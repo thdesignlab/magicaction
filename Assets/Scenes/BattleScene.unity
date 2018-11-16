@@ -649,7 +649,7 @@ Prefab:
         type: 2}
       propertyPath: pointer
       value: 
-      objectReference: {fileID: 1198805873627302, guid: 69f520665a20a3b4c9613d88ced52cad,
+      objectReference: {fileID: 1764096844883978, guid: 69f520665a20a3b4c9613d88ced52cad,
         type: 2}
     - target: {fileID: 114148212535936236, guid: 49ace1294c179554bbd1c325a2042295,
         type: 2}
@@ -674,6 +674,12 @@ Prefab:
       propertyPath: pointerDouble
       value: 
       objectReference: {fileID: 1791573871166338, guid: 0e02ba7f20b444849ab9579e0c2418e9,
+        type: 2}
+    - target: {fileID: 114148212535936236, guid: 49ace1294c179554bbd1c325a2042295,
+        type: 2}
+      propertyPath: pointerStart
+      value: 
+      objectReference: {fileID: 1495470903125220, guid: e910b3ff44ad719419d8ad75acc884bb,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49ace1294c179554bbd1c325a2042295, type: 2}

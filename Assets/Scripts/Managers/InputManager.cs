@@ -31,6 +31,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     [SerializeField]
     private GameObject pointer;
     [SerializeField]
+    private GameObject pointerStart;
+    [SerializeField]
     private GameObject pointerLong;
     [SerializeField]
     private GameObject pointerDouble;
@@ -75,8 +77,12 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected InputStatus inputStatus;
     protected Camera mainCam;
     protected GameObject pointerObj;
+    protected GameObject pointerNormalObj;
+    protected GameObject pointerSpecialObj;
+    protected GameObject pointerStartObj;
+    protected LineRenderer pointerStartLine;
     protected GameObject pointerLongObj;
-    protected LineRenderer pointerLine;
+    protected LineRenderer pointerLongLine;
     protected GameObject pointerDoubleObj;
     protected Transform pointerDoubleStartTran;
     protected Transform pointerDoubleEndTran;
@@ -122,7 +128,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     {
         if (Common.FUNC.IsNanVector(pos)) return;
 
-        if (isLongPressing)
+        if (isLongPressing || isTransform)
         {
             endPoint = pos;
         } else
@@ -136,6 +142,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         {
             //off
             if (pointerObj != null) pointerObj.SetActive(false);
+            if (pointerStartObj != null) pointerStartObj.SetActive(false);
+            TogglePointerChange(true);
         }
         else
         {
@@ -143,14 +151,51 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
             if (pointerObj == null)
             {
                 pointerObj = Instantiate(pointer);
+                pointerNormalObj = pointerObj.transform.Find("Normal").gameObject;
+                pointerSpecialObj = pointerObj.transform.Find("Special").gameObject;
+                pointerNormalObj.SetActive(true);
+                pointerSpecialObj.SetActive(false);
             }
             pointerObj.SetActive(true);
             pointerObj.transform.position = ChangeWorldVector(pos);
-            if (pointerLine != null && isLongPressing)
+
+            Vector2 sPos = ChangeWorldVector(startPoint);
+            Vector2 ePos = ChangeWorldVector(endPoint);
+            if (isLongPressing)
             {
-                pointerLine.SetPosition(1, ChangeWorldVector(endPoint) - ChangeWorldVector(startPoint));
+                //ロングタップポインターとのライン
+                if (pointerLongLine != null)
+                {
+                    pointerLongLine.SetPosition(1, ePos - sPos);
+                }
+                TogglePointerChange(false);
+            } else if (isTransform)
+            {
+                //通常タップ時開始位置にポインター生成
+                if (pointerStart != null)
+                {
+                    if (pointerStartObj == null)
+                    {
+                        pointerStartObj = Instantiate(pointerStart);
+                        pointerStartLine = pointerStartObj.GetComponentInChildren<LineRenderer>();
+                    }
+                    pointerStartObj.SetActive(true);
+                    pointerStartObj.transform.position = sPos;
+                    if (pointerStartLine != null)
+                    {
+                        pointerStartLine.SetPosition(0, Vector3.zero);
+                        pointerStartLine.SetPosition(1, ePos - sPos);
+                    }
+                }
+                TogglePointerChange(true);
             }
         }
+    }
+    protected void TogglePointerChange(bool isNormal)
+    {
+        if (pointerNormalObj == null && pointerSpecialObj == null) return;
+        pointerNormalObj.SetActive(isNormal);
+        pointerSpecialObj.SetActive(!isNormal);
     }
     protected void SetPointerLong(Vector2 pos = default(Vector2))
     {
@@ -164,6 +209,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         {
             //off
             if (pointerLongObj != null) pointerLongObj.SetActive(false);
+            TogglePointerChange(true);
         }
         else
         {
@@ -171,20 +217,20 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
             if (pointerLongObj == null)
             {
                 pointerLongObj = Instantiate(pointerLong);
-                pointerLine = pointerLongObj.GetComponentInChildren<LineRenderer>();
+                pointerLongLine = pointerLongObj.GetComponentInChildren<LineRenderer>();
             }
             pointerLongObj.SetActive(true);
             pointerLongObj.transform.position = ChangeWorldVector(pos);
-            if (pointerLine != null)
+            if (pointerLongLine != null)
             {
-                pointerLine.SetPosition(0, Vector3.zero);
-                pointerLine.SetPosition(1, Vector3.zero);
+                pointerLongLine.SetPosition(0, Vector3.zero);
+                pointerLongLine.SetPosition(1, Vector3.zero);
             }
+            if (pointerStartObj != null) pointerStartObj.SetActive(false);
         }
     }
     protected void SetPointerDouble(Vector2 pos1 = default(Vector2), Vector2 pos2 = default(Vector2))
     {
-        Debug.Log("SetPointerDouble");
         if (Common.FUNC.IsNanVector(pos1) || Common.FUNC.IsNanVector(pos2)) return;
 
         SetPointer();
@@ -197,6 +243,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         {
             //off
             if (pointerDoubleObj != null) pointerDoubleObj.SetActive(false);
+            TogglePointerChange(true);
         }
         else
         {
@@ -291,7 +338,6 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
         if (gesture.NumPointers == 1)
         {
-            //Debug.Log(point + " >> " + gesture.ScreenPosition + "## " + gesture.DeltaPosition);
             if (dragBorder <= Vector2.Distance(point, gesture.ScreenPosition) || isDraging)
             {
                 //ドラッグ
@@ -410,6 +456,6 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected void Log(object obj)
     {
         if (!isDebugLog) return; 
-        Debug.Log(obj);
+        DebugManager.Instance.AdminLog(obj);
     }
 }
