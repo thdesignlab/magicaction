@@ -13,7 +13,7 @@ public class ObjectController : MonoBehaviour
     protected float deltaTime;
     protected float liveTime = 0;
 
-    const float LIMIT_AREA = 30.0f;
+    const float LIMIT_AREA = 50.0f;
 
     protected virtual void Awake()
     {

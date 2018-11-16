@@ -9,6 +9,16 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
         base.Awake();
     }
 
+    IEnumerator Start()
+    {
+        for (; ; )
+        {
+            if (AppManager.Instance.isReadyGame) break;
+            yield return null;
+        }
+
+        //BgmManager.Instance.PlayBgm();
+    }
 
     public void Demo()
     {

@@ -131,13 +131,23 @@ namespace Common
         {
             return dic.ElementAt(Random.Range(0, dic.Count)).Key;
         }
-    
+        public static T RandomList<T>(List<T> list)
+        {
+            return list.ElementAt(Random.Range(0, list.Count));
+        }
+
         //三角関数
         public static float GetSin(float time, float anglePerSec = 360, float startAngle = 0)
         {
             float angle = (startAngle + anglePerSec * time) % 360;
             float radian = Mathf.PI / 180 * angle;
             return Mathf.Sin(radian);
+        }
+
+        //NaNチェック
+        public static bool IsNanVector(Vector2 v)
+        {
+            return (float.IsNaN(v.x) && float.IsNaN(v.y));
         }
     }
 }

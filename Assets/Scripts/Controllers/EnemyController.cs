@@ -57,4 +57,10 @@ public class EnemyController : UnitController
         GameObject obj = Instantiate(spawnObj, myTran.position + new Vector3(1, 0, 0), Quaternion.identity);
         LookAt(obj.transform, new Vector3(target.x, target.y, obj.transform.position.z));
     }
+
+    protected override void Dead()
+    {
+        BattleManager.Instance.AddScore();
+        base.Dead();
+    }
 }

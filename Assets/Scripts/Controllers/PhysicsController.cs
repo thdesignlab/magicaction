@@ -58,22 +58,22 @@ public class PhysicsController : ObjectController
     //ユニットに衝突
     protected virtual void HitUnit(GameObject obj)
     {
-        DebugManager.Instance.AdminLog("### HitUnit");
-        DebugManager.Instance.AdminLog(this.name, obj.name);
+        //DebugManager.Instance.AdminLog("### HitUnit");
+        //DebugManager.Instance.AdminLog(this.name, obj.name);
     }
 
     //ダメージオブジェクトに衝突
     protected virtual void HitDamageObject(GameObject obj)
     {
-        DebugManager.Instance.AdminLog("### HitDamageObject");
-        DebugManager.Instance.AdminLog(this.name, obj.name);
+        //DebugManager.Instance.AdminLog("### HitDamageObject");
+        //DebugManager.Instance.AdminLog(this.name, obj.name);
     }
 
     //ステージに衝突
     protected virtual void HitStage(GameObject obj)
     {
-        DebugManager.Instance.AdminLog("### HitStage");
-        DebugManager.Instance.AdminLog(this.name, obj.name);
+        //DebugManager.Instance.AdminLog("### HitStage");
+        //DebugManager.Instance.AdminLog(this.name, obj.name);
     }
 
     //耐久値削減

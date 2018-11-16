@@ -103,11 +103,11 @@ MonoBehaviour:
   spawnObj: {fileID: 0}
   isGravity: 0
   strength: 1
-  maxhp: 2
-  speed: 4
-  bullet: {fileID: 1660847698679210, guid: e10a5b05db7508543a013e161e925741, type: 2}
-  attackInterval: 5
-  rapidCount: 1
+  maxhp: 4
+  speed: 10
+  bullet: {fileID: 1824865235060008, guid: aa19dc08520b171459ff7320c4382418, type: 2}
+  attackInterval: 2
+  rapidCount: 5
 --- !u!212 &212741989172126626
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -22,7 +22,7 @@ public class PlayerController : UnitController
     {
         base.Update();
 
-        recover += 5 * deltaTime;
+        recover += 10 * deltaTime;
         if (recover >= 1.0f)
         {
             int r = (int)Mathf.Floor(recover);
@@ -102,11 +102,12 @@ public class PlayerController : UnitController
 
         for (int i = 0; i <= 100; i++)
         {
-            Vector3 pos = new Vector3(Random.Range(-20, 20), 15, myTran.position.z);
+            Vector3 pos = new Vector3(Random.Range(-30, 30), 20, myTran.position.z);
+            float diff = Random.Range(-3, 3);
             GameObject obj = Instantiate(bullet, pos, Quaternion.identity);
-            LookAt(obj.transform, new Vector3(pos.x, pos.y - 1, myTran.position.z));
+            LookAt(obj.transform, new Vector3(pos.x + diff, pos.y - 10, myTran.position.z));
             obj.GetComponent<ObjectController>().SetPlayer(true);
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.04f);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using TouchScript.Gestures;
 using TouchScript.Gestures.TransformGestures;
+using TouchScript.Pointers;
 
 public class InputStatus
 {
@@ -27,6 +28,24 @@ public class GestureAction : UnityEvent<InputStatus> { }
 
 public class InputManager : SingletonMonoBehaviour<InputManager>
 {
+    [SerializeField]
+    private GameObject pointer;
+    [SerializeField]
+    private GameObject pointerLong;
+    [SerializeField]
+    private GameObject pointerDouble;
+    [SerializeField]
+    private bool isDebugLog;
+    [SerializeField]
+    private float dragBorder = 10.0f;
+    [SerializeField]
+    private float pinchBorder = 0.2f;
+    [SerializeField]
+    private float twistBorder = 0.5f;
+    [SerializeField]
+    private float flickTimeBorder = 0.1f;
+
+    //ジェスチャーアクション
     public GestureAction pressAction;
     public GestureAction pressingAction;
     public GestureAction tapAction;
@@ -39,23 +58,12 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     public GestureAction twistAction;
     public GestureAction twistingAction;
 
-    [SerializeField]
-    private bool isDebugLog;
-    [SerializeField]
-    private float dragBorder = 10.0f;
-    [SerializeField]
-    private float pinchBorder = 0.2f;
-    [SerializeField]
-    private float twistBorder = 0.5f;
-    [SerializeField]
-    private float flickTimeBorder = 0.1f;
-
+    //一時格納
     protected bool isLongPressing = false;
     protected bool isTransform = false;
     protected bool isDraging = false;
     protected bool isPinching = false;
     protected bool isTwisting = false;
-
     protected Vector2 point = Vector2.zero;
     protected Vector2 prePoint = Vector2.zero;
     protected Vector2 startPoint = Vector2.zero;
@@ -65,13 +73,22 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected float pressTime = 0;
 
     protected InputStatus inputStatus;
+    protected Camera mainCam;
+    protected GameObject pointerObj;
+    protected GameObject pointerLongObj;
+    protected LineRenderer pointerLine;
+    protected GameObject pointerDoubleObj;
+    protected Transform pointerDoubleStartTran;
+    protected Transform pointerDoubleEndTran;
+    protected LineRenderer pointerDoubleLine;
 
     protected override void Awake()
     {
-        base.isDontDestroyOnLoad = false;
+        isDontDestroyOnLoad = false;
         base.Awake();
 
         inputStatus = new InputStatus();
+        mainCam = Camera.main;
     }
     void OnEnable()
     {
@@ -90,8 +107,125 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         if (IsPressing())
         {
             pressTime += Time.deltaTime;
-            ActionInvoke(pressingAction);
+            prePoint = point;
+            point = Input.mousePosition;
+            if (!isPinching && !isTwisting)
+            {
+                SetPointer(point);
+                ActionInvoke(pressingAction);
+            }
         }
+    }
+
+    //ポインター切替
+    protected void SetPointer(Vector2 pos = default(Vector2))
+    {
+        if (Common.FUNC.IsNanVector(pos)) return;
+
+        if (isLongPressing)
+        {
+            endPoint = pos;
+        } else
+        {
+            startPoint = pos;
+        }
+
+        if (pointer == null) return;
+
+        if (pos == default(Vector2))
+        {
+            //off
+            if (pointerObj != null) pointerObj.SetActive(false);
+        }
+        else
+        {
+            //on
+            if (pointerObj == null)
+            {
+                pointerObj = Instantiate(pointer);
+            }
+            pointerObj.SetActive(true);
+            pointerObj.transform.position = ChangeWorldVector(pos);
+            if (pointerLine != null && isLongPressing)
+            {
+                pointerLine.SetPosition(1, ChangeWorldVector(endPoint) - ChangeWorldVector(startPoint));
+            }
+        }
+    }
+    protected void SetPointerLong(Vector2 pos = default(Vector2))
+    {
+        if (Common.FUNC.IsNanVector(pos)) return;
+
+        startPoint = pos;
+
+        if (pointerLong == null) return;
+
+        if (pos == default(Vector2))
+        {
+            //off
+            if (pointerLongObj != null) pointerLongObj.SetActive(false);
+        }
+        else
+        {
+            //on
+            if (pointerLongObj == null)
+            {
+                pointerLongObj = Instantiate(pointerLong);
+                pointerLine = pointerLongObj.GetComponentInChildren<LineRenderer>();
+            }
+            pointerLongObj.SetActive(true);
+            pointerLongObj.transform.position = ChangeWorldVector(pos);
+            if (pointerLine != null)
+            {
+                pointerLine.SetPosition(0, Vector3.zero);
+                pointerLine.SetPosition(1, Vector3.zero);
+            }
+        }
+    }
+    protected void SetPointerDouble(Vector2 pos1 = default(Vector2), Vector2 pos2 = default(Vector2))
+    {
+        Debug.Log("SetPointerDouble");
+        if (Common.FUNC.IsNanVector(pos1) || Common.FUNC.IsNanVector(pos2)) return;
+
+        SetPointer();
+        startPoint = pos1;
+        endPoint = pos2;
+
+        if (pointerDouble == null) return;
+
+        if (pos1 == default(Vector2) || pos2 == default(Vector2))
+        {
+            //off
+            if (pointerDoubleObj != null) pointerDoubleObj.SetActive(false);
+        }
+        else
+        {
+            //on
+            if (pointerDoubleObj == null)
+            {
+                pointerDoubleObj = Instantiate(pointerDouble);
+                pointerDoubleStartTran = pointerDoubleObj.transform.Find("Start");
+                pointerDoubleEndTran = pointerDoubleObj.transform.Find("End");
+                pointerDoubleLine = pointerDoubleObj.GetComponentInChildren<LineRenderer>();
+                pointerDoubleLine.SetPosition(0, Vector2.zero);
+            }
+            pointerDoubleObj.SetActive(true);
+            Vector2 sPos = ChangeWorldVector(startPoint);
+            Vector2 ePos = ChangeWorldVector(endPoint);
+            pointerDoubleStartTran.position = sPos;
+            pointerDoubleEndTran.position = ePos;
+            if (pointerDoubleLine != null)
+            {
+                pointerDoubleLine.SetPosition(0, sPos);
+                pointerDoubleLine.SetPosition(1, ePos);
+            }
+        }
+    }
+    protected void ResetPointer()
+    {
+        SetPointer();
+        SetPointerLong();
+        SetPointerDouble();
     }
 
     //プレス(押した時)
@@ -99,12 +233,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     {
         Log("PressHandle");
         PressGesture gesture = sender as PressGesture;
-        if (IsPressing())
-        {
-            prePoint = point;
-        }
         point = gesture.ScreenPosition;
-        startPoint = point;
+        SetPointer(point);
         ActionInvoke(pressAction);
     }
 
@@ -112,15 +242,17 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected virtual void LongPressHandle(object sender, System.EventArgs e)
     {
         Log("LongPressHandle");
+        if (isTransform) return;
         isLongPressing = true;
+        SetPointerLong(point);
     }
 
     //リリース(離した時)
     protected virtual void ReleaseHandle(object sender, System.EventArgs e)
     {
+        Log("ReleaseHandle (isTransform="+ isTransform+")");
         if (isTransform) return;
 
-        Log("ReleaseHandle");
         if (isLongPressing)
         {
             ActionInvoke(longTapAction);
@@ -128,7 +260,6 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         {
             ActionInvoke(tapAction);
         }
-
         ResetState();
     }
 
@@ -143,15 +274,21 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected virtual void TransformStartedHandle(object sender, System.EventArgs e)
     {
         // 変形開始のタッチ時の処理
-        Log("TransformStartedHandle");
+        Log("TransformStartedHandle (IsPressing()=" + IsPressing()+")");
+        if (!IsPressing()) return;
         isTransform = true;
     }
 
     protected virtual void StateChangedHandle(object sender, System.EventArgs e)
     {
+        Log("StateChangedHandle (isTransform ="+ isTransform+" / IsPressing()=" + IsPressing() + ")");
+        if (!isTransform || !IsPressing()) return;
+
         // 変形中のタッチ時の処理
         ScreenTransformGesture gesture = sender as ScreenTransformGesture;
         Vector2 nowPoint = gesture.ScreenPosition;
+        if (Common.FUNC.IsNanVector(nowPoint)) return;
+
         if (gesture.NumPointers == 1)
         {
             //Debug.Log(point + " >> " + gesture.ScreenPosition + "## " + gesture.DeltaPosition);
@@ -178,6 +315,11 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
                 isTwisting = true;
                 ActionInvoke(twistingAction);
             }
+            prePoint = point;
+            point = nowPoint;
+
+            IList<Pointer> pList = gesture.ActivePointers;
+            SetPointerDouble(pList[0].Position, pList[1].Position);
         }
     }
 
@@ -217,6 +359,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected void ResetState()
     {
+        ResetPointer();
         isLongPressing = false;
         isTransform = false;
         isDraging = false;
@@ -256,7 +399,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected Vector2 ChangeWorldVector(Vector2 v)
     {
-        return Camera.main.ScreenToWorldPoint(v);
+        return mainCam.ScreenToWorldPoint(v);
     }
 
     protected bool IsPressing()
