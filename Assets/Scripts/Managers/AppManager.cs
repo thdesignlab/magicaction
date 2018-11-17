@@ -3,24 +3,18 @@ using System.Collections;
 
 public class AppManager : SingletonMonoBehaviour<AppManager>
 {
-    [SerializeField]
-    private bool isDebugMode;
-    public static bool isDebug;
+    public bool isDebug;
 
     [HideInInspector]
     public bool isReadyGame = false;
     [HideInInspector]
     public bool isFinishedSplash = false;
 
-    public static ScreenManager screenManager;
-
     protected override void Awake()
     {
         base.Awake();
 
-        Debug.Log("isDebugMode=" + isDebugMode);
-        isDebug = isDebugMode;
-        screenManager = GetComponent<ScreenManager>();
+        Debug.Log("isDebugMode=" + isDebug);
     }
 
     IEnumerator Start()

@@ -27,8 +27,6 @@ public class EnemyController : UnitController
     {
         base.Update();
 
-        MoveForward(speed);
-
         if (player == null)
         {
             player = GameObject.FindGameObjectWithTag(Common.CO.TAG_PLAYER);
@@ -40,6 +38,12 @@ public class EnemyController : UnitController
             StartCoroutine(Rapid(targetPos));
             nextAttackTime = attackInterval;
         }
+    }
+    protected override void InitSpeed()
+    {
+        base.InitSpeed();
+
+        SetSpeed(GetForward() * speed);
     }
 
     IEnumerator Rapid(Vector2 targetPos)

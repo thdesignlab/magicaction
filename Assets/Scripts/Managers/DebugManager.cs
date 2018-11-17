@@ -4,7 +4,7 @@ using System.Collections;
 public class DebugManager : SingletonMonoBehaviour<DebugManager>
 {
     [SerializeField]
-    private GUISkin guiSkin;
+    private bool isFps;
 
     private Queue logQueue = new Queue();
     private int logCount = 100;
@@ -21,12 +21,12 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
     }
     public void AdminLog(object log)
     {
-        if (UserManager.isAdmin || AppManager.isDebug) Debug.Log(log);
+        if (UserManager.isAdmin || AppManager.Instance.isDebug) Debug.Log(log);
     }
 
     public void StartLog()
     {
-        if (!AppManager.isDebug && !UserManager.isAdmin) return;
+        if (!AppManager.Instance.isDebug && !UserManager.isAdmin) return;
         Application.logMessageReceived += HandleLog;
     }
     public void StopLog()
@@ -65,10 +65,16 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
     private int textAreaWidth = Screen.width;
     private int textAreaheight = Screen.height / 2;
     private int space = Screen.height / 16;
+    private float fpsTimer = 0;
+    private float fps = 0;
 
     void OnGUI()
     {
-        if (!AppManager.isDebug && !UserManager.isAdmin) return;
+        if (!AppManager.Instance.isDebug && !UserManager.isAdmin) return;
+
+        SetGuiSkin();
+        
+        //ログ
         Rect btnRect = new Rect(0, 0, space, space);
         Rect logRect = new Rect(0, space, textAreaWidth, textAreaheight);
         if (dispLog)
@@ -88,8 +94,6 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
         }
         else
         {
-            SetGuiSkin(GUI.skin);
-            GUI.skin = guiSkin;
 
             //ログ非表示中
             if (GUI.RepeatButton(btnRect, "", "button"))
@@ -100,23 +104,26 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
                     dispLog = true;
                 }
             }
-            else
-            {
-                //btnDown = 0;
-                //btnDown -= Time.deltaTime / 10;
+        }
+
+        //FPS
+        if (isFps)
+        {
+            fpsTimer += Time.deltaTime;
+            if (fpsTimer >= 0.5f) {
+                fpsTimer -= 0.5f;
+                fps = Mathf.Round(10 / Time.deltaTime) / 10.0f;
             }
+            Rect fpsRect = new Rect(0, 0, 50, 30);
+            GUI.Label(fpsRect, fps.ToString());
         }
     }
 
-    private void SetGuiSkin(GUISkin defaultGuiSKin)
+    private void SetGuiSkin()
     {
-        if (guiSkin == null)
-        {
-            guiSkin = Instantiate(defaultGuiSKin);
-            guiSkin.button.normal.background = null;
-            guiSkin.button.hover.background = null;
-            guiSkin.button.active.background = null;
-        }
+        GUI.skin.button.normal.background = null;
+        GUI.skin.button.hover.background = null;
+        GUI.skin.button.active.background = null;
     }
 
     /**

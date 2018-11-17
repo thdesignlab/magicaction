@@ -6,9 +6,9 @@ public class BulletController : DamageObjectController
     [SerializeField]
     protected int speed;
 
-    protected override void Update()
+    protected override void Start()
     {
-        base.Update();
-        MoveForward(speed);
+        base.Start();
+        AddSpeed(GetForward() * speed);
     }
 }

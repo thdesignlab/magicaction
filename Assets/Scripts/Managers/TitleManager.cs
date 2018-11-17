@@ -18,6 +18,7 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
         }
 
         //BgmManager.Instance.PlayBgm();
+        ScreenManager.Instance.OpenMessage("Tap to Start");
     }
 
     public void Demo()

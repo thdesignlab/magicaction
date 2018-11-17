@@ -456,6 +456,6 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected void Log(object obj)
     {
         if (!isDebugLog) return; 
-        DebugManager.Instance.AdminLog(obj);
+        Debug.Log(obj);
     }
 }

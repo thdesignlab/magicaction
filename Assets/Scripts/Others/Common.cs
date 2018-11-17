@@ -149,5 +149,18 @@ namespace Common
         {
             return (float.IsNaN(v.x) && float.IsNaN(v.y));
         }
+
+        //2D変換
+        public static Vector2 ParseVector2(Vector3 v3)
+        {
+            return new Vector2(v3.x, v3.y);
+        }
+
+        //3D変換
+        public static Vector3 ParseVector3(Vector2 v2)
+        {
+            return new Vector3(v2.x, v2.y, 0);
+        }
+
     }
 }

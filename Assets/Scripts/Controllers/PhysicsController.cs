@@ -9,43 +9,81 @@ public class PhysicsController : ObjectController
     protected int strength;
 
     protected Rigidbody2D myBody;
+    protected Vector2 myVelocity = Vector2.zero;
+    protected Vector2 gVelocity = Vector2.zero;
     protected bool isBreakable;
+    protected Vector2 myG;
+    protected bool isGround = false;
 
     protected override void Awake()
     {
         base.Awake();
-
         myBody = GetComponent<Rigidbody2D>();
-        if (myBody != null)
-        {
-            myBody.gravityScale = isGravity ? 1 : 0;
-        }
         isBreakable = (strength > 0);
+        myG = Physics2D.gravity;
     }
 
     protected override void Update()
     {
         base.Update();
-
-
+    }
+    void FixedUpdate()
+    {
+        if (isGravity)
+        {
+            AddGravity(myG * Time.fixedDeltaTime);
+        }
+        Move((myVelocity + gVelocity) * Time.fixedDeltaTime);
     }
 
     //前方Vector取得
-    protected Vector3 GetForward()
+    protected Vector2 GetForward()
     {
         return myTran.right;
     }
-
-    //移動
-    protected virtual void Move(Vector3 vector, float speed)
+    //後方Vector取得
+    protected Vector2 GetBack()
     {
-        myTran.position += vector * speed * deltaTime;
+        return GetForward() * -1;
+    }
+    //上方Vector取得
+    protected Vector2 GetUp()
+    {
+        return myTran.up;
+    }
+    //下方Vector取得
+    protected Vector2 GetDown()
+    {
+        return GetUp() * -1;
     }
 
-    //前方へ移動
-    protected virtual void MoveForward(float speed)
+    //移動
+    protected virtual void Move(Vector2 v)
     {
-        Move(GetForward(), speed);
+        if (v == Vector2.zero) return;
+        myTran.position += Common.FUNC.ParseVector3(v);
+    }
+
+    //速度設定
+    protected virtual void SetSpeed(Vector2 v)
+    {
+        myVelocity = v;
+    }
+
+    //加速
+    protected virtual void AddSpeed(Vector2 v)
+    {
+        myVelocity += v;
+    }
+
+    //重力速度加算
+    protected virtual void AddGravity(Vector2 v)
+    {
+        gVelocity += v;
+        if (myG.y < gVelocity.y)
+        {
+            gVelocity = myG;
+        }
     }
 
     //2DLookAt
@@ -58,22 +96,19 @@ public class PhysicsController : ObjectController
     //ユニットに衝突
     protected virtual void HitUnit(GameObject obj)
     {
-        //DebugManager.Instance.AdminLog("### HitUnit");
-        //DebugManager.Instance.AdminLog(this.name, obj.name);
+        //Debug.Log("### HitUnit");
     }
 
     //ダメージオブジェクトに衝突
     protected virtual void HitDamageObject(GameObject obj)
     {
-        //DebugManager.Instance.AdminLog("### HitDamageObject");
-        //DebugManager.Instance.AdminLog(this.name, obj.name);
+        //Debug.Log("### HitDamageObject");
     }
 
     //ステージに衝突
     protected virtual void HitStage(GameObject obj)
     {
-        //DebugManager.Instance.AdminLog("### HitStage");
-        //DebugManager.Instance.AdminLog(this.name, obj.name);
+        //Debug.Log("### HitStage");
     }
 
     //耐久値削減
@@ -92,6 +127,22 @@ public class PhysicsController : ObjectController
         if (strength <= 0)
         {
             Break();
+        }
+    }
+
+    //接地処理
+    protected void SetGround(bool flg)
+    {
+        if (flg)
+        {
+            gVelocity = Vector2.zero;
+            myG = Vector2.zero;
+            isGround = true;
+        }
+        else
+        {
+            myG = Physics2D.gravity;
+            isGround = false;
         }
     }
 
@@ -118,9 +169,6 @@ public class PhysicsController : ObjectController
         }
 
     }
-    //protected void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //}
 
     //### getter/setter ###
 

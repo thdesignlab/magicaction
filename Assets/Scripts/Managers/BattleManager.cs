@@ -30,17 +30,17 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
         popEnemy.Add(1, Resources.Load<GameObject>("Units/Enemy"));
         popTransform.Add(1, GameObject.Find("Pops/Pop1").transform);
-        popInterval.Add(1, 3f);
+        popInterval.Add(1, 1.5f);
         popTime.Add(1, 0);
 
         popEnemy.Add(2, Resources.Load<GameObject>("Units/Enemy2"));
         popTransform.Add(2, GameObject.Find("Pops/Pop2").transform);
-        popInterval.Add(2, 0.9f);
+        popInterval.Add(2, 0.75f);
         popTime.Add(2, 0);
 
         popEnemy.Add(3, Resources.Load<GameObject>("Units/Enemy3"));
         popTransform.Add(3, GameObject.Find("Pops/Pop3").transform);
-        popInterval.Add(3, 0.7f);
+        popInterval.Add(3, 0.5f);
         popTime.Add(3, 0);
     }
 
@@ -52,13 +52,13 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         EnemyPop(3);
     }
 
-    private void EnemyPop(int index)
+    public void EnemyPop(int index)
     {
         float diffTime = battleTime - popTime[index];
         if (diffTime >= popInterval[index])
         {
             popTime[index] = battleTime;
-            GameObject obj = Instantiate<GameObject>(popEnemy[index], popTransform[index].position, popTransform[index].rotation);
+            GameObject obj = Instantiate(popEnemy[index], popTransform[index].position, popTransform[index].rotation);
         }
     }
 
