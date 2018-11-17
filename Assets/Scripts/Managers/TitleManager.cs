@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class TitleManager : SingletonMonoBehaviour<TitleManager>
@@ -19,9 +20,12 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
 
         //BgmManager.Instance.PlayBgm();
         ScreenManager.Instance.OpenMessage("Tap to Start");
+
+        //TapAction
+        InputManager.Instance.SetTapAction(Demo);
     }
 
-    public void Demo()
+    private void Demo(InputStatus input)
     {
         ScreenManager.Instance.SceneLoad(Common.CO.SCENE_BATTLE);
     }

@@ -12,7 +12,11 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private Dictionary<int, float> popTime = new Dictionary<int, float>();
 
     private Canvas battleCanvas;
+    private Slider hpSlider;
     private Text scoreText;
+    private bool isBattleStart = false;
+
+    private PlayerController playerCtrl;
 
     protected override void Awake()
     {
@@ -20,6 +24,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         base.Awake();
 
         battleCanvas = GameObject.Find("BattleCanvas").GetComponent<Canvas>();
+        hpSlider = battleCanvas.transform.Find("HP").GetComponent<Slider>();
         scoreText = battleCanvas.transform.Find("Score").GetComponent<Text>();
         scoreText.text = "0";
     }
@@ -28,28 +33,61 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     {
         BgmManager.Instance.PlayBgm();
 
+        //敵情報（仮）
         popEnemy.Add(1, Resources.Load<GameObject>("Units/Enemy"));
-        popTransform.Add(1, GameObject.Find("Pops/Pop1").transform);
+        popTransform.Add(1, GameObject.Find("EnemyPops/Pop1").transform);
         popInterval.Add(1, 1.5f);
         popTime.Add(1, 0);
 
         popEnemy.Add(2, Resources.Load<GameObject>("Units/Enemy2"));
-        popTransform.Add(2, GameObject.Find("Pops/Pop2").transform);
+        popTransform.Add(2, GameObject.Find("EnemyPops/Pop2").transform);
         popInterval.Add(2, 0.75f);
         popTime.Add(2, 0);
 
         popEnemy.Add(3, Resources.Load<GameObject>("Units/Enemy3"));
-        popTransform.Add(3, GameObject.Find("Pops/Pop3").transform);
+        popTransform.Add(3, GameObject.Find("EnemyPops/Pop3").transform);
         popInterval.Add(3, 0.5f);
         popTime.Add(3, 0);
+
+        StartCoroutine(BattleStart());
     }
 
     private void Update()
     {
+        if (!isBattleStart) return;
+
         battleTime += Time.deltaTime;
         EnemyPop(1);
         EnemyPop(2);
         EnemyPop(3);
+        if (playerCtrl != null)
+        {
+            hpSlider.value = playerCtrl.GetHpRate();
+        }
+    }
+
+    IEnumerator BattleStart()
+    {
+        //プレイヤー生成
+        yield return StartCoroutine(PlayerSummon());
+
+        isBattleStart = true;
+    }
+
+    IEnumerator PlayerSummon()
+    {
+        GameObject player = Resources.Load<GameObject>("Units/Player");
+        GameObject summon = Resources.Load<GameObject>("Directions/SummonPlayer");
+        Transform pPopTran = GameObject.Find("PlayerPop").transform;
+
+        //召喚演出
+        GameObject summonObj = Instantiate(summon, pPopTran.position, pPopTran.rotation);
+        yield return new WaitForSeconds(0.5f);
+        GameObject playerObj = Instantiate(player, pPopTran.position + Vector3.up * 1.5f, pPopTran.rotation);
+        playerCtrl = playerObj.GetComponent<PlayerController>();
+        yield return new WaitForSeconds(4.0f);
+        Destroy(summonObj);
+        yield return new WaitForSeconds(1.0f);
     }
 
     public void EnemyPop(int index)

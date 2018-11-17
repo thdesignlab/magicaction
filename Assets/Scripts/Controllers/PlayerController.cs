@@ -13,10 +13,14 @@ public class PlayerController : UnitController
     [SerializeField]
     private GameObject spread;
 
-    [SerializeField]
-    private Slider hpSlider;
-
     private float recover = 0;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        InputManager.Instance.SetTapAction(TapAction);
+        InputManager.Instance.SetLongTapAction(LongTapAction);
+    }
 
     protected override void Update()
     {
@@ -31,16 +35,24 @@ public class PlayerController : UnitController
         }
     }
 
-    protected override void SetHp(int diff)
+    public float GetHpRate()
     {
-        base.SetHp(diff);
-
-        hpSlider.value = (float)hp / maxhp;
+        return (float)hp / maxhp;
     }
 
-    public void Drag(InputStatus status)
+    private void TapAction(InputStatus input)
     {
-        StartCoroutine(Rapid(status));
+        Shoot(input);
+    }
+
+    private void LongTapAction(InputStatus input)
+    {
+        Rain(input);
+    }
+
+    public void Drag(InputStatus input)
+    {
+        StartCoroutine(Rapid(input));
     }
     IEnumerator Rapid(InputStatus status)
     {
@@ -71,14 +83,9 @@ public class PlayerController : UnitController
         }
     }
 
-    public void Shoot(InputStatus status)
+    public void Shoot(InputStatus input)
     {
-        Spawn(bullet, status.point);
-    }
-
-    public void Laser(InputStatus status)
-    {
-        Spawn(laser, status.point);
+        Spawn(bullet, input.GetPoint());
     }
 
     private void Spawn(GameObject spawnObj, Vector2 target)
@@ -91,7 +98,7 @@ public class PlayerController : UnitController
 
 
 
-    public void Rain(InputStatus status)
+    public void Rain(InputStatus input)
     {
         Spawn(bullet, myTran.position + Vector3.up + Vector3.right);
         StartCoroutine(Meteor());

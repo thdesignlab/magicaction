@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114932339921818372}
   - component: {fileID: 50889952588875832}
   - component: {fileID: 58978507598236666}
+  - component: {fileID: 114821353618768760}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -78,6 +79,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.28
+--- !u!114 &114821353618768760
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1385153413713462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bd6709a443ccea4db9367d5548220a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startScale: {x: 0, y: 1, z: 1}
+  endScale: {x: 1, y: 1, z: 1}
+  scaleTime: 1
+  scaleLateTime: 0.5
+  continuationTime: 0
 --- !u!114 &114932339921818372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -98,7 +115,6 @@ MonoBehaviour:
   arrow: {fileID: 1824865235060008, guid: aa19dc08520b171459ff7320c4382418, type: 2}
   laser: {fileID: 1660847698679210, guid: e10a5b05db7508543a013e161e925741, type: 2}
   spread: {fileID: 1019747205862536, guid: 931aaee4b4eefe0428e26aded9dd2f96, type: 2}
-  hpSlider: {fileID: 0}
 --- !u!212 &212813395286430828
 SpriteRenderer:
   m_ObjectHideFlags: 1

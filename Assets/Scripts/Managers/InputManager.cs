@@ -21,9 +21,25 @@ public class InputStatus
     public float totalPinch;
     public float totalTwist;
     public float pressTime;
+
+    public Vector2 GetPoint()
+    {
+        return InputManager.Instance.ChangeWorldVector(point);
+    }
+    public Vector2 GetPrePoint()
+    {
+        return InputManager.Instance.ChangeWorldVector(prePoint);
+    }
+    public Vector2 GetStartPoint()
+    {
+        return InputManager.Instance.ChangeWorldVector(startPoint);
+    }
+    public Vector2 GetEndPoint()
+    {
+        return InputManager.Instance.ChangeWorldVector(endPoint);
+    }
 }
 
-[Serializable]
 public class GestureAction : UnityEvent<InputStatus> { }
 
 public class InputManager : SingletonMonoBehaviour<InputManager>
@@ -48,17 +64,17 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     private float flickTimeBorder = 0.1f;
 
     //ジェスチャーアクション
-    public GestureAction pressAction;
-    public GestureAction pressingAction;
-    public GestureAction tapAction;
-    public GestureAction longTapAction;
-    public GestureAction flickAction;
-    public GestureAction dragAction;
-    public GestureAction dragingAction;
-    public GestureAction pinchAction;
-    public GestureAction pinchingAction;
-    public GestureAction twistAction;
-    public GestureAction twistingAction;
+    protected GestureAction pressAction;
+    protected GestureAction pressingAction;
+    protected GestureAction tapAction;
+    protected GestureAction longTapAction;
+    protected GestureAction flickAction;
+    protected GestureAction dragAction;
+    protected GestureAction dragingAction;
+    protected GestureAction pinchAction;
+    protected GestureAction pinchingAction;
+    protected GestureAction twistAction;
+    protected GestureAction twistingAction;
 
     //一時格納
     protected bool isLongPressing = false;
@@ -427,10 +443,10 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         inputStatus.isDraging = isDraging;
         inputStatus.isPinching = isPinching;
         inputStatus.isTwisting = isTwisting;
-        inputStatus.point = ChangeWorldVector(point);
-        inputStatus.prePoint = ChangeWorldVector(prePoint);
-        inputStatus.startPoint = ChangeWorldVector(startPoint);
-        inputStatus.endPoint = ChangeWorldVector(endPoint);
+        inputStatus.point = point;
+        inputStatus.prePoint = prePoint;
+        inputStatus.startPoint = startPoint;
+        inputStatus.endPoint = endPoint;
         inputStatus.totalPinch = totalPinch;
         inputStatus.totalTwist = totalTwist;
         inputStatus.pressTime = pressTime;
@@ -438,12 +454,13 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected void ActionInvoke(GestureAction action)
     {
-        if (action == null || action.GetPersistentEventCount() == 0) return;
+        if (action == null) return;
+
         SetInputStatus();
         action.Invoke(inputStatus);
     }
 
-    protected Vector2 ChangeWorldVector(Vector2 v)
+    public Vector2 ChangeWorldVector(Vector2 v)
     {
         return mainCam.ScreenToWorldPoint(v);
     }
@@ -457,5 +474,56 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     {
         if (!isDebugLog) return; 
         Debug.Log(obj);
+    }
+
+    private GestureAction CreateGestureAction(UnityAction<InputStatus> action)
+    {
+        GestureAction gesture = new GestureAction();
+        gesture.AddListener(action);
+        return gesture;
+    }
+    public void SetPressAction(UnityAction<InputStatus> action)
+    {
+        pressAction = CreateGestureAction(action);
+    }
+    public void SetPressingAction(UnityAction<InputStatus> action)
+    {
+        pressingAction = CreateGestureAction(action);
+    }
+    public void SetTapAction(UnityAction<InputStatus> action)
+    {
+        tapAction = CreateGestureAction(action);
+    }
+    public void SetLongTapAction(UnityAction<InputStatus> action)
+    {
+        longTapAction = CreateGestureAction(action);
+    }
+    public void SetFlickAction(UnityAction<InputStatus> action)
+    {
+        flickAction = CreateGestureAction(action);
+    }
+    public void SetDragAction(UnityAction<InputStatus> action)
+    {
+        dragAction = CreateGestureAction(action);
+    }
+    public void SetDragingAction(UnityAction<InputStatus> action)
+    {
+        dragingAction = CreateGestureAction(action);
+    }
+    public void SetPinchAction(UnityAction<InputStatus> action)
+    {
+        pinchAction = CreateGestureAction(action);
+    }
+    public void SetPinchingAction(UnityAction<InputStatus> action)
+    {
+        pinchingAction = CreateGestureAction(action);
+    }
+    public void SetTwistAction(UnityAction<InputStatus> action)
+    {
+        twistAction = CreateGestureAction(action);
+    }
+    public void SetTwistingAction(UnityAction<InputStatus> action)
+    {
+        twistingAction = CreateGestureAction(action);
     }
 }
