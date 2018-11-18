@@ -21,6 +21,7 @@ public class InputStatus
     public float totalPinch;
     public float totalTwist;
     public float pressTime;
+    public int pressLevel;
 
     public Vector2 GetPoint()
     {
@@ -42,6 +43,29 @@ public class InputStatus
 
 public class GestureAction : UnityEvent<InputStatus> { }
 
+public class GesturePointer
+{
+    public GameObject body;
+    public List<GameObject> levelBodyList = new List<GameObject>();
+    public List<LineRenderer> levelLineList = new List<LineRenderer>();
+
+    public GameObject GetLevelBody(int level)
+    {
+        if (levelBodyList.Count < level) return null;
+        return levelBodyList[level];
+    }
+    public void SetLevelLine(Vector2 pos, int index = 1)
+    {
+        //if (levelLineList.Count < level) return;
+        foreach (LineRenderer line in levelLineList)
+        {
+            if (line == null) continue;
+            line.positionCount = index + 1;
+            line.SetPosition(index, pos);
+        }
+    }
+}
+
 public class InputManager : SingletonMonoBehaviour<InputManager>
 {
     [SerializeField]
@@ -54,6 +78,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     private GameObject pointerDouble;
     [SerializeField]
     private bool isDebugLog;
+    [SerializeField]
+    private List<float> longPressBorder = new List<float>();
     [SerializeField]
     private float dragBorder = 10.0f;
     [SerializeField]
@@ -89,16 +115,13 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected float totalPinch = 0;
     protected float totalTwist = 0;
     protected float pressTime = 0;
+    protected int pressLevel = 0;
 
     protected InputStatus inputStatus;
     protected Camera mainCam;
-    protected GameObject pointerObj;
-    protected GameObject pointerNormalObj;
-    protected GameObject pointerSpecialObj;
-    protected GameObject pointerStartObj;
-    protected LineRenderer pointerStartLine;
-    protected GameObject pointerLongObj;
-    protected LineRenderer pointerLongLine;
+    protected GesturePointer pointerObj;
+    protected GesturePointer pointerStartObj;
+    protected GesturePointer pointerLongObj;
     protected GameObject pointerDoubleObj;
     protected Transform pointerDoubleStartTran;
     protected Transform pointerDoubleEndTran;
@@ -111,7 +134,40 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
         inputStatus = new InputStatus();
         mainCam = Camera.main;
+
+        if (longPressBorder.Count > 0)
+        {
+            //長押し時間設定
+            GetComponent<LongPressGesture>().TimeToPress = longPressBorder[0];
+        }
+        //pointer格納
+        pointerObj = GetPointer(pointer);
+        pointerStartObj = GetPointer(pointerStart);
+        pointerLongObj = GetPointer(pointerLong);
     }
+    protected GesturePointer GetPointer(GameObject p)
+    {
+        if (p == null) return null;
+        GesturePointer newPointer = new GesturePointer();
+        newPointer.body = Instantiate(p);
+        for (int i = 0; i <= longPressBorder.Count; i++)
+        {
+            Transform bodyTran = newPointer.body.transform.Find("Level"+i.ToString());
+            if (bodyTran == null)
+            {
+                newPointer.levelBodyList.Add(null);
+                newPointer.levelLineList.Add(null);
+                continue;
+            }
+            newPointer.levelBodyList.Add(bodyTran.gameObject);
+            LineRenderer line = bodyTran.GetComponentInChildren<LineRenderer>();
+            newPointer.levelLineList.Add(line);
+        }
+        newPointer.SetLevelLine(Vector2.zero, 0);
+        newPointer.body.SetActive(false);
+        return newPointer;
+    }
+
     void OnEnable()
     {
         GetComponent<PressGesture>().Pressed += PressHandle;
@@ -128,18 +184,25 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     {
         if (IsPressing())
         {
+            //タップ中処理
             pressTime += Time.deltaTime;
             prePoint = point;
             point = Input.mousePosition;
             if (!isPinching && !isTwisting)
             {
+                //ポインター位置
                 SetPointer(point);
                 ActionInvoke(pressingAction);
+            }
+            if (isLongPressing && dragBorder > Vector2.Distance(startPoint, endPoint))
+            {
+                //長押しレベル
+                SetPressLevel();
             }
         }
     }
 
-    //ポインター切替
+    //通常時,ドラッグ時ポインター
     protected void SetPointer(Vector2 pos = default(Vector2))
     {
         if (Common.FUNC.IsNanVector(pos)) return;
@@ -152,104 +215,117 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
             startPoint = pos;
         }
 
-        if (pointer == null) return;
+        if (pointerObj == null) return;
 
         if (pos == default(Vector2))
         {
             //off
-            if (pointerObj != null) pointerObj.SetActive(false);
-            if (pointerStartObj != null) pointerStartObj.SetActive(false);
-            TogglePointerChange(true);
+            pointerObj.body.SetActive(false);
+            if (pointerStartObj != null) pointerStartObj.body.SetActive(false);
+            if (pointerLongObj != null) pointerLongObj.body.SetActive(false);
         }
         else
         {
             //on
-            if (pointerObj == null)
-            {
-                pointerObj = Instantiate(pointer);
-                pointerNormalObj = pointerObj.transform.Find("Normal").gameObject;
-                pointerSpecialObj = pointerObj.transform.Find("Special").gameObject;
-                pointerNormalObj.SetActive(true);
-                pointerSpecialObj.SetActive(false);
-            }
-            pointerObj.SetActive(true);
-            pointerObj.transform.position = ChangeWorldVector(pos);
+            pointerObj.body.SetActive(true);
+            pointerObj.body.transform.position = ChangeWorldVector(pos);
 
             Vector2 sPos = ChangeWorldVector(startPoint);
             Vector2 ePos = ChangeWorldVector(endPoint);
             if (isLongPressing)
             {
-                //ロングタップポインターとのライン
-                if (pointerLongLine != null)
+                //長押し時ライン
+                if (pointerLongObj != null)
                 {
-                    pointerLongLine.SetPosition(1, ePos - sPos);
+                    pointerLongObj.SetLevelLine(ePos - sPos);
                 }
-                TogglePointerChange(false);
             } else if (isTransform)
             {
-                //通常タップ時開始位置にポインター生成
-                if (pointerStart != null)
+                //通常タップ時ポインター・ライン
+                if (pointerStartObj != null)
                 {
-                    if (pointerStartObj == null)
-                    {
-                        pointerStartObj = Instantiate(pointerStart);
-                        pointerStartLine = pointerStartObj.GetComponentInChildren<LineRenderer>();
-                    }
-                    pointerStartObj.SetActive(true);
-                    pointerStartObj.transform.position = sPos;
-                    if (pointerStartLine != null)
-                    {
-                        pointerStartLine.SetPosition(0, Vector3.zero);
-                        pointerStartLine.SetPosition(1, ePos - sPos);
-                    }
+                    pointerStartObj.body.SetActive(true);
+                    pointerStartObj.body.transform.position = sPos;
+                    pointerStartObj.SetLevelLine(ePos - sPos);
                 }
-                TogglePointerChange(true);
             }
         }
     }
-    protected void TogglePointerChange(bool isNormal)
-    {
-        if (pointerNormalObj == null && pointerSpecialObj == null) return;
-        pointerNormalObj.SetActive(isNormal);
-        pointerSpecialObj.SetActive(!isNormal);
-    }
+
+    //長押し時ポインター
     protected void SetPointerLong(Vector2 pos = default(Vector2))
     {
         if (Common.FUNC.IsNanVector(pos)) return;
 
         startPoint = pos;
 
-        if (pointerLong == null) return;
+        if (pointerLongObj == null) return;
 
         if (pos == default(Vector2))
         {
             //off
-            if (pointerLongObj != null) pointerLongObj.SetActive(false);
-            TogglePointerChange(true);
+            pointerLongObj.body.SetActive(false);
         }
         else
         {
             //on
-            if (pointerLongObj == null)
-            {
-                pointerLongObj = Instantiate(pointerLong);
-                pointerLongLine = pointerLongObj.GetComponentInChildren<LineRenderer>();
-            }
-            pointerLongObj.SetActive(true);
-            pointerLongObj.transform.position = ChangeWorldVector(pos);
-            if (pointerLongLine != null)
-            {
-                pointerLongLine.SetPosition(0, Vector3.zero);
-                pointerLongLine.SetPosition(1, Vector3.zero);
-            }
-            if (pointerStartObj != null) pointerStartObj.SetActive(false);
+            pointerLongObj.body.SetActive(true);
+            pointerLongObj.body.transform.position = ChangeWorldVector(pos);
+            pointerLongObj.SetLevelLine(Vector3.zero, 0);
+            if (pointerStartObj != null) pointerStartObj.body.SetActive(false);
         }
     }
+
+    //長押しレベル更新
+    protected void SetPressLevel()
+    {
+        int level = 0;
+        for (int i = longPressBorder.Count; i >= 0; i--)
+        {
+            if (i == 0 || pressTime >= longPressBorder[i - 1])
+            {
+                level = i;
+                break;
+            }
+        }
+        SetPressLevel(level);
+    }
+    protected void SetPressLevel(int level)
+    {
+        if (pressLevel == level) return;
+        pressLevel = level;
+        SetPointerLevel(pointerObj);
+        SetPointerLevel(pointerStartObj);
+        SetPointerLevel(pointerLongObj);
+    }
+
+    //長押しレベルによるポインター表示変更
+    protected void SetPointerLevel(GesturePointer p)
+    {
+        if (p == null || (!p.body.activeInHierarchy && pressLevel > 0)) return;
+
+        GameObject activeBody = p.levelBodyList[pressLevel];
+        GameObject stockBody = null;
+        for (int i = 0; i < p.levelBodyList.Count; i++)
+        {
+            if (p.levelBodyList[i] == null) continue;
+            if (stockBody == null) stockBody = p.levelBodyList[i];
+            p.levelBodyList[i].SetActive(false);
+        }
+        if (activeBody == null) activeBody = stockBody;
+        if (activeBody != null)
+        {
+            activeBody.SetActive(true);
+        }
+    }
+
+    //pinch,twist時ポインター
     protected void SetPointerDouble(Vector2 pos1 = default(Vector2), Vector2 pos2 = default(Vector2))
     {
         if (Common.FUNC.IsNanVector(pos1) || Common.FUNC.IsNanVector(pos2)) return;
 
         SetPointer();
+        SetPointerLong();
         startPoint = pos1;
         endPoint = pos2;
 
@@ -259,7 +335,6 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         {
             //off
             if (pointerDoubleObj != null) pointerDoubleObj.SetActive(false);
-            TogglePointerChange(true);
         }
         else
         {
@@ -304,8 +379,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     //プレス(長押し)
     protected virtual void LongPressHandle(object sender, System.EventArgs e)
     {
+        if (isTransform || longPressBorder.Count == 0) return;
         Log("LongPressHandle");
-        if (isTransform) return;
         isLongPressing = true;
         SetPointerLong(point);
     }
@@ -313,8 +388,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     //リリース(離した時)
     protected virtual void ReleaseHandle(object sender, System.EventArgs e)
     {
-        Log("ReleaseHandle (isTransform="+ isTransform+")");
         if (isTransform) return;
+        Log("ReleaseHandle (isTransform=" + isTransform + ")");
 
         if (isLongPressing)
         {
@@ -337,15 +412,15 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected virtual void TransformStartedHandle(object sender, System.EventArgs e)
     {
         // 変形開始のタッチ時の処理
-        Log("TransformStartedHandle (IsPressing()=" + IsPressing()+")");
         if (!IsPressing()) return;
+        Log("TransformStartedHandle (IsPressing()=" + IsPressing() + ")");
         isTransform = true;
     }
 
     protected virtual void StateChangedHandle(object sender, System.EventArgs e)
     {
-        Log("StateChangedHandle (isTransform ="+ isTransform+" / IsPressing()=" + IsPressing() + ")");
         if (!isTransform || !IsPressing()) return;
+        Log("StateChangedHandle (isTransform =" + isTransform + " / IsPressing()=" + IsPressing() + ")");
 
         // 変形中のタッチ時の処理
         ScreenTransformGesture gesture = sender as ScreenTransformGesture;
@@ -434,6 +509,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         totalPinch = 0;
         totalTwist = 0;
         pressTime = 0;
+        SetPressLevel(0);
     }
 
     protected void SetInputStatus()
@@ -450,6 +526,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         inputStatus.totalPinch = totalPinch;
         inputStatus.totalTwist = totalTwist;
         inputStatus.pressTime = pressTime;
+        inputStatus.pressLevel = pressLevel;
     }
 
     protected void ActionInvoke(GestureAction action)
@@ -475,6 +552,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         if (!isDebugLog) return; 
         Debug.Log(obj);
     }
+
+    //### GestureAction登録 ###
 
     private GestureAction CreateGestureAction(UnityAction<InputStatus> action)
     {

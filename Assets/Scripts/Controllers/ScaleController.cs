@@ -59,6 +59,7 @@ public class ScaleController : MonoBehaviour
     {
         ChangeScale(startScale);
         activeTime = 0;
+        isReverse = false;
     }
 
     private void ChangeScale(Vector3 scale)

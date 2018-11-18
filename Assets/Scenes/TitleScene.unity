@@ -641,11 +641,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 114118158810153660, guid: 1ffca8cd3b63b5a478c07db305a03314,
-        type: 2}
-      propertyPath: tapAction.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 162978236}
     - target: {fileID: 114641467078709154, guid: 1ffca8cd3b63b5a478c07db305a03314,
         type: 2}
       propertyPath: _camera

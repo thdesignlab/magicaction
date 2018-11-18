@@ -237,11 +237,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bd6709a443ccea4db9367d5548220a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startScale: {x: 0, y: 0, z: 0}
-  endScale: {x: 1, y: 1, z: 1}
+  startScale: {x: 1, y: 1, z: 1}
+  endScale: {x: 0, y: 0, z: 0}
   scaleTime: 1
-  scaleLateTime: 0
-  continuationTime: 1.5
+  scaleLateTime: 3
+  continuationTime: 0
 --- !u!198 &198099337165287122
 ParticleSystem:
   m_ObjectHideFlags: 1

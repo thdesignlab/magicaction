@@ -27,7 +27,20 @@ public class Shortcut
         }
         catch
         {
-            Debug.Log("[Err]PlayFromPrelaunchScene");
+            Debug.Log("[Err]PlayGame");
+        }
+    }
+
+    [MenuItem("Tools/StopGame &w")]
+    public static void StopGame()
+    {
+        try
+        {
+            EditorApplication.isPaused = !EditorApplication.isPaused;
+        }
+        catch
+        {
+            Debug.Log("[Err]StopGame");
         }
     }
 
