@@ -67,4 +67,24 @@ public class EnemyController : UnitController
         BattleManager.Instance.AddScore();
         base.Dead();
     }
+
+    protected void Assault(GameObject obj)
+    {
+        int d = (strength == 0) ? hp * hp : hp * strength;
+        GameObject spawn = Resources.Load<GameObject>("Effects/Assault");
+        obj.GetComponent<UnitController>().Damage(d);
+        if (spawn != null) Instantiate(spawn, myTran.position, Quaternion.identity);
+        base.Dead();
+    }
+
+    //### イベントハンドラ ###
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        base.OnCollisionEnter2D(collision);
+
+        if (collision.gameObject.tag != Common.CO.TAG_PLAYER) return;
+
+        Assault(collision.gameObject);
+    }
 }

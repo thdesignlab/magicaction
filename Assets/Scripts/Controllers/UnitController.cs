@@ -101,7 +101,7 @@ public class UnitController : PhysicsController
 
     //### イベントハンドラ ###
 
-    protected void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (!Common.FUNC.IsStageTag(collision.gameObject.tag)) return;
 
@@ -116,7 +116,7 @@ public class UnitController : PhysicsController
             FlickFromStage(p);
         }
     }
-    protected void OnCollisionStay2D(Collision2D collision)
+    protected virtual void OnCollisionStay2D(Collision2D collision)
     {
         if (!Common.FUNC.IsStageTag(collision.gameObject.tag)) return;
 
@@ -135,7 +135,7 @@ public class UnitController : PhysicsController
             FlickFromStage(p);
         }
     }
-    protected void OnCollisionExit2D(Collision2D collision)
+    protected virtual void OnCollisionExit2D(Collision2D collision)
     {
         if (!Common.FUNC.IsStageTag(collision.gameObject.tag)) return;
 
