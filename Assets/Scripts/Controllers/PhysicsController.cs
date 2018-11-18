@@ -86,13 +86,6 @@ public class PhysicsController : ObjectController
         }
     }
 
-    //2DLookAt
-    protected virtual void LookAt(Transform tran, Vector3 target)
-    {
-        Vector3 diff = (target - tran.position).normalized;
-        tran.rotation = Quaternion.FromToRotation(Vector3.right, diff);
-    }
-
     //ユニットに衝突
     protected virtual void HitUnit(GameObject obj)
     {

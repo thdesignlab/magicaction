@@ -94,6 +94,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected GestureAction pressingAction;
     protected GestureAction tapAction;
     protected GestureAction longTapAction;
+    protected GestureAction longTapLevelAction;
+    protected GestureAction releaseAction;
     protected GestureAction flickAction;
     protected GestureAction dragAction;
     protected GestureAction dragingAction;
@@ -126,6 +128,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected Transform pointerDoubleStartTran;
     protected Transform pointerDoubleEndTran;
     protected LineRenderer pointerDoubleLine;
+    protected bool isActive = false;
 
     protected override void Awake()
     {
@@ -145,6 +148,19 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         pointerStartObj = GetPointer(pointerStart);
         pointerLongObj = GetPointer(pointerLong);
     }
+
+    public void SetActive(bool flg)
+    {
+        isActive = flg;
+        if (flg)
+        {
+            AddEvent();
+        } else
+        {
+            RemoveEvent();
+        }
+    }
+
     protected GesturePointer GetPointer(GameObject p)
     {
         if (p == null) return null;
@@ -152,7 +168,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         newPointer.body = Instantiate(p);
         for (int i = 0; i <= longPressBorder.Count; i++)
         {
-            Transform bodyTran = newPointer.body.transform.Find("Level"+i.ToString());
+            Transform bodyTran = newPointer.body.transform.Find(Common.CO.LEVEL_PREFIX + i.ToString());
             if (bodyTran == null)
             {
                 newPointer.levelBodyList.Add(null);
@@ -168,7 +184,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         return newPointer;
     }
 
-    void OnEnable()
+    protected void AddEvent()
     {
         GetComponent<PressGesture>().Pressed += PressHandle;
         GetComponent<LongPressGesture>().LongPressed += LongPressHandle;
@@ -179,11 +195,26 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         GetComponent<ScreenTransformGesture>().TransformCompleted += TransformCompletedHandle;
         GetComponent<ScreenTransformGesture>().Cancelled += CancelledHandle;
     }
+    protected void RemoveEvent()
+    {
+        GetComponent<PressGesture>().Pressed -= PressHandle;
+        GetComponent<LongPressGesture>().LongPressed -= LongPressHandle;
+        GetComponent<ReleaseGesture>().Released -= ReleaseHandle;
+        GetComponent<FlickGesture>().Flicked -= FlickHandle;
+        GetComponent<ScreenTransformGesture>().TransformStarted -= TransformStartedHandle;
+        GetComponent<ScreenTransformGesture>().StateChanged -= StateChangedHandle;
+        GetComponent<ScreenTransformGesture>().TransformCompleted -= TransformCompletedHandle;
+        GetComponent<ScreenTransformGesture>().Cancelled -= CancelledHandle;
+    }
 
     private void Update()
     {
+        if (!isActive) return;
+
         if (IsPressing())
         {
+            ActionInvoke(pressingAction);
+
             //タップ中処理
             pressTime += Time.deltaTime;
             prePoint = point;
@@ -192,7 +223,6 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
             {
                 //ポインター位置
                 SetPointer(point);
-                ActionInvoke(pressingAction);
             }
             if (isLongPressing && dragBorder > Vector2.Distance(startPoint, endPoint))
             {
@@ -215,7 +245,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
             startPoint = pos;
         }
 
-        if (pointerObj == null) return;
+        if (pointerObj == null || pointerObj.body == null) return;
 
         if (pos == default(Vector2))
         {
@@ -259,7 +289,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
         startPoint = pos;
 
-        if (pointerLongObj == null) return;
+        if (pointerLongObj == null || pointerLongObj.body == null) return;
 
         if (pos == default(Vector2))
         {
@@ -297,6 +327,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         SetPointerLevel(pointerObj);
         SetPointerLevel(pointerStartObj);
         SetPointerLevel(pointerLongObj);
+        ActionInvoke(longTapLevelAction);
     }
 
     //長押しレベルによるポインター表示変更
@@ -369,6 +400,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     //プレス(押した時)
     protected virtual void PressHandle(object sender, System.EventArgs e)
     {
+        if (!isActive) return;
+
         Log("PressHandle");
         PressGesture gesture = sender as PressGesture;
         point = gesture.ScreenPosition;
@@ -379,6 +412,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     //プレス(長押し)
     protected virtual void LongPressHandle(object sender, System.EventArgs e)
     {
+        if (!isActive) return;
+
         if (isTransform || longPressBorder.Count == 0) return;
         Log("LongPressHandle");
         isLongPressing = true;
@@ -388,6 +423,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     //リリース(離した時)
     protected virtual void ReleaseHandle(object sender, System.EventArgs e)
     {
+        if (!isActive) return;
+
         if (isTransform) return;
         Log("ReleaseHandle (isTransform=" + isTransform + ")");
 
@@ -401,16 +438,19 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         ResetState();
     }
 
-
     //フリック
     protected virtual void FlickHandle(object sender, System.EventArgs e)
     {
+        if (!isActive) return;
+
         Log("FlickHandle");
         ActionInvoke(flickAction);
     }
 
     protected virtual void TransformStartedHandle(object sender, System.EventArgs e)
     {
+        if (!isActive) return;
+
         // 変形開始のタッチ時の処理
         if (!IsPressing()) return;
         Log("TransformStartedHandle (IsPressing()=" + IsPressing() + ")");
@@ -419,6 +459,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected virtual void StateChangedHandle(object sender, System.EventArgs e)
     {
+        if (!isActive) return;
+
         if (!isTransform || !IsPressing()) return;
         Log("StateChangedHandle (isTransform =" + isTransform + " / IsPressing()=" + IsPressing() + ")");
 
@@ -462,6 +504,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected virtual void TransformCompletedHandle(object sender, System.EventArgs e)
     {
+        if (!isActive) return;
+
         // 変形終了のタッチ時の処理
         if (isDraging)
         {
@@ -489,6 +533,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     }
     protected virtual void CancelledHandle(object sender, System.EventArgs e)
     {
+        if (!isActive) return;
+
         // 変形終了のタッチ時の処理
         Log("CancelledHandle");
         ResetState();
@@ -510,6 +556,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         totalTwist = 0;
         pressTime = 0;
         SetPressLevel(0);
+        ActionInvoke(releaseAction);
     }
 
     protected void SetInputStatus()
@@ -576,6 +623,14 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     public void SetLongTapAction(UnityAction<InputStatus> action)
     {
         longTapAction = CreateGestureAction(action);
+    }
+    public void SetLongTapLevelAction(UnityAction<InputStatus> action)
+    {
+        longTapLevelAction = CreateGestureAction(action);
+    }
+    public void SetReleaseAction(UnityAction<InputStatus> action)
+    {
+        releaseAction = CreateGestureAction(action);
     }
     public void SetFlickAction(UnityAction<InputStatus> action)
     {

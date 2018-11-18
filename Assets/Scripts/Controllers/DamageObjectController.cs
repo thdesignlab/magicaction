@@ -55,7 +55,7 @@ public class DamageObjectController : PhysicsController
     {
         base.HitDamageObject(obj);
 
-        DamageObjectController dmgObjCtrl = obj.GetComponent<DamageObjectController>();
+        //DamageObjectController dmgObjCtrl = obj.GetComponent<DamageObjectController>();
     }
 
     //ステージに衝突

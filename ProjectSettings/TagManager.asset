@@ -9,6 +9,7 @@ TagManager:
   - Object
   - Physics
   - Effect
+  - Muzzle
   layers:
   - Default
   - TransparentFX

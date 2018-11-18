@@ -27,6 +27,7 @@ namespace Common
         public const string TAG_PHYSICS = "Physics";
         public const string TAG_EFFECT = "Effect";
         public const string TAG_LASER = "Laser";
+        public const string TAG_MUZZLE = "Muzzle";
 
         //ユニットタグ
         public static string[] unitTags = new string[]
@@ -48,6 +49,28 @@ namespace Common
         {
             TAG_STAGE,
             TAG_OBJECT,
+        };
+
+        //レベル接頭文字
+        public static string LEVEL_PREFIX = "Level";
+    }
+
+    //### ユニット共通 ###
+    public static class UNIT
+    {
+        //詠唱エフェクト
+        public const string PARTS_CHANT = "Chants";
+    }
+
+    //### プレイヤー ###
+    public static class PLAYER
+    {
+        //武器種類
+        public const string PARTS_WEAPON_TAP = "TapWeapon";
+        public const string PARTS_WEAPON_LONG_TAP = "LongTapWeapon";
+        public static string[] weaponPartsList = {
+            PARTS_WEAPON_TAP,
+            PARTS_WEAPON_LONG_TAP,
         };
     }
 
@@ -160,6 +183,19 @@ namespace Common
         public static Vector3 ParseVector3(Vector2 v2)
         {
             return new Vector3(v2.x, v2.y, 0);
+        }
+
+        //誤差値
+        public static float GetRandom(float num)
+        {
+            return Random.Range(-num, num);
+        }
+
+        //2DLookAt
+        public static void LookAt(Transform tran, Vector3 target)
+        {
+            Vector3 diff = (target - tran.position).normalized;
+            tran.rotation = Quaternion.FromToRotation(Vector3.right, diff);
         }
 
     }

@@ -23,6 +23,8 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
 
         //TapAction
         InputManager.Instance.SetTapAction(Demo);
+
+        InputManager.Instance.SetActive(true);
     }
 
     private void Demo(InputStatus input)

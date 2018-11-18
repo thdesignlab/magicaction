@@ -59,7 +59,7 @@ public class EnemyController : UnitController
     private void Spawn(GameObject spawnObj, Vector2 target)
     {
         GameObject obj = Instantiate(spawnObj, myTran.position + new Vector3(1, 0, 0), Quaternion.identity);
-        LookAt(obj.transform, new Vector3(target.x, target.y, obj.transform.position.z));
+        Common.FUNC.LookAt(obj.transform, new Vector3(target.x, target.y, obj.transform.position.z));
     }
 
     protected override void Dead()

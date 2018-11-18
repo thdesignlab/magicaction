@@ -14,6 +14,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private Canvas battleCanvas;
     private Slider hpSlider;
     private Text scoreText;
+    private Text messageText;
     private bool isBattleStart = false;
 
     private PlayerController playerCtrl;
@@ -27,6 +28,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         hpSlider = battleCanvas.transform.Find("HP").GetComponent<Slider>();
         scoreText = battleCanvas.transform.Find("Score").GetComponent<Text>();
         scoreText.text = "0";
+        messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
     }
 
     private void Start()
@@ -34,17 +36,17 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         BgmManager.Instance.PlayBgm();
 
         //敵情報（仮）
-        popEnemy.Add(1, Resources.Load<GameObject>("Units/Enemy"));
+        popEnemy.Add(1, Resources.Load<GameObject>("Enemies/Enemy"));
         popTransform.Add(1, GameObject.Find("EnemyPops/Pop1").transform);
         popInterval.Add(1, 1.5f);
         popTime.Add(1, 0);
 
-        popEnemy.Add(2, Resources.Load<GameObject>("Units/Enemy2"));
+        popEnemy.Add(2, Resources.Load<GameObject>("Enemies/Enemy2"));
         popTransform.Add(2, GameObject.Find("EnemyPops/Pop2").transform);
         popInterval.Add(2, 0.75f);
         popTime.Add(2, 0);
 
-        popEnemy.Add(3, Resources.Load<GameObject>("Units/Enemy3"));
+        popEnemy.Add(3, Resources.Load<GameObject>("Enemies/Enemy3"));
         popTransform.Add(3, GameObject.Find("EnemyPops/Pop3").transform);
         popInterval.Add(3, 0.5f);
         popTime.Add(3, 0);
@@ -68,15 +70,20 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     IEnumerator BattleStart()
     {
+        SetMessage("READY...");
+
         //プレイヤー生成
         yield return StartCoroutine(PlayerSummon());
+
+        InputManager.Instance.SetActive(true);
+        SetMessage("START", 3.0f);
 
         isBattleStart = true;
     }
 
     IEnumerator PlayerSummon()
     {
-        GameObject player = Resources.Load<GameObject>("Units/Player");
+        GameObject player = Resources.Load<GameObject>("Players/Player");
         GameObject summon = Resources.Load<GameObject>("Directions/SummonPlayer");
         Transform pPopTran = GameObject.Find("PlayerPop").transform;
 
@@ -85,7 +92,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         yield return new WaitForSeconds(0.5f);
         GameObject playerObj = Instantiate(player, pPopTran.position + Vector3.up * 1.5f, pPopTran.rotation);
         playerCtrl = playerObj.GetComponent<PlayerController>();
-        yield return new WaitForSeconds(4.0f);
+        yield return new WaitForSeconds(2.5f);
         Destroy(summonObj);
         yield return new WaitForSeconds(1.0f);
     }
@@ -108,5 +115,23 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     public void AddScore()
     {
         scoreText.text = (int.Parse(scoreText.text) + 1).ToString();
+    }
+
+    public void SetMessage(string txt, float limit = 0)
+    {
+        if (limit <= 0)
+        {
+            messageText.text = txt;
+        }
+        else
+        {
+            StartCoroutine(SetMessageProcess(txt, limit));
+        }
+    }
+    IEnumerator SetMessageProcess(string txt, float limit)
+    {
+        messageText.text = txt;
+        yield return new WaitForSeconds(limit);
+        messageText.text = "";
     }
 }

@@ -1,22 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UnitController : PhysicsController
 {
     [SerializeField]
-    protected int maxhp;
+    protected int maxHp;
 
-    protected int hp;
+    protected int hp = 0;
     protected float colliderRadius;
     protected float stackTime = 0;
+    protected Dictionary<string, GameObject> chantDic = new Dictionary<string, GameObject>();
 
     protected override void Awake()
     {
         base.Awake();
 
-        hp = maxhp;
-        SetHp();
+        SetHp(maxHp);
         SetColliderRadius();
+        SetChant();
     }
 
     protected override void Start()
@@ -26,21 +28,24 @@ public class UnitController : PhysicsController
         InitSpeed();
     }
 
+    //被弾
     public virtual void Damage(int damage)
     {
         SetHp(-damage);
         if (hp <= 0) Dead();
     }
 
+    //死亡
     protected virtual void Dead()
     {
         Break();
     }
 
+    //HP設定
     protected virtual void SetHp(int diff = 0)
     {
         hp += diff;
-        if (hp > maxhp) hp = maxhp;
+        if (hp > maxHp) hp = maxHp;
     }
 
     //初期速度設定
@@ -98,6 +103,27 @@ public class UnitController : PhysicsController
         }
         colliderRadius = 0;
     }
+
+    //詠唱エフェクト設定
+    protected void SetChant()
+    {
+        Transform parts = myTran.Find(Common.UNIT.PARTS_CHANT);
+        if (parts == null) return;
+        foreach (Transform child in parts) {
+            chantDic.Add(child.name, child.gameObject);
+        }
+    }
+    protected void OnChant(int level, bool flg)
+    {
+        string targetKey = Common.CO.LEVEL_PREFIX + level.ToString();
+        foreach (string key in chantDic.Keys)
+        {
+            if (!chantDic.ContainsKey(key)) continue;
+            bool isActive = (targetKey == key && flg);
+            chantDic[key].SetActive(isActive);
+        }
+    }
+
 
     //### イベントハンドラ ###
 
