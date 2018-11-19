@@ -646,6 +646,11 @@ Prefab:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 114410617400446790, guid: 1ffca8cd3b63b5a478c07db305a03314,
+        type: 2}
+      propertyPath: layers.Array.data[0]
+      value: 
+      objectReference: {fileID: 1793469141}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ffca8cd3b63b5a478c07db305a03314, type: 2}
   m_IsPrefabAsset: 0
@@ -865,7 +870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e7ca1f49748ce4882d6f8ae1452e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volume: 0.5
+  volume: 0.2
 --- !u!4 &1419248986
 Transform:
   m_ObjectHideFlags: 0
@@ -950,6 +955,12 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1654273354}
   m_CullTransparentMesh: 0
+--- !u!114 &1793469141 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114641467078709154, guid: 1ffca8cd3b63b5a478c07db305a03314,
+    type: 2}
+  m_PrefabInternal: {fileID: 985753253}
+  m_Script: {fileID: 11500000, guid: bc7fd33c57d694994b0ab9f33fcdcbea, type: 3}
 --- !u!1 &1934265954
 GameObject:
   m_ObjectHideFlags: 0

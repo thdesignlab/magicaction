@@ -11,6 +11,12 @@ public class PlayerController : UnitController
     private int recoverHp;
     [SerializeField]
     private int recoverMp;
+    [SerializeField]
+    private float runSpeed = 10.0f;
+    [SerializeField]
+    private float runLimit = 0.5f;
+    [SerializeField]
+    private float walkSpeed = 1.0f;
 
     //武器
     [SerializeField]
@@ -52,6 +58,9 @@ public class PlayerController : UnitController
     private float rmp = 0;
     private bool isCharge = false;
     private Dictionary<string, WeaponController> weaponList = new Dictionary<string, WeaponController>();
+    private Vector2 popPos;
+    private bool isFlying = false;
+    private Vector2 returnVelocity = Vector2.zero;
 
     protected override void Awake()
     {
@@ -67,6 +76,7 @@ public class PlayerController : UnitController
         InputManager.Instance.SetReleaseAction(ReleaseAction);
         SetMp(maxMp);
         SetWeapon();
+        popPos = GameObject.Find("PlayerPop").transform.position;
     }
 
     protected override void Update()
@@ -74,7 +84,7 @@ public class PlayerController : UnitController
         base.Update();
 
         //HP回復
-        rhp = recoverHp * deltaTime;
+        rhp += recoverHp * deltaTime;
         if (rhp >= 1.0f)
         {
             int r = (int)Mathf.Floor(rhp);
@@ -85,7 +95,7 @@ public class PlayerController : UnitController
         //MP回復
         if (!isCharge)
         {
-            rmp = recoverMp * deltaTime;
+            rmp += recoverMp * deltaTime;
             if (rmp >= 1.0f)
             {
                 int r = (int)Mathf.Floor(rmp);
@@ -93,6 +103,24 @@ public class PlayerController : UnitController
                 rmp -= r;
             }
         }
+
+        //定位置へ移動
+        returnVelocity = Vector2.zero;
+        if (!isCharge && !isKnockBack && (isGround || isFlying))
+        {
+            Vector2 pos = isFlying ? popPos : new Vector2(popPos.x, myTran.position.y);
+            Vector2 target = pos - Common.FUNC.ParseVector2(myTran.position);
+            float distance = target.magnitude;
+            if (distance > 1.0f)
+            {
+                returnVelocity = target.normalized * walkSpeed;
+            }
+        }
+    }
+
+    protected override Vector2 GetTotalVelocity()
+    {
+        return base.GetTotalVelocity() + returnVelocity;
     }
 
     //HP割合取得
@@ -124,7 +152,16 @@ public class PlayerController : UnitController
     private void SetWeapon()
     {
         tapWeaponCtrl = EquipWeapon(tapWeapon);
+        playerTapWeaponCtrl = EquipWeapon(playerTapWeapon);
+        enemyTapWeaponCtrl = EquipWeapon(enemyTapWeapon);
         longTapWeaponCtrlList = EquipWeapon(longTapWeaponList);
+        playerLongTapWeaponCtrlList = EquipWeapon(playerLongTapWeaponList);
+        dragWeaponCtrlList = EquipWeapon(dragWeaponList);
+        playerDragWeaponCtrlList = EquipWeapon(playerDragWeaponList);
+        flickWeaponCtrl = EquipWeapon(flickWeapon);
+        playerFlickWeaponCtrl = EquipWeapon(playerFlickWeapon);
+        pinchWeaponCtrl = EquipWeapon(pinchWeapon);
+        twistWeaponCtrl = EquipWeapon(twistWeapon);
     }
     private WeaponController EquipWeapon(GameObject weapon)
     {
@@ -149,13 +186,13 @@ public class PlayerController : UnitController
     private void Fire(List<WeaponController> weaponCtrlList, InputStatus input)
     {
         if (weaponCtrlList.Count == 0) return;
-        int level = (weaponCtrlList.Count < input.pressLevel) ? weaponCtrlList.Count : input.pressLevel;
+        int level = (weaponCtrlList.Count < input.pressLevel) ? weaponCtrlList.Count - 1 : input.pressLevel;
         Fire(weaponCtrlList[level], input);
     }
     private void Fire(WeaponController weaponCtrl, InputStatus input)
     {
         if (weaponCtrl == null) return;
-        weaponCtrl.Fire(input.GetPoint(), input.pressLevel);
+        weaponCtrl.Fire(input);
     }
 
     //### ジェスチャーアクション ###
@@ -175,7 +212,9 @@ public class PlayerController : UnitController
     //フリック(base)
     private void FlickAction(InputStatus input)
     {
-        Fire(flickWeaponCtrl, input);
+        Vector2 vector = input.GetEndPoint() - input.GetStartPoint();
+        KnockBack(vector.normalized * runSpeed, runLimit);
+        //Fire(flickWeaponCtrl, input);
     }
 
     //ドラッグ(base)

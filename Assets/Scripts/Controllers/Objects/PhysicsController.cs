@@ -14,6 +14,9 @@ public class PhysicsController : ObjectController
     protected bool isBreakable;
     protected Vector2 myG;
     protected bool isGround = false;
+    protected GameObject groundObj;
+    protected bool isKnockBack = false;
+
 
     protected override void Awake()
     {
@@ -26,14 +29,22 @@ public class PhysicsController : ObjectController
     protected override void Update()
     {
         base.Update();
+        if (isGround && groundObj == null)
+        {
+            SetGround();
+        }
     }
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (isGravity)
         {
             AddGravity(myG * Time.fixedDeltaTime);
         }
-        Move((myVelocity + gVelocity) * Time.fixedDeltaTime);
+        Move(GetTotalVelocity() * Time.fixedDeltaTime);
+    }
+    protected virtual Vector2 GetTotalVelocity()
+    {
+        return myVelocity + gVelocity;
     }
 
     //前方Vector取得
@@ -79,11 +90,47 @@ public class PhysicsController : ObjectController
     //重力速度加算
     protected virtual void AddGravity(Vector2 v)
     {
+        if (isKnockBack) return;
+
         gVelocity += v;
         if (myG.y < gVelocity.y)
         {
             gVelocity = myG;
         }
+    }
+
+    public void KnockBack(Vector3 v, float limit)
+    {
+        if (isKnockBack) return;
+        StartCoroutine(KnockBackProcess(v, limit));
+    }
+
+    //ノックバック
+    const float START_ANGLE = 90;
+    const float TOTAL_ANGLE = 90;
+    IEnumerator KnockBackProcess(Vector2 v, float limit)
+    {
+        if (v == Vector2.zero) yield break;
+
+        isKnockBack = true;
+        float leftTime = limit;
+        for (; ; )
+        {
+            //時間
+            float processTime = limit - leftTime;
+
+            //速度係数
+            float sinVal = Common.FUNC.GetSin(processTime, TOTAL_ANGLE / limit, START_ANGLE);
+
+            //移動
+            Move(v * sinVal * Time.deltaTime);
+
+            //残り時間チェック
+            leftTime -= Time.deltaTime;
+            if (leftTime <= 0) break;
+            yield return null;
+        }
+        isKnockBack = false;
     }
 
     //ユニットに衝突
@@ -124,9 +171,10 @@ public class PhysicsController : ObjectController
     }
 
     //接地処理
-    protected void SetGround(bool flg)
+    protected void SetGround(GameObject ground = null)
     {
-        if (flg)
+        groundObj = ground;
+        if (groundObj != null)
         {
             gVelocity = Vector2.zero;
             myG = Vector2.zero;

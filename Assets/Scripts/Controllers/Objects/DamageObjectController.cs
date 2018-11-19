@@ -67,7 +67,10 @@ public class DamageObjectController : PhysicsController
         {
             case Common.CO.TAG_OBJECT:
                 PhysicsController phyCtrl = obj.GetComponent<PhysicsController>();
-                phyCtrl.Scrape(strength, this);
+                if (phyCtrl.IsPlayer() != isPlayer)
+                {
+                    phyCtrl.Scrape(strength, this);
+                }
                 break;
 
             default:

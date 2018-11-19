@@ -88,7 +88,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         Transform pPopTran = GameObject.Find("PlayerPop").transform;
 
         //召喚演出
-        GameObject summonObj = Instantiate(summon, pPopTran.position, pPopTran.rotation);
+        GameObject summonObj = Instantiate(summon, pPopTran.position - Vector3.up * 0.5f, pPopTran.rotation);
         yield return new WaitForSeconds(0.5f);
         GameObject playerObj = Instantiate(player, pPopTran.position + Vector3.up * 1.5f, pPopTran.rotation);
         playerCtrl = playerObj.GetComponent<PlayerController>();

@@ -10,7 +10,8 @@ public class UnitController : PhysicsController
     protected int hp = 0;
     protected float colliderRadius;
     protected float stackTime = 0;
-    protected Dictionary<string, GameObject> chantDic = new Dictionary<string, GameObject>();
+    protected Dictionary<string, ParticleSystem> chantDic = new Dictionary<string, ParticleSystem>();
+    const float ENABLED_OVER_RATE = 0.25f;
 
     protected override void Awake()
     {
@@ -110,17 +111,26 @@ public class UnitController : PhysicsController
         Transform parts = myTran.Find(Common.UNIT.PARTS_CHANT);
         if (parts == null) return;
         foreach (Transform child in parts) {
-            chantDic.Add(child.name, child.gameObject);
+            chantDic.Add(child.name, child.gameObject.GetComponent<ParticleSystem>());
         }
     }
     protected void OnChant(int level, bool flg)
     {
         string targetKey = Common.CO.LEVEL_PREFIX + level.ToString();
+        float t = 0;
+        ParticleSystem p = null;
         foreach (string key in chantDic.Keys)
         {
             if (!chantDic.ContainsKey(key)) continue;
             bool isActive = (targetKey == key && flg);
-            chantDic[key].SetActive(isActive);
+            if (chantDic[key].gameObject.activeInHierarchy) t = chantDic[key].time;
+            chantDic[key].gameObject.SetActive(isActive);
+            if (chantDic[key].gameObject.activeInHierarchy) p = chantDic[key];
+        }
+        if (p != null)
+        {
+            p.Simulate(t);
+            p.Play();
         }
     }
 
@@ -137,7 +147,7 @@ public class UnitController : PhysicsController
             if (p.y < 0)
             {
                 //Unitの下方で衝突
-                SetGround(true);
+                SetGround(collision.gameObject);
             }
             FlickFromStage(p);
         }
@@ -152,7 +162,8 @@ public class UnitController : PhysicsController
             if ((p.x > 0 && myVelocity.x > 0) || (p.x < 0 && myVelocity.x < 0))
             {
                 //Unitの前方で衝突
-                if (p.normalized.y >= -0.8f)
+                float height = (1 + p.normalized.y) * colliderRadius;
+                if (height > colliderRadius * ENABLED_OVER_RATE)
                 {
                     //乗り越えられないオブジェクトと衝突
                     StartCoroutine(Stack(1.5f));
@@ -165,6 +176,6 @@ public class UnitController : PhysicsController
     {
         if (!Common.FUNC.IsStageTag(collision.gameObject.tag)) return;
 
-        SetGround(false);
+        SetGround();
     }
 }

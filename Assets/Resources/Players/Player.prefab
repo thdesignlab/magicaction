@@ -650,7 +650,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 7
 --- !u!58 &58614440416115236
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -701,6 +701,9 @@ MonoBehaviour:
   maxMp: 1000
   recoverHp: 10
   recoverMp: 100
+  runSpeed: 30
+  runLimit: 0.5
+  walkSpeed: 1
   tapWeapon: {fileID: 1963503696641010, guid: e0e46350d142e9547843f2ebd9d8d6fb, type: 2}
   playerTapWeapon: {fileID: 0}
   enemyTapWeapon: {fileID: 0}
@@ -710,9 +713,11 @@ MonoBehaviour:
   - {fileID: 1849405888717946, guid: f61d5fc60f22c054c8e7d0d320aebff7, type: 2}
   - {fileID: 1437253651016208, guid: 615580006638a524a85c92c8fed6ba6c, type: 2}
   playerLongTapWeaponList: []
-  dragWeaponList: []
+  dragWeaponList:
+  - {fileID: 1599299109696230, guid: 95c1b0c2a6bc83f47b8788c1512136ef, type: 2}
   playerDragWeaponList: []
-  flickWeapon: {fileID: 0}
+  flickWeapon: {fileID: 1599299109696230, guid: 95c1b0c2a6bc83f47b8788c1512136ef,
+    type: 2}
   playerFlickWeapon: {fileID: 0}
   pinchWeapon: {fileID: 0}
   twistWeapon: {fileID: 0}

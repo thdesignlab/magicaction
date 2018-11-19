@@ -39,6 +39,23 @@ public class InputStatus
     {
         return InputManager.Instance.ChangeWorldVector(endPoint);
     }
+    public GameObject GetTapObject()
+    {
+        GameObject obj = null;
+        Ray ray = Camera.main.ScreenPointToRay(point);
+        RaycastHit2D hit2d = Physics2D.Raycast(ray.origin, ray.direction);
+        if (hit2d)
+        {
+            obj = hit2d.transform.gameObject;
+        }
+        return obj;
+    }
+    public bool IsTapPlayer()
+    {
+        GameObject obj = GetTapObject();
+        if (obj == null) return false;
+        return (obj.tag == Common.CO.TAG_PLAYER);
+    }
 }
 
 public class GestureAction : UnityEvent<InputStatus> { }

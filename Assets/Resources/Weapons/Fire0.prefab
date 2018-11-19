@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4863086870466588}
-  - component: {fileID: 114406636192779180}
+  - component: {fileID: 114208228364111074}
   m_Layer: 0
   m_Name: Fire0
   m_TagString: Untagged
@@ -69,7 +69,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114406636192779180
+--- !u!114 &114208228364111074
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,11 +77,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1963503696641010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e0d30eeb55adc34fa3018e07aaeeec6, type: 3}
+  m_Script: {fileID: 11500000, guid: 01cfdcb17cb49184a8d149d324f40a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 1583857083937172, guid: 22812fd49bee6c34cae3d8a4cd013e0d, type: 2}
+  spawn: {fileID: 1583857083937172, guid: 22812fd49bee6c34cae3d8a4cd013e0d, type: 2}
+  useMp: 0
   rapidCount: 1
   rapidInterval: 0
   deviation: 0
-  useMp: 0
