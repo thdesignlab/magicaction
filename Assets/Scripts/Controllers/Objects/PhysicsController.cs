@@ -99,13 +99,22 @@ public class PhysicsController : ObjectController
         }
     }
 
+    //ノックバック
+    protected Coroutine knockBackCoroutine;
     public void KnockBack(Vector3 v, float limit)
     {
         if (isKnockBack) return;
-        StartCoroutine(KnockBackProcess(v, limit));
+        if (isGround && v.normalized.y <= -0.5f) return;
+        knockBackCoroutine = StartCoroutine(KnockBackProcess(v, limit));
     }
 
-    //ノックバック
+    protected void CancelKnockBack()
+    {
+        isKnockBack = false;
+        if (knockBackCoroutine == null) return;
+        StopCoroutine(knockBackCoroutine);
+    }
+
     const float START_ANGLE = 90;
     const float TOTAL_ANGLE = 90;
     IEnumerator KnockBackProcess(Vector2 v, float limit)

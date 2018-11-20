@@ -29,7 +29,13 @@ public class ObjectWeaponController : WeaponController
         Quaternion q = Quaternion.LookRotation(Vector3.back, startPoint - endPoint);
         GameObject obj = Spawn(spawn, spawnPoint, q);
         obj.transform.localScale = new Vector2(1, length);
-
+        //if (player != null)
+        //{
+        //    foreach (Collider2D col in Physics2D.OverlapCircleAll(player.transform.position, player.GetColliderRadius()))
+        //    {
+        //        Debug.Log(col.name);
+        //    }
+        //}
         return true;
     }
 

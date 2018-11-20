@@ -87,6 +87,7 @@ public class UnitController : PhysicsController
         float diff = colliderRadius - p.magnitude;
         if (diff > 0.1f)
         {
+            if (isKnockBack) CancelKnockBack();
             Vector2 flickVector = -p.normalized;
             if (isGround && flickVector.y < 0) flickVector.y = 0;
             Move(flickVector * diff * 5.0f);
@@ -177,5 +178,12 @@ public class UnitController : PhysicsController
         if (!Common.FUNC.IsStageTag(collision.gameObject.tag)) return;
 
         SetGround();
+    }
+
+    //### getter/setter ###
+
+    public float GetColliderRadius()
+    {
+        return colliderRadius;
     }
 }

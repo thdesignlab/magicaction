@@ -3,4 +3,5 @@ Library/
 *.sln
 *.suo
 Temp/
+obj/
 .vs/
