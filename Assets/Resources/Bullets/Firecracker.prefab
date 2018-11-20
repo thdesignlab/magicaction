@@ -9,30 +9,30 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1599299109696230}
+  m_RootGameObject: {fileID: 1642625439397002}
   m_IsPrefabAsset: 1
---- !u!1 &1599299109696230
+--- !u!1 &1642625439397002
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4054635731199232}
-  - component: {fileID: 114628461454214742}
+  - component: {fileID: 4686861166186570}
+  - component: {fileID: 114810665831355150}
   m_Layer: 0
-  m_Name: Shield
+  m_Name: Firecracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4054635731199232
+--- !u!4 &4686861166186570
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1599299109696230}
+  m_GameObject: {fileID: 1642625439397002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,21 +40,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114628461454214742
+--- !u!114 &114810665831355150
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1599299109696230}
+  m_GameObject: {fileID: 1642625439397002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b74fb26f4f3db1249bfd1f324c8709e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 94b72c8019fb96a40af8aee3b3524fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawn: {fileID: 1350782263818984, guid: 375a89c9614d5e3478cfab7347a999d0, type: 2}
-  useMp: 0
-  minLength: 1
-  maxLength: 10
-  multiSpawn: {fileID: 1642625439397002, guid: 861680efc003c274b8e14ae98f077576, type: 2}
-  multiCount: 20
-  multiInterval: 0.1
+  timeLimit: 0.5
+  spawnObj: {fileID: 1687126525106678, guid: 473e9d4208c32ae4883ee1d13e985c36, type: 2}
+  isGravity: 0
+  strength: 0
+  damage: 0
+  speed: 0

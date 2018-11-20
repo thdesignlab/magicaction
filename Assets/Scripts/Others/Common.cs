@@ -197,6 +197,5 @@ namespace Common
             Vector3 diff = (target - tran.position).normalized;
             tran.rotation = Quaternion.FromToRotation(Vector3.right, diff);
         }
-
     }
 }

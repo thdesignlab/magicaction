@@ -22,6 +22,7 @@ public class InputStatus
     public float totalTwist;
     public float pressTime;
     public int pressLevel;
+    public List<Vector2> linePositions;
 
     public Vector2 GetPoint()
     {
@@ -65,20 +66,47 @@ public class GesturePointer
     public GameObject body;
     public List<GameObject> levelBodyList = new List<GameObject>();
     public List<LineRenderer> levelLineList = new List<LineRenderer>();
+    public bool isMultiPoints = false;
 
     public GameObject GetLevelBody(int level)
     {
         if (levelBodyList.Count < level) return null;
         return levelBodyList[level];
     }
-    public void SetLevelLine(Vector2 pos, int index = 1)
+    public void ResetLevelLine()
     {
-        //if (levelLineList.Count < level) return;
         foreach (LineRenderer line in levelLineList)
         {
             if (line == null) continue;
-            line.positionCount = index + 1;
-            line.SetPosition(index, pos);
+            line.positionCount = 1;
+            line.SetPosition(0, Vector2.zero);
+        }
+        InputManager.Instance.linePositionList = new List<Vector2>();
+    }
+    public void AddLevelLine(Vector2 pos)
+    {
+        foreach (LineRenderer line in levelLineList)
+        {
+            if (line == null) continue;
+            if (isMultiPoints)
+            {
+                if (Vector2.Distance(line.GetPosition(line.positionCount - 1), pos) < 0.2f) continue;
+                line.positionCount += 1;
+                line.SetPosition(line.positionCount - 1, pos);
+                InputManager.Instance.linePositionList.Add(pos);
+            }
+            else
+            {
+                line.positionCount = 2;
+                line.SetPosition(1, pos);
+                if (InputManager.Instance.linePositionList.Count == 0)
+                {
+                    InputManager.Instance.linePositionList.Add(pos);
+                } else
+                {
+                    InputManager.Instance.linePositionList[0] =pos;
+                }
+            }
         }
     }
 }
@@ -146,6 +174,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected Transform pointerDoubleEndTran;
     protected LineRenderer pointerDoubleLine;
     protected bool isActive = false;
+    public List<Vector2> linePositionList = new List<Vector2>();
 
     protected override void Awake()
     {
@@ -162,8 +191,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         }
         //pointer格納
         pointerObj = GetPointer(pointer);
-        pointerStartObj = GetPointer(pointerStart);
-        pointerLongObj = GetPointer(pointerLong);
+        pointerStartObj = GetPointer(pointerStart, true);
+        pointerLongObj = GetPointer(pointerLong, false);
     }
 
     public void SetActive(bool flg)
@@ -178,10 +207,11 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         }
     }
 
-    protected GesturePointer GetPointer(GameObject p)
+    protected GesturePointer GetPointer(GameObject p, bool isMultiPoints = false)
     {
         if (p == null) return null;
         GesturePointer newPointer = new GesturePointer();
+        newPointer.isMultiPoints = isMultiPoints;
         newPointer.body = Instantiate(p);
         for (int i = 0; i <= longPressBorder.Count; i++)
         {
@@ -196,7 +226,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
             LineRenderer line = bodyTran.GetComponentInChildren<LineRenderer>();
             newPointer.levelLineList.Add(line);
         }
-        newPointer.SetLevelLine(Vector2.zero, 0);
+        newPointer.ResetLevelLine();
         newPointer.body.SetActive(false);
         return newPointer;
     }
@@ -268,8 +298,16 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         {
             //off
             pointerObj.body.SetActive(false);
-            if (pointerStartObj != null) pointerStartObj.body.SetActive(false);
-            if (pointerLongObj != null) pointerLongObj.body.SetActive(false);
+            if (pointerStartObj != null)
+            {
+                pointerStartObj.body.SetActive(false);
+                pointerStartObj.ResetLevelLine();
+            }
+            if (pointerLongObj != null)
+            {
+                pointerLongObj.body.SetActive(false);
+                pointerLongObj.ResetLevelLine();
+            }
         }
         else
         {
@@ -284,7 +322,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
                 //長押し時ライン
                 if (pointerLongObj != null)
                 {
-                    pointerLongObj.SetLevelLine(ePos - sPos);
+                    pointerLongObj.AddLevelLine(ePos - sPos);
                 }
             } else if (isTransform)
             {
@@ -293,7 +331,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
                 {
                     pointerStartObj.body.SetActive(true);
                     pointerStartObj.body.transform.position = sPos;
-                    pointerStartObj.SetLevelLine(ePos - sPos);
+                    pointerStartObj.AddLevelLine(ePos - sPos);
                 }
             }
         }
@@ -318,7 +356,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
             //on
             pointerLongObj.body.SetActive(true);
             pointerLongObj.body.transform.position = ChangeWorldVector(pos);
-            pointerLongObj.SetLevelLine(Vector3.zero, 0);
+            pointerLongObj.ResetLevelLine();
             if (pointerStartObj != null) pointerStartObj.body.SetActive(false);
         }
     }
@@ -361,10 +399,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
             p.levelBodyList[i].SetActive(false);
         }
         if (activeBody == null) activeBody = stockBody;
-        if (activeBody != null)
-        {
-            activeBody.SetActive(true);
-        }
+        if (activeBody != null) activeBody.SetActive(true);
     }
 
     //pinch,twist時ポインター
@@ -573,6 +608,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         totalTwist = 0;
         pressTime = 0;
         SetPressLevel(0);
+        linePositionList = new List<Vector2>();
         ActionInvoke(releaseAction);
     }
 
@@ -591,6 +627,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         inputStatus.totalTwist = totalTwist;
         inputStatus.pressTime = pressTime;
         inputStatus.pressLevel = pressLevel;
+        inputStatus.linePositions = linePositionList;
     }
 
     protected void ActionInvoke(GestureAction action)

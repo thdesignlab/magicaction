@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class ObjectWeaponController : WeaponController
 {
@@ -8,27 +9,46 @@ public class ObjectWeaponController : WeaponController
     protected float minLength;
     [SerializeField]
     protected float maxLength;
+    [SerializeField]
+    protected GameObject multiSpawn;
+    [SerializeField]
+    protected int multiCount;
+    [SerializeField]
+    protected float multiInterval;
 
     //発射
     public override bool Fire(InputStatus input)
     {
         if (!base.Fire(input)) return false;
 
-        Vector2 startPoint = input.GetStartPoint();
-        Vector2 endPoint = input.GetEndPoint();
-        Vector2 spawnPoint = (startPoint + endPoint) / 2;
-        float length = (startPoint - endPoint).magnitude;
-        if (length > maxLength)
+        LineRendererStatus lineStatus = new LineRendererStatus(input.linePositions);
+        if (lineStatus.rate < 95)
         {
-            length = maxLength;
+            StartCoroutine(ContinuousSpawn(input.GetStartPoint(), lineStatus.GetEvenlySpacedPoints(multiCount)));
         }
-        else if (length < minLength)
+        else
         {
-            length = minLength;
+            Vector2 startPoint = input.GetStartPoint();
+            Vector2 endPoint = input.GetEndPoint();
+            Vector2 spawnPoint = (startPoint + endPoint) / 2;
+            float length = (startPoint - endPoint).magnitude;
+            if (length > maxLength)
+            {
+                length = maxLength;
+            }
+            else if (length < minLength)
+            {
+                length = minLength;
+            }
+            Quaternion q = Quaternion.LookRotation(Vector3.back, startPoint - endPoint);
+            GameObject obj = Spawn(spawn, spawnPoint, q);
+            obj.transform.localScale = new Vector2(1, length);
         }
-        Quaternion q = Quaternion.LookRotation(Vector3.back, startPoint - endPoint);
-        GameObject obj = Spawn(spawn, spawnPoint, q);
-        obj.transform.localScale = new Vector2(1, length);
+        return true;
+    }
+
+    protected bool IsExistPlayer()
+    {
         //if (player != null)
         //{
         //    foreach (Collider2D col in Physics2D.OverlapCircleAll(player.transform.position, player.GetColliderRadius()))
@@ -36,8 +56,15 @@ public class ObjectWeaponController : WeaponController
         //        Debug.Log(col.name);
         //    }
         //}
-        return true;
+        return false;
     }
 
-
+    IEnumerator ContinuousSpawn(Vector2 startPos, List<Vector2> posList)
+    {
+        foreach (Vector2 pos in posList)
+        {
+            GameObject obj = Spawn(multiSpawn, startPos + pos, Quaternion.identity);
+            yield return new WaitForSeconds(multiInterval);
+        }
+    }
 }
