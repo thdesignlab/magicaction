@@ -695,7 +695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 0
   spawnObj: {fileID: 0}
-  isGravity: 1
+  isGravity: 0
   strength: 0
   maxHp: 1000
   maxMp: 1000
@@ -715,6 +715,9 @@ MonoBehaviour:
   playerLongTapWeaponList: []
   dragWeaponList:
   - {fileID: 1599299109696230, guid: 95c1b0c2a6bc83f47b8788c1512136ef, type: 2}
+  - {fileID: 1112668793167936, guid: 6fab912d6d6d61949841b51b49bb826f, type: 2}
+  - {fileID: 1604644311144064, guid: ec4b61dcec294aa4cbd8663004833f27, type: 2}
+  - {fileID: 1260481762692094, guid: 389558da90aea1f459e1c304f48e324a, type: 2}
   playerDragWeaponList: []
   flickWeapon: {fileID: 1599299109696230, guid: 95c1b0c2a6bc83f47b8788c1512136ef,
     type: 2}

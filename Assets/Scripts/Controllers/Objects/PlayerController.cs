@@ -106,12 +106,12 @@ public class PlayerController : UnitController
 
         //定位置へ移動
         returnVelocity = Vector2.zero;
-        if (!isCharge && !isKnockBack && (isGround || isFlying))
+        if (!isCharge && !isKnockBack)
         {
             Vector2 pos = isFlying ? popPos : new Vector2(popPos.x, myTran.position.y);
             Vector2 target = pos - Common.FUNC.ParseVector2(myTran.position);
             float distance = target.magnitude;
-            if (distance > 1.0f)
+            if (distance > 2.0f)
             {
                 returnVelocity = target.normalized * walkSpeed;
             }
@@ -185,8 +185,10 @@ public class PlayerController : UnitController
     //攻撃処理
     private void Fire(List<WeaponController> weaponCtrlList, InputStatus input)
     {
+        Debug.Log("weaponCtrlList.Count >> " + weaponCtrlList.Count);
         if (weaponCtrlList.Count == 0) return;
         int level = (weaponCtrlList.Count < input.pressLevel) ? weaponCtrlList.Count - 1 : input.pressLevel;
+        Debug.Log("weaponCtrlList[level] >> " + weaponCtrlList[level]);
         Fire(weaponCtrlList[level], input);
     }
     private void Fire(WeaponController weaponCtrl, InputStatus input)
@@ -212,14 +214,15 @@ public class PlayerController : UnitController
     //フリック(base)
     private void FlickAction(InputStatus input)
     {
-        Vector2 vector = input.GetEndPoint() - input.GetStartPoint();
-        KnockBack(vector.normalized * runSpeed, runLimit);
-        //Fire(flickWeaponCtrl, input);
+        //Vector2 vector = input.GetEndPoint() - input.GetStartPoint();
+        //KnockBack(vector.normalized * runSpeed, runLimit);
+        Fire(flickWeaponCtrl, input);
     }
 
     //ドラッグ(base)
     private void DragAction(InputStatus input)
     {
+        Debug.Log("DragAction");
         Fire(dragWeaponCtrlList, input);
     }
 

@@ -312,8 +312,8 @@ MonoBehaviour:
   timeLimit: 0
   spawnObj: {fileID: 1687126525106678, guid: 473e9d4208c32ae4883ee1d13e985c36, type: 2}
   isGravity: 0
-  strength: 10
-  damage: 10
+  strength: 5
+  damage: 5
   speed: 50
 --- !u!198 &198750428070255336
 ParticleSystem:

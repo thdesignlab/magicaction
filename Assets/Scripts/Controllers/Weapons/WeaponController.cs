@@ -44,8 +44,21 @@ public class WeaponController : MonoBehaviour
     //発射
     public virtual bool Fire(InputStatus input)
     {
+        Debug.Log("Fire:"+name);
         if (!UseMp()) return false;
 
         return true;
+    }
+
+    protected virtual bool IsSpawnPosition(Transform tran)
+    {
+        //if (player != null)
+        //{
+        //    foreach (Collider2D col in Physics2D.OverlapCircleAll(player.transform.position, player.GetColliderRadius()))
+        //    {
+        //        Debug.Log(col.name);
+        //    }
+        //}
+        return false;
     }
 }

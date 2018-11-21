@@ -14,6 +14,7 @@ public class InputStatus
     public bool isDraging;
     public bool isPinching;
     public bool isTwisting;
+    public bool isLongDraging;
     public Vector2 point;
     public Vector2 prePoint;
     public Vector2 startPoint;
@@ -122,6 +123,10 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     [SerializeField]
     private GameObject pointerDouble;
     [SerializeField]
+    private bool isMultiLineStartPointer;
+    [SerializeField]
+    private bool isMultiLineLongPointer;
+    [SerializeField]
     private bool isDebugLog;
     [SerializeField]
     private List<float> longPressBorder = new List<float>();
@@ -155,6 +160,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected bool isDraging = false;
     protected bool isPinching = false;
     protected bool isTwisting = false;
+    protected bool isLongDraging = false;
     protected Vector2 point = Vector2.zero;
     protected Vector2 prePoint = Vector2.zero;
     protected Vector2 startPoint = Vector2.zero;
@@ -191,8 +197,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         }
         //pointer格納
         pointerObj = GetPointer(pointer);
-        pointerStartObj = GetPointer(pointerStart, true);
-        pointerLongObj = GetPointer(pointerLong, false);
+        pointerStartObj = GetPointer(pointerStart, isMultiLineStartPointer);
+        pointerLongObj = GetPointer(pointerLong, isMultiLineLongPointer);
     }
 
     public void SetActive(bool flg)
@@ -271,10 +277,16 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
                 //ポインター位置
                 SetPointer(point);
             }
-            if (isLongPressing && dragBorder > Vector2.Distance(startPoint, endPoint))
+            if (isLongPressing)
             {
-                //長押しレベル
-                SetPressLevel();
+                if (dragBorder > Vector2.Distance(startPoint, endPoint))
+                {
+                    //長押しレベル
+                    SetPressLevel();
+                } else
+                {
+                    isLongDraging = true;
+                }
             }
         }
     }
@@ -477,14 +489,22 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     {
         if (!isActive) return;
 
-        if (isTransform) return;
         Log("ReleaseHandle (isTransform=" + isTransform + ")");
+        if (isTransform) return;
 
-        if (isLongPressing)
+        if (isLongDraging)
         {
+            Log("LongDraging");
+            ActionInvoke(dragAction);
+        }
+        else if (isLongPressing)
+        {
+            Log("LongTap");
             ActionInvoke(longTapAction);
-        } else
+        }
+        else
         {
+            Log("Tap");
             ActionInvoke(tapAction);
         }
         ResetState();
@@ -600,6 +620,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         isDraging = false;
         isPinching = false;
         isTwisting = false;
+        isLongDraging = false;
         point = Vector2.zero;
         prePoint = Vector2.zero;
         startPoint = Vector2.zero;
@@ -619,6 +640,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         inputStatus.isDraging = isDraging;
         inputStatus.isPinching = isPinching;
         inputStatus.isTwisting = isTwisting;
+        inputStatus.isLongDraging = isLongDraging;
         inputStatus.point = point;
         inputStatus.prePoint = prePoint;
         inputStatus.startPoint = startPoint;

@@ -609,6 +609,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114118158810153660, guid: 1ffca8cd3b63b5a478c07db305a03314,
+        type: 2}
+      propertyPath: longPressBorder.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4303124040058892, guid: 1ffca8cd3b63b5a478c07db305a03314, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -651,6 +656,31 @@ Prefab:
       propertyPath: layers.Array.data[0]
       value: 
       objectReference: {fileID: 1793469141}
+    - target: {fileID: 114118158810153660, guid: 1ffca8cd3b63b5a478c07db305a03314,
+        type: 2}
+      propertyPath: longPressBorder.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114118158810153660, guid: 1ffca8cd3b63b5a478c07db305a03314,
+        type: 2}
+      propertyPath: longPressBorder.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114118158810153660, guid: 1ffca8cd3b63b5a478c07db305a03314,
+        type: 2}
+      propertyPath: longPressBorder.Array.data[2]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114118158810153660, guid: 1ffca8cd3b63b5a478c07db305a03314,
+        type: 2}
+      propertyPath: isMultiLineStartPointer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114118158810153660, guid: 1ffca8cd3b63b5a478c07db305a03314,
+        type: 2}
+      propertyPath: isDebugLog
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ffca8cd3b63b5a478c07db305a03314, type: 2}
   m_IsPrefabAsset: 0

@@ -54,12 +54,12 @@ public class LineRendererStatus
         endPoint = pointCount > 0 ? points[pointCount - 1] : Vector2.zero;
     }
 
-    public List<Vector2> GetEvenlySpacedPoints(int count)
+    public List<Vector2> GetEvenlySpacedPoints(int maxCount, float perLength = 0)
     {
-        if (count >= pointCount) return points;
+        if (maxCount >= pointCount && perLength <= 0) return points;
 
         List<Vector2> list = new List<Vector2>();
-        float unit = length / count;
+        float unit = perLength > 0 ? perLength : length / maxCount;
         float total = 0;
         list.Add(startPoint);
         for (int i = 1; i < pointCount - 1; i++)
@@ -68,7 +68,7 @@ public class LineRendererStatus
             if (unit * list.Count <= total)
             {
                 list.Add(points[i]);
-                if (list.Count >= count - 1) break;
+                if (list.Count >= maxCount - 1) break;
             }
         }
         list.Add(endPoint);
