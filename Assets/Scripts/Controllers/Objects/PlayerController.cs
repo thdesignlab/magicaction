@@ -135,6 +135,12 @@ public class PlayerController : UnitController
         return (float)mp / maxMp;
     }
 
+    //被弾
+    public override void Damage(int damage)
+    {
+        UseMp(damage);
+    }
+
     //MP設定
     protected virtual void SetMp(int diff = 0)
     {
@@ -145,6 +151,12 @@ public class PlayerController : UnitController
     //MP消費
     public bool UseMp(int use)
     {
+        mp -= use;
+        if (mp < 0)
+        {
+            base.Damage(Mathf.Abs(mp));
+            mp = 0;
+        }
         return true;
     }
 
@@ -185,10 +197,8 @@ public class PlayerController : UnitController
     //攻撃処理
     private void Fire(List<WeaponController> weaponCtrlList, InputStatus input)
     {
-        Debug.Log("weaponCtrlList.Count >> " + weaponCtrlList.Count);
         if (weaponCtrlList.Count == 0) return;
         int level = (weaponCtrlList.Count < input.pressLevel) ? weaponCtrlList.Count - 1 : input.pressLevel;
-        Debug.Log("weaponCtrlList[level] >> " + weaponCtrlList[level]);
         Fire(weaponCtrlList[level], input);
     }
     private void Fire(WeaponController weaponCtrl, InputStatus input)
@@ -222,7 +232,6 @@ public class PlayerController : UnitController
     //ドラッグ(base)
     private void DragAction(InputStatus input)
     {
-        Debug.Log("DragAction");
         Fire(dragWeaponCtrlList, input);
     }
 

@@ -51,8 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8618ea7f3323e4d85cd996a36aa2e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawn: {fileID: 1642625439397002, guid: 861680efc003c274b8e14ae98f077576, type: 2}
-  useMp: 0
+  spawn: {fileID: 1774582503790038, guid: c1630611af0963d498a0c71bec386354, type: 2}
+  useMp: 30
   maxCount: 15
   perLength: 0
   multiInterval: 0.2

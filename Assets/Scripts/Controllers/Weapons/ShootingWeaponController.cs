@@ -34,13 +34,13 @@ public class ShootingWeaponController : WeaponController
     }
 
     //発射
-    public override bool Fire(InputStatus input)
+    public override void Fire(InputStatus input)
     {
-        if (!base.Fire(input)) return false;
-            
-        StartCoroutine(FireProcess(input.GetPoint()));
+        base.Fire(input);
 
-        return true;
+        UseMp();
+
+        StartCoroutine(FireProcess(input.GetPoint()));
     }
 
     //発射処理

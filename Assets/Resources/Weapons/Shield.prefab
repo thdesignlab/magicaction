@@ -52,9 +52,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawn: {fileID: 1350782263818984, guid: 375a89c9614d5e3478cfab7347a999d0, type: 2}
-  useMp: 0
+  useMp: 250
   minLength: 1
   maxLength: 10
-  multiSpawn: {fileID: 1642625439397002, guid: 861680efc003c274b8e14ae98f077576, type: 2}
-  multiCount: 20
-  multiInterval: 0.1

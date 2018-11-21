@@ -13,6 +13,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     private Canvas battleCanvas;
     private Slider hpSlider;
+    private Slider mpSlider;
     private Text scoreText;
     private Text messageText;
     private bool isBattleStart = false;
@@ -26,6 +27,9 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
         battleCanvas = GameObject.Find("BattleCanvas").GetComponent<Canvas>();
         hpSlider = battleCanvas.transform.Find("HP").GetComponent<Slider>();
+        hpSlider.value = 1;
+        mpSlider = battleCanvas.transform.Find("MP").GetComponent<Slider>();
+        mpSlider.value = 1;
         scoreText = battleCanvas.transform.Find("Score").GetComponent<Text>();
         scoreText.text = "0";
         messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
@@ -56,16 +60,22 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     private void Update()
     {
+        if (playerCtrl != null)
+        {
+            hpSlider.value = playerCtrl.GetHpRate();
+            mpSlider.value = playerCtrl.GetMpRate();
+        }
+        else
+        {
+            hpSlider.value = 0;
+        }
+
         if (!isBattleStart) return;
 
         battleTime += Time.deltaTime;
         EnemyPop(1);
         EnemyPop(2);
         EnemyPop(3);
-        if (playerCtrl != null)
-        {
-            hpSlider.value = playerCtrl.GetHpRate();
-        }
     }
 
     IEnumerator BattleStart()

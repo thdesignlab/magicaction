@@ -11,9 +11,11 @@ public class ObjectWeaponController : WeaponController
     protected float maxLength;
 
     //発射
-    public override bool Fire(InputStatus input)
+    public override void Fire(InputStatus input)
     {
-        if (!base.Fire(input)) return false;
+        base.Fire(input);
+
+        UseMp();
 
         Vector2 startPoint = input.GetStartPoint();
         Vector2 endPoint = input.GetEndPoint();
@@ -30,6 +32,5 @@ public class ObjectWeaponController : WeaponController
         Quaternion q = Quaternion.LookRotation(Vector3.back, startPoint - endPoint);
         GameObject obj = Spawn(spawn, spawnPoint, q);
         obj.transform.localScale = new Vector2(1, length);
-        return true;
     }
 }

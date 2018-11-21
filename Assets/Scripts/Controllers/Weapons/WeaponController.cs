@@ -42,12 +42,8 @@ public class WeaponController : MonoBehaviour
     }
 
     //発射
-    public virtual bool Fire(InputStatus input)
+    public virtual void Fire(InputStatus input)
     {
-        Debug.Log("Fire:"+name);
-        if (!UseMp()) return false;
-
-        return true;
     }
 
     protected virtual bool IsSpawnPosition(Transform tran)

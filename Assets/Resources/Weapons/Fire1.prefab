@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawn: {fileID: 1583857083937172, guid: 22812fd49bee6c34cae3d8a4cd013e0d, type: 2}
-  useMp: 0
+  useMp: 100
   rapidCount: 3
   rapidInterval: 0.2
   deviation: 3
