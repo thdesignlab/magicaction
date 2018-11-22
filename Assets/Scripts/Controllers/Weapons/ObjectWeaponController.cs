@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ObjectWeaponController : WeaponController
+public class ObjectWeaponController : SpawnWeaponController
 {
     [SerializeField]
     protected float minLength;
@@ -13,8 +13,6 @@ public class ObjectWeaponController : WeaponController
     //発射
     public override void Fire(InputStatus input)
     {
-        base.Fire(input);
-
         UseMp();
 
         Vector2 startPoint = input.GetStartPoint();

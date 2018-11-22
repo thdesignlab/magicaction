@@ -9,6 +9,6 @@ public class BulletController : DamageObjectController
     protected override void Start()
     {
         base.Start();
-        AddSpeed(GetForward() * speed);
+        SetSpeed(GetForward() * speed);
     }
 }

@@ -9,7 +9,7 @@ public class ObjectController : MonoBehaviour
     private GameObject spawnObj;
 
     protected Transform myTran;
-    protected bool isPlayer;
+    protected PlayerController player;
     protected float deltaTime;
     protected float liveTime = 0;
 
@@ -18,7 +18,7 @@ public class ObjectController : MonoBehaviour
     protected virtual void Awake()
     {
         myTran = transform;
-        isPlayer = (tag == Common.CO.TAG_PLAYER);
+        player = GetComponent<PlayerController>();
     }
 
     protected virtual void Start()
@@ -49,20 +49,20 @@ public class ObjectController : MonoBehaviour
         if (spawnObj != null)
         {
             GameObject obj = Instantiate(spawnObj, myTran.position, myTran.rotation);
-            obj.GetComponent<ObjectController>().SetPlayer(isPlayer);
+            obj.GetComponent<ObjectController>().SetPlayer(player);
         }
         Destroy(gameObject);
     }
 
     //### getter/setter ###
 
-    public void SetPlayer(bool flg)
+    public virtual void SetPlayer(PlayerController p)
     {
-        isPlayer = flg;
+        player = p;
     }
 
     public bool IsPlayer()
     {
-        return isPlayer;
+        return (player != null);
     }
 }

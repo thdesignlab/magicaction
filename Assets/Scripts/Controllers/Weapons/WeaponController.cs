@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField]
-    protected GameObject spawn;
-    [SerializeField]
-    protected int useMp;
-
     protected Transform myTran;
     protected PlayerController player;
 
@@ -18,32 +13,20 @@ public class WeaponController : MonoBehaviour
     }
 
     //Player設定
-    public void SetPlayer(PlayerController p)
+    public virtual void SetPlayer(PlayerController p)
     {
         player = p;
-    }
-
-    //MP消費
-    protected bool UseMp()
-    {
-        if (!player) return true;
-
-        if (!player.UseMp(useMp)) return false;
-
-        return true;
-    }
-
-    //生成
-    protected virtual GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua)
-    {
-        GameObject obj = Instantiate(spawnObj, pos, qua);
-        obj.GetComponent<ObjectController>().SetPlayer(true);
-        return obj;
     }
 
     //発射
     public virtual void Fire(InputStatus input)
     {
+    }
+
+    //目標ポイント取得
+    protected virtual Vector2 GetTarget(InputStatus input)
+    {
+        return input.GetPoint();
     }
 
     protected virtual bool IsSpawnPosition(Transform tran)

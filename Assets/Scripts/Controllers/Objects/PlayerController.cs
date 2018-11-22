@@ -59,7 +59,7 @@ public class PlayerController : UnitController
     private bool isCharge = false;
     private Dictionary<string, WeaponController> weaponList = new Dictionary<string, WeaponController>();
     private Vector2 popPos;
-    private bool isFlying = false;
+    private bool isFlying = true;
     private Vector2 returnVelocity = Vector2.zero;
 
     protected override void Awake()
@@ -93,15 +93,12 @@ public class PlayerController : UnitController
         }
 
         //MP回復
-        if (!isCharge)
+        rmp += recoverMp * deltaTime * (isCharge ? 0.3f : 1);
+        if (rmp >= 1.0f)
         {
-            rmp += recoverMp * deltaTime;
-            if (rmp >= 1.0f)
-            {
-                int r = (int)Mathf.Floor(rmp);
-                SetMp(r);
-                rmp -= r;
-            }
+            int r = (int)Mathf.Floor(rmp);
+            SetMp(r);
+            rmp -= r;
         }
 
         //定位置へ移動
@@ -111,7 +108,7 @@ public class PlayerController : UnitController
             Vector2 pos = isFlying ? popPos : new Vector2(popPos.x, myTran.position.y);
             Vector2 target = pos - Common.FUNC.ParseVector2(myTran.position);
             float distance = target.magnitude;
-            if (distance > 2.0f)
+            if (distance > 1.0f)
             {
                 returnVelocity = target.normalized * walkSpeed;
             }
@@ -175,7 +172,7 @@ public class PlayerController : UnitController
         pinchWeaponCtrl = EquipWeapon(pinchWeapon);
         twistWeaponCtrl = EquipWeapon(twistWeapon);
     }
-    private WeaponController EquipWeapon(GameObject weapon)
+    public WeaponController EquipWeapon(GameObject weapon)
     {
         if (weapon == null) return null;
         GameObject weaponObj = Instantiate(weapon, myTran.position, Quaternion.identity);
@@ -232,7 +229,14 @@ public class PlayerController : UnitController
     //ドラッグ(base)
     private void DragAction(InputStatus input)
     {
-        Fire(dragWeaponCtrlList, input);
+        if (input.isTapPlayer)
+        {
+            Fire(playerDragWeaponCtrlList, input);
+        }
+        else
+        {
+            Fire(dragWeaponCtrlList, input);
+        }
     }
 
     //ピンチイン・アウト(base)

@@ -13,7 +13,7 @@ public class EnemyController : UnitController
     private float rapidCount;
     private float nextAttackTime;
 
-    protected GameObject player;
+    protected GameObject playerObj;
 
     protected override void Awake()
     {
@@ -27,14 +27,14 @@ public class EnemyController : UnitController
     {
         base.Update();
 
-        if (player == null)
+        if (playerObj == null)
         {
-            player = GameObject.FindGameObjectWithTag(Common.CO.TAG_PLAYER);
+            playerObj = GameObject.FindGameObjectWithTag(Common.CO.TAG_PLAYER);
         }
         nextAttackTime -= deltaTime;
         if (attackInterval > 0 && nextAttackTime <= 0)
         {
-            Vector2 targetPos = (player != null) ? player.transform.position : myTran.position;
+            Vector2 targetPos = (playerObj != null) ? playerObj.transform.position : myTran.position;
             StartCoroutine(Rapid(targetPos));
             nextAttackTime = attackInterval;
         }

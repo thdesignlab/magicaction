@@ -15,6 +15,7 @@ public class InputStatus
     public bool isPinching;
     public bool isTwisting;
     public bool isLongDraging;
+    public bool isTapPlayer;
     public Vector2 point;
     public Vector2 prePoint;
     public Vector2 startPoint;
@@ -40,23 +41,6 @@ public class InputStatus
     public Vector2 GetEndPoint()
     {
         return InputManager.Instance.ChangeWorldVector(endPoint);
-    }
-    public GameObject GetTapObject()
-    {
-        GameObject obj = null;
-        Ray ray = Camera.main.ScreenPointToRay(point);
-        RaycastHit2D hit2d = Physics2D.Raycast(ray.origin, ray.direction);
-        if (hit2d)
-        {
-            obj = hit2d.transform.gameObject;
-        }
-        return obj;
-    }
-    public bool IsTapPlayer()
-    {
-        GameObject obj = GetTapObject();
-        if (obj == null) return false;
-        return (obj.tag == Common.CO.TAG_PLAYER);
     }
 }
 
@@ -84,12 +68,12 @@ public class GesturePointer
         }
         InputManager.Instance.linePositionList = new List<Vector2>();
     }
-    public void AddLevelLine(Vector2 pos)
+    public void AddLevelLine(Vector2 pos, bool isTapPlayer = false)
     {
         foreach (LineRenderer line in levelLineList)
         {
             if (line == null) continue;
-            if (isMultiPoints)
+            if (isMultiPoints && !isTapPlayer)
             {
                 if (Vector2.Distance(line.GetPosition(line.positionCount - 1), pos) < 0.2f) continue;
                 line.positionCount += 1;
@@ -161,6 +145,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected bool isPinching = false;
     protected bool isTwisting = false;
     protected bool isLongDraging = false;
+    protected bool isTapPlayer = false;
     protected Vector2 point = Vector2.zero;
     protected Vector2 prePoint = Vector2.zero;
     protected Vector2 startPoint = Vector2.zero;
@@ -334,7 +319,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
                 //長押し時ライン
                 if (pointerLongObj != null)
                 {
-                    pointerLongObj.AddLevelLine(ePos - sPos);
+                    pointerLongObj.AddLevelLine(ePos - sPos, isTapPlayer);
                 }
             } else if (isTransform)
             {
@@ -343,7 +328,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
                 {
                     pointerStartObj.body.SetActive(true);
                     pointerStartObj.body.transform.position = sPos;
-                    pointerStartObj.AddLevelLine(ePos - sPos);
+                    pointerStartObj.AddLevelLine(ePos - sPos, isTapPlayer);
                 }
             }
         }
@@ -469,6 +454,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         Log("PressHandle");
         PressGesture gesture = sender as PressGesture;
         point = gesture.ScreenPosition;
+        isTapPlayer = IsTapPlayer(point);
         SetPointer(point);
         ActionInvoke(pressAction);
     }
@@ -621,6 +607,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         isPinching = false;
         isTwisting = false;
         isLongDraging = false;
+        isTapPlayer = false;
         point = Vector2.zero;
         prePoint = Vector2.zero;
         startPoint = Vector2.zero;
@@ -641,6 +628,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         inputStatus.isPinching = isPinching;
         inputStatus.isTwisting = isTwisting;
         inputStatus.isLongDraging = isLongDraging;
+        inputStatus.isTapPlayer = isTapPlayer;
         inputStatus.point = point;
         inputStatus.prePoint = prePoint;
         inputStatus.startPoint = startPoint;
@@ -674,6 +662,27 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     {
         if (!isDebugLog) return; 
         Debug.Log(obj);
+    }
+
+    //Tap箇所のオブジェクト取得
+    public GameObject GetTapObject(Vector2 pos, int layerMask = 0, Camera cam = null)
+    {
+        GameObject obj = null;
+        cam = cam ?? Camera.main;
+        Ray ray = cam.ScreenPointToRay(pos);
+        RaycastHit2D hit2d = Physics2D.Raycast(ray.origin, ray.direction, 10, layerMask);
+        if (hit2d)
+        {
+            obj = hit2d.transform.gameObject;
+        }
+        return obj;
+    }
+    public bool IsTapPlayer(Vector2 pos)
+    {
+        int layerMask = Common.FUNC.GetLayerMask(new string[] { Common.CO.LAYER_PLAYER });
+        GameObject obj = GetTapObject(pos, layerMask);
+        if (obj == null) return false;
+        return (obj.tag == Common.CO.TAG_PLAYER);
     }
 
     //### GestureAction登録 ###

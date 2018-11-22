@@ -25,12 +25,12 @@ public class DamageObjectController : PhysicsController
         switch (obj.tag)
         {
             case Common.CO.TAG_PLAYER:
-                if (isPlayer) return;
+                if (IsPlayer()) return;
                 isScrape = false;
                 break;
 
             case Common.CO.TAG_ENEMY:
-                if (!isPlayer) return;
+                if (!IsPlayer()) return;
                 isScrape = true;
                 break;
 
@@ -67,7 +67,7 @@ public class DamageObjectController : PhysicsController
         {
             case Common.CO.TAG_OBJECT:
                 PhysicsController phyCtrl = obj.GetComponent<PhysicsController>();
-                if (phyCtrl.IsPlayer() != isPlayer)
+                if (phyCtrl.IsPlayer() != IsPlayer())
                 {
                     phyCtrl.Scrape(strength, this);
                 }

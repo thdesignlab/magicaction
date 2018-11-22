@@ -19,6 +19,9 @@ namespace Common
         public const string SCENE_TITLE = "TitleScene";
         public const string SCENE_BATTLE = "BattleScene";
 
+        //レイヤー
+        public const string LAYER_PLAYER = "Player";
+
         //タグ
         public const string TAG_PLAYER = "Player";
         public const string TAG_ENEMY = "Enemy";
@@ -196,6 +199,22 @@ namespace Common
         {
             Vector3 diff = (target - tran.position).normalized;
             tran.rotation = Quaternion.FromToRotation(Vector3.right, diff);
+        }
+
+        //レイヤーマスク取得
+        public static int GetLayerMask(string[] layerNames)
+        {
+            return LayerMask.GetMask(layerNames);
+        }
+
+        //２点間の角度
+        public static float GetAngle(Vector2 start, Vector2 end)
+        {
+            return Vector2.Angle(start, end);
+            float dx = end.x - start.x;
+            float dy = end.y - start.y;
+            float rad = Mathf.Atan2(dy, dx);
+            return rad * Mathf.Rad2Deg;
         }
     }
 }

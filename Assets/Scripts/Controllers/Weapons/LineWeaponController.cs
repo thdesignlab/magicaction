@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class LineWeaponController : WeaponController
+public class LineWeaponController : SpawnWeaponController
 {
     [SerializeField]
     protected int maxCount;
@@ -16,8 +16,6 @@ public class LineWeaponController : WeaponController
     //発射
     public override void Fire(InputStatus input)
     {
-        base.Fire(input);
-
         LineRendererStatus lineStatus = new LineRendererStatus(input.linePositions);
         StartCoroutine(ContinuousSpawn(input.GetStartPoint(), lineStatus.GetEvenlySpacedPoints(maxCount, perLength)));
     }
