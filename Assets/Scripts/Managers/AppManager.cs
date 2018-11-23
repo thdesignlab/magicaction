@@ -13,7 +13,6 @@ public class AppManager : SingletonMonoBehaviour<AppManager>
     protected override void Awake()
     {
         base.Awake();
-
         Debug.Log("isDebugMode=" + isDebug);
     }
 

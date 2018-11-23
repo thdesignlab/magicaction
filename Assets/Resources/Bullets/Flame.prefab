@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 4566166375966732}
   - component: {fileID: 198067072932872856}
   - component: {fileID: 199614816729131690}
+  - component: {fileID: 114649677174211068}
   m_Layer: 0
   m_Name: Sprays_01
   m_TagString: Untagged
@@ -86,8 +87,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1638577697223092}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -17.3, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children:
   - {fileID: 4566166375966732}
   m_Father: {fileID: 0}
@@ -101,7 +102,7 @@ Transform:
   m_GameObject: {fileID: 1909119548714664}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 1, z: 2}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 4707245302334972}
   - {fileID: 4983733606571418}
@@ -159,6 +160,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 24, y: 3}
   m_EdgeRadius: 1
+--- !u!114 &114649677174211068
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1909119548714664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b44664d5edcdc67488b350d8d4d122b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  start: 3
 --- !u!114 &114658697590411896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,7 +188,7 @@ MonoBehaviour:
   isGravity: 0
   strength: 0
   damage: 10
-  useMp: 100
+  useMp: 150
 --- !u!198 &198067072932872856
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -255,7 +268,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -308,7 +321,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 30
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4789,7 +4802,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 3
-      minScalar: 0.5
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4823,8 +4836,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 10
-      minScalar: 6
+      scalar: 30
+      minScalar: 15
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -9267,8 +9280,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1.5
-      minScalar: 0.5
+      scalar: 3
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -9302,8 +9315,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 10
-      minScalar: 6
+      scalar: 30
+      minScalar: 15
       maxCurve:
         serializedVersion: 2
         m_Curve:

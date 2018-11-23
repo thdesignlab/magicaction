@@ -52,7 +52,7 @@ public class EnemyController : UnitController
         for (int i = 0; i < rapidCount; i++)
         {
             Vector2 target = targetPos + new Vector2(Random.Range(-diff, diff), Random.Range(-diff, diff));
-            Spawn(bullet, targetPos);
+            Spawn(bullet, target);
             yield return new WaitForSeconds(0.1f);
         }
     }
