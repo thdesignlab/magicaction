@@ -20,6 +20,11 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
     [HideInInspector]
     public bool isUiFade = false;
 
+    private Camera _cam;
+    protected Camera cam { get { return _cam ? _cam : _cam = Camera.main; } }
+    private float targetRatio;
+    private int preWidth;
+    private int preHeight;
 
     //メッセージ
     public const string MESSAGE_LOADING = "Now Loading...";
@@ -47,6 +52,21 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         msgImg = msgTran.Find("Image").GetComponent<Image>();
         msgTxt = msgTran.Find("Text").GetComponent<Text>();
         CloseMessage();
+
+        //アス比
+        targetRatio = (float)Mathf.Round(Common.CO.SCREEN_WIDTH * 100 / Common.CO.SCREEN_HEIGHT);
+        preWidth = Screen.width;
+        preHeight = Screen.height;
+        AdjustScreen();
+    }
+
+    private void Update()
+    {
+        //アス比が変わったら調整
+        if (preWidth != Screen.width || preHeight != Screen.height)
+        {
+            AdjustScreen();
+        }
     }
 
     public void SceneLoad(string sceneName, string message = MESSAGE_LOADING)
@@ -316,6 +336,40 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
             }
         }
         return image;
+    }
+
+    //### アスペクト比固定 ###
+
+    //UIを調整
+    private void AdjustScreen()
+    {
+        preWidth = Screen.width;
+        preHeight = Screen.height;
+        float nowRatio = (float)Mathf.Round(100 * Screen.width / Screen.height);
+        float x = 0;
+        float y = 0;
+        float w = 1;
+        float h = 1;
+
+        if (targetRatio > nowRatio)
+        {
+            //横に合わせる
+            float targetR = (float)Screen.width / Common.CO.SCREEN_WIDTH;
+            float targetL = Common.CO.SCREEN_HEIGHT * targetR;
+            float r = (Screen.height - targetL) / Screen.height;
+            y = r / 2;
+            h -= r;
+        }
+        else if (targetRatio < nowRatio)
+        {
+            //縦に合わせる
+            float targetR = (float)Screen.height / Common.CO.SCREEN_HEIGHT;
+            float targetL = Common.CO.SCREEN_WIDTH * targetR;
+            float r = (Screen.width - targetL) / Screen.width;
+            x = r / 2;
+            w -= r;
+        }
+        cam.rect = new Rect(x, y, w, h);
     }
 }
 

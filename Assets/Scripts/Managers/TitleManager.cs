@@ -6,7 +6,6 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
 {
     protected override void Awake()
     {
-        isDontDestroyOnLoad = false;
         base.Awake();
     }
 
