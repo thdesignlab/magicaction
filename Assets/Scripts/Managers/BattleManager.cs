@@ -17,6 +17,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private Text scoreText;
     private Text messageText;
     private bool isBattleStart = false;
+    private bool isPause = false;
 
     private PlayerController playerCtrl;
 
@@ -123,11 +124,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         }
     }
 
-    public void Return()
-    {
-        ScreenManager.Instance.SceneLoad(Common.CO.SCENE_TITLE);
-    }
-
     public void AddScore()
     {
         scoreText.text = (int.Parse(scoreText.text) + 1).ToString();
@@ -149,5 +145,37 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         messageText.text = txt;
         yield return new WaitForSeconds(limit);
         messageText.text = "";
+    }
+
+    void OnApplicationPause(bool flg)
+    {
+        if (flg)
+        {
+            Pause();
+        }
+        else
+        {
+            ResetPause();
+        }
+    }
+
+    //### MENU ###
+
+    public void Pause()
+    {
+        isPause = true;
+        MenuManager.Instance.SwitchMenu(true);
+        Time.timeScale = 0;
+    }
+    public void ResetPause()
+    {
+        isPause = false;
+        MenuManager.Instance.SwitchMenu(false);
+        Time.timeScale = 1;
+    }
+
+    public void Return()
+    {
+        ScreenManager.Instance.SceneLoad(Common.CO.SCENE_TITLE);
     }
 }
