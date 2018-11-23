@@ -27,24 +27,29 @@ public class MenuManager : SingletonMonoBehaviour<MenuManager>
     //アプリ終了
     public void OnExitButton()
     {
-        //DialogController.OpenDialog("アプリを終了します", () => GameController.Instance.Exit(), true);
+        UnityAction callback = () => Application.Quit();
+
+        DialogManager.Instance.OpenSelect("アプリを終了します。", callback);
     }
 
     //タイトルへ戻る
     public void OnTitleButton()
     {
-        UnityAction callback = () =>
-        {
-            BattleManager.Instance.Return();
-        };
+        UnityAction callback = () => BattleManager.Instance.Return();
 
-        //DialogController.OpenDialog("タイトルに戻ります", callback, true);
+        DialogManager.Instance.OpenSelect("タイトルへ戻ります。", callback);
     }
 
-    //一時停止
-    public void OnPauseButton()
+    //ヘルプ
+    public void OnHelpButton()
     {
-        //GameController.Instance.Pause();
+        DialogManager.Instance.Open("Help!");
+    }
+
+    //ヘルプ
+    public void OnConfigButton()
+    {
+        DialogManager.Instance.Open("Config!");
     }
 
 }

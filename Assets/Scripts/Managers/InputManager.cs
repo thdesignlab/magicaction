@@ -1,8 +1,9 @@
 ﻿using System;
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using TouchScript.Gestures;
 using TouchScript.Gestures.TransformGestures;
 using TouchScript.Pointers;
@@ -165,6 +166,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected Transform pointerDoubleEndTran;
     protected LineRenderer pointerDoubleLine;
     protected bool isActive = false;
+    protected bool isTapUI = false;
     public List<Vector2> linePositionList = new List<Vector2>();
 
     protected override void Awake()
@@ -247,7 +249,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     private void Update()
     {
-        if (!isActive) return;
+        if (!IsActive()) return;
 
         if (IsPressing())
         {
@@ -449,11 +451,17 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     //プレス(押した時)
     protected virtual void PressHandle(object sender, System.EventArgs e)
     {
-        if (!isActive) return;
+        if (!IsActive()) return;
 
         Log("PressHandle");
         PressGesture gesture = sender as PressGesture;
         point = gesture.ScreenPosition;
+        if (IsTapUI(point))
+        {
+            isTapUI = true;
+            return;
+        }
+
         isTapPlayer = IsTapPlayer(point);
         SetPointer(point);
         ActionInvoke(pressAction);
@@ -462,7 +470,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     //プレス(長押し)
     protected virtual void LongPressHandle(object sender, System.EventArgs e)
     {
-        if (!isActive) return;
+        if (!IsActive()) return;
 
         if (isTransform || longPressBorder.Count == 0) return;
         Log("LongPressHandle");
@@ -473,7 +481,11 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     //リリース(離した時)
     protected virtual void ReleaseHandle(object sender, System.EventArgs e)
     {
-        if (!isActive) return;
+        if (!IsActive())
+        {
+            isTapUI = false;
+            return;
+        }
 
         Log("ReleaseHandle (isTransform=" + isTransform + ")");
         if (isTransform) return;
@@ -499,7 +511,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     //フリック
     protected virtual void FlickHandle(object sender, System.EventArgs e)
     {
-        if (!isActive) return;
+        if (!IsActive()) return;
 
         Log("FlickHandle");
         ActionInvoke(flickAction);
@@ -507,7 +519,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected virtual void TransformStartedHandle(object sender, System.EventArgs e)
     {
-        if (!isActive) return;
+        if (!IsActive()) return;
 
         // 変形開始のタッチ時の処理
         if (!IsPressing()) return;
@@ -517,7 +529,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected virtual void StateChangedHandle(object sender, System.EventArgs e)
     {
-        if (!isActive) return;
+        if (!IsActive()) return;
 
         if (!isTransform || !IsPressing()) return;
         Log("StateChangedHandle (isTransform =" + isTransform + " / IsPressing()=" + IsPressing() + ")");
@@ -562,7 +574,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected virtual void TransformCompletedHandle(object sender, System.EventArgs e)
     {
-        if (!isActive) return;
+        if (!IsActive()) return;
 
         // 変形終了のタッチ時の処理
         if (isDraging)
@@ -591,7 +603,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     }
     protected virtual void CancelledHandle(object sender, System.EventArgs e)
     {
-        if (!isActive) return;
+        if (!IsActive()) return;
 
         // 変形終了のタッチ時の処理
         Log("CancelledHandle");
@@ -617,6 +629,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         pressTime = 0;
         SetPressLevel(0);
         linePositionList = new List<Vector2>();
+        isTapUI = false;
         ActionInvoke(releaseAction);
     }
 
@@ -664,7 +677,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         Debug.Log(obj);
     }
 
-    //Tap箇所のオブジェクト取得
+    //のオブジェクト取得
     public GameObject GetTapObject(Vector2 pos, int layerMask = 0, Camera cam = null)
     {
         GameObject obj = null;
@@ -679,10 +692,34 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     }
     public bool IsTapPlayer(Vector2 pos)
     {
-        int layerMask = Common.FUNC.GetLayerMask(new string[] { Common.CO.LAYER_PLAYER_BODY });
+        int layerMask = Common.FUNC.GetLayerMask(Common.CO.LAYER_PLAYER_BODY);
         GameObject obj = GetTapObject(pos, layerMask);
-        if (obj == null) return false;
-        return (obj.tag == Common.CO.TAG_PLAYER);
+        return (obj != null);
+    }
+
+    //指定座標のUI取得
+    public List<GameObject> GetTapUIList(Vector2 pos)
+    {
+        PointerEventData p = new PointerEventData(EventSystem.current);
+        p.position = pos;
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(p, results);
+        List<GameObject> objList = new List<GameObject>();
+        foreach (RaycastResult hit in results)
+        {
+            objList.Add(hit.gameObject);
+        }
+        return objList;
+    }
+    public bool IsTapUI(Vector2 pos)
+    {
+        List<GameObject> objList = GetTapUIList(pos);
+        return (objList.Count > 0);
+    }
+
+    private bool IsActive()
+    {
+        return (isActive && !isTapUI);
     }
 
     //### GestureAction登録 ###

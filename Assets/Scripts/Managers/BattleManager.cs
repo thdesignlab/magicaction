@@ -17,7 +17,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private Text scoreText;
     private Text messageText;
     private bool isBattleStart = false;
-    private bool isPause = false;
 
     private PlayerController playerCtrl;
 
@@ -120,7 +119,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         if (diffTime >= popInterval[index])
         {
             popTime[index] = battleTime;
-            GameObject obj = Instantiate(popEnemy[index], popTransform[index].position, popTransform[index].rotation);
+            Instantiate(popEnemy[index], popTransform[index].position, popTransform[index].rotation);
         }
     }
 
@@ -163,13 +162,11 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     public void Pause()
     {
-        isPause = true;
         MenuManager.Instance.SwitchMenu(true);
         Time.timeScale = 0;
     }
     public void ResetPause()
     {
-        isPause = false;
         MenuManager.Instance.SwitchMenu(false);
         Time.timeScale = 1;
     }

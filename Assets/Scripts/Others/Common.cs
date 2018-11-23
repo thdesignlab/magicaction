@@ -26,6 +26,7 @@ namespace Common
         //レイヤー
         public const string LAYER_PLAYER = "Player";
         public const string LAYER_PLAYER_BODY = "PlayerBody";
+        public const string LAYER_UI = "UI";
 
         //タグ
         public const string TAG_PLAYER = "Player";
@@ -207,6 +208,10 @@ namespace Common
         }
 
         //レイヤーマスク取得
+        public static int GetLayerMask(string layerName)
+        {
+            return GetLayerMask(new string[]{ layerName });
+        }
         public static int GetLayerMask(string[] layerNames)
         {
             return LayerMask.GetMask(layerNames);

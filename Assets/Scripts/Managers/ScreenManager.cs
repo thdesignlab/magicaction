@@ -7,8 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
 {
-    private Transform commonCanvas;
+    private Transform _commonCanvas;
+    private Transform commonCanvas
+    {
+        get { return _commonCanvas ? _commonCanvas : _commonCanvas = GameObject.Find("CommonCanvas").transform; }
+    }
+
     private Image fadeImg;
+    private GameObject msgObj;
     private Image msgImg;
     private Text msgTxt;
 
@@ -38,8 +44,8 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
 
     protected override void OnInitialize()
     {
-        Transform commonCanvas = GameObject.Find("CommonCanvas").transform;
         DontDestroyOnLoad(commonCanvas);
+
         //フェード
         fadeImg = commonCanvas.Find("Fade").GetComponent<Image>();
         fadeImg.raycastTarget = false;
@@ -47,6 +53,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
 
         //メッセージ
         Transform msgTran = commonCanvas.Find("Message");
+        msgObj = msgTran.gameObject;
         msgImg = msgTran.Find("Image").GetComponent<Image>();
         msgTxt = msgTran.Find("Text").GetComponent<Text>();
 
@@ -54,7 +61,6 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         targetRatio = Mathf.Round(Common.CO.SCREEN_WIDTH * 100 / Common.CO.SCREEN_HEIGHT);
         preWidth = Common.CO.SCREEN_WIDTH;
         preHeight = Common.CO.SCREEN_HEIGHT;
-        AdjustScreen();
 
         //画面向き
         preOrientation = Input.deviceOrientation;
@@ -65,10 +71,13 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
 
     private void Update()
     {
-        //アス比チェック
-        if (preWidth != Screen.width || preHeight != Screen.height)
+        if (Common.FUNC.IsPc())
         {
-            AdjustScreen();
+            //アス比チェック
+            if (preWidth != Screen.width || preHeight != Screen.height)
+            {
+                AdjustScreen();
+            }
         }
 
         //画面向きチェック
@@ -78,6 +87,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
     //シーン遷移時イベント
     void OnActiveSceneChanged(Scene prevScene, Scene nextScene)
     {
+        commonCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
         AdjustScreen();
     }
 
@@ -93,18 +103,16 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         isSceneFade = true;
 
         //メッセージ表示
-        if (message != "") OpenMessage(message);
+        OpenMessage();
 
         //フェードアウト
-        Coroutine fadeOut = StartCoroutine(Fade(imgs, false));
-        yield return fadeOut;
+        yield return StartCoroutine(Fade(imgs, false));
 
         //シーンロード
         SceneManager.LoadScene(sceneName);
 
         //フェードイン
-        Coroutine fadeIn = StartCoroutine(Fade(imgs, true));
-        yield return fadeIn;
+        yield return StartCoroutine(Fade(imgs, true));
 
         //メッセージ非表示
         CloseMessage();
@@ -321,6 +329,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
             msgImg.enabled = false;
             msgTxt.enabled = true;
         }
+        msgObj.SetActive(true);
     }
 
     public void CloseMessage()
@@ -329,6 +338,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         msgImg.enabled = false;
         msgTxt.text = "";
         msgTxt.enabled = false;
+        msgObj.SetActive(false);
     }
 
     private static Sprite GetMessageImage(string text)
@@ -390,12 +400,15 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         {
             sizeRate = 1.0f;
         }
+
         Camera.main.rect = new Rect(x, y, w, h);
     }
+
     public float GetSizeRate()
     {
         return sizeRate;
     }
+
     //###　画面向き ###
 
     private void SetOrientation()

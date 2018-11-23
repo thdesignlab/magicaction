@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4d92dddedf09e49913927168f5dfd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 5
+  timeLimit: 3
   spawnObj: {fileID: 0}
   isGravity: 0
   strength: 0

@@ -11,10 +11,10 @@ public class PlayerController : UnitController
     private int recoverHp;
     [SerializeField]
     private int recoverMp;
-    [SerializeField]
-    private float runSpeed = 10.0f;
-    [SerializeField]
-    private float runLimit = 0.5f;
+    //[SerializeField]
+    //private float runSpeed = 10.0f;
+    //[SerializeField]
+    //private float runLimit = 0.5f;
     [SerializeField]
     private float walkSpeed = 1.0f;
 
