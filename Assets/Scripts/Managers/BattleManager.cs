@@ -85,7 +85,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
             if (!ScreenManager.Instance.isSceneFade) break;
             yield return null;
         }
-
         SetMessage("READY...");
 
         //プレイヤー生成
@@ -106,9 +105,11 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         //召喚演出
         GameObject summonObj = Instantiate(summon, pPopTran.position - Vector3.up * 0.5f, pPopTran.rotation);
         yield return new WaitForSeconds(0.5f);
+
         GameObject playerObj = Instantiate(player, pPopTran.position + Vector3.up * 1.5f, pPopTran.rotation);
         playerCtrl = playerObj.GetComponent<PlayerController>();
         yield return new WaitForSeconds(2.5f);
+
         Destroy(summonObj);
         yield return new WaitForSeconds(1.0f);
     }
@@ -152,10 +153,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         {
             Pause();
         }
-        else
-        {
-            ResetPause();
-        }
     }
 
     //### MENU ###
@@ -173,6 +170,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     public void Return()
     {
+        ResetPause();
         ScreenManager.Instance.SceneLoad(Common.CO.SCENE_TITLE);
     }
 }
