@@ -97,15 +97,15 @@ MonoBehaviour:
   pointerStart: {fileID: 0}
   pointerLong: {fileID: 0}
   pointerDouble: {fileID: 0}
+  isMultiLineStartPointer: 0
+  isMultiLineLongPointer: 0
   isDebugLog: 0
-  longPressBorder:
-  - 1
-  - 3
-  - 5
+  longPressBorder: []
   dragBorder: 15
   pinchBorder: 0.2
   twistBorder: 0.5
   flickTimeBorder: 0.12
+  linePositionList: []
 --- !u!114 &114124757244509114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -294,7 +294,7 @@ MonoBehaviour:
   sendMessageTarget: {fileID: 0}
   useUnityEvents: 0
   layers:
-  - {fileID: 0}
+  - {fileID: 114641467078709154}
 --- !u!114 &114600079583238150
 MonoBehaviour:
   m_ObjectHideFlags: 1

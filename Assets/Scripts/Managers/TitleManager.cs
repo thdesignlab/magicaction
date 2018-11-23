@@ -6,6 +6,7 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
 {
     protected override void Awake()
     {
+        isDontDestroyOnLoad = false;
         base.Awake();
     }
 
@@ -14,6 +15,11 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
         for (; ; )
         {
             if (AppManager.Instance.isReadyGame) break;
+            yield return null;
+        }
+        for (; ;)
+        {
+            if (!ScreenManager.Instance.isSceneFade) break;
             yield return null;
         }
 
@@ -30,4 +36,5 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
     {
         ScreenManager.Instance.SceneLoad(Common.CO.SCENE_BATTLE);
     }
+
 }

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
+    protected static bool isInit = true;
+
     private static T instance;
     public static T Instance
     {
@@ -29,6 +31,7 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
         }
         else if (instance != paramInstance)
         {
+            isInit = false;
             Destroy(paramInstance.gameObject);
         }
     }
@@ -39,5 +42,11 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
     {
         Initialize(this as T);
         if (isDontDestroyOnLoad) DontDestroyOnLoad(gameObject);
+        if (isInit) OnInitialize();
+    }
+
+    protected virtual void OnInitialize()
+    {
+
     }
 }

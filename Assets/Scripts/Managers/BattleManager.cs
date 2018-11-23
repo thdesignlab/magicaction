@@ -80,6 +80,12 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     IEnumerator BattleStart()
     {
+        for (; ; )
+        {
+            if (!ScreenManager.Instance.isSceneFade) break;
+            yield return null;
+        }
+
         SetMessage("READY...");
 
         //プレイヤー生成

@@ -25,6 +25,7 @@ namespace Common
 
         //レイヤー
         public const string LAYER_PLAYER = "Player";
+        public const string LAYER_PLAYER_BODY = "PlayerBody";
 
         //タグ
         public const string TAG_PLAYER = "Player";
@@ -215,10 +216,6 @@ namespace Common
         public static float GetAngle(Vector2 start, Vector2 end)
         {
             return Vector2.Angle(start, end);
-            float dx = end.x - start.x;
-            float dy = end.y - start.y;
-            float rad = Mathf.Atan2(dy, dx);
-            return rad * Mathf.Rad2Deg;
         }
     }
 }

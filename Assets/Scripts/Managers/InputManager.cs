@@ -679,7 +679,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     }
     public bool IsTapPlayer(Vector2 pos)
     {
-        int layerMask = Common.FUNC.GetLayerMask(new string[] { Common.CO.LAYER_PLAYER });
+        int layerMask = Common.FUNC.GetLayerMask(new string[] { Common.CO.LAYER_PLAYER_BODY });
         GameObject obj = GetTapObject(pos, layerMask);
         if (obj == null) return false;
         return (obj.tag == Common.CO.TAG_PLAYER);

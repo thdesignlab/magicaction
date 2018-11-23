@@ -70,8 +70,10 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
 
     void OnGUI()
     {
+        return;
         if (!AppManager.Instance.isDebug && !UserManager.isAdmin) return;
 
+        float sizeRate = ScreenManager.Instance.GetSizeRate();
         SetGuiSkin();
         
         //ログ
@@ -94,7 +96,6 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
         }
         else
         {
-
             //ログ非表示中
             if (GUI.RepeatButton(btnRect, "", "button"))
             {
@@ -114,7 +115,7 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
                 fpsTimer -= 0.5f;
                 fps = Mathf.Round(10 / Time.deltaTime) / 10.0f;
             }
-            Rect fpsRect = new Rect(0, 0, 50, 30);
+            Rect fpsRect = new Rect(0, 0, 150, 50);
             GUI.Label(fpsRect, fps.ToString());
         }
     }
@@ -124,6 +125,9 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
         GUI.skin.button.normal.background = null;
         GUI.skin.button.hover.background = null;
         GUI.skin.button.active.background = null;
+        GUI.skin.label.fontSize = 36;
+        //GUI.skin.label.fontSize = Mathf.RoundToInt(36 * ScreenManager.Instance.GetSizeRate());
+        //Debug.Log(ScreenManager.Instance.GetSizeRate()+" >> "+ GUI.skin.label.fontSize);
     }
 
     /**

@@ -10,12 +10,6 @@ public class AppManager : SingletonMonoBehaviour<AppManager>
     [HideInInspector]
     public bool isFinishedSplash = false;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        Debug.Log("isDebugMode=" + isDebug);
-    }
-
     IEnumerator Start()
     {
 #if UNITY_EDITOR

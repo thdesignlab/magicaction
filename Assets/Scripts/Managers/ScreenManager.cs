@@ -20,11 +20,12 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
     [HideInInspector]
     public bool isUiFade = false;
 
-    private Camera _cam;
-    protected Camera cam { get { return _cam ? _cam : _cam = Camera.main; } }
+    private float sizeRate = 1;
     private float targetRatio;
     private int preWidth;
     private int preHeight;
+
+    private DeviceOrientation preOrientation;
 
     //メッセージ
     public const string MESSAGE_LOADING = "Now Loading...";
@@ -35,11 +36,8 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
     };
     private static Dictionary<string, Sprite> messageImgDic = null;
 
-
-    protected override void Awake()
+    protected override void OnInitialize()
     {
-        base.Awake();
-
         Transform commonCanvas = GameObject.Find("CommonCanvas").transform;
         DontDestroyOnLoad(commonCanvas);
         //フェード
@@ -51,22 +49,36 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         Transform msgTran = commonCanvas.Find("Message");
         msgImg = msgTran.Find("Image").GetComponent<Image>();
         msgTxt = msgTran.Find("Text").GetComponent<Text>();
-        CloseMessage();
 
         //アス比
-        targetRatio = (float)Mathf.Round(Common.CO.SCREEN_WIDTH * 100 / Common.CO.SCREEN_HEIGHT);
-        preWidth = Screen.width;
-        preHeight = Screen.height;
+        targetRatio = Mathf.Round(Common.CO.SCREEN_WIDTH * 100 / Common.CO.SCREEN_HEIGHT);
+        preWidth = Common.CO.SCREEN_WIDTH;
+        preHeight = Common.CO.SCREEN_HEIGHT;
         AdjustScreen();
+
+        //画面向き
+        preOrientation = Input.deviceOrientation;
+
+        //シーン遷移時イベント
+        SceneManager.activeSceneChanged += OnActiveSceneChanged;
     }
 
     private void Update()
     {
-        //アス比が変わったら調整
+        //アス比チェック
         if (preWidth != Screen.width || preHeight != Screen.height)
         {
             AdjustScreen();
         }
+
+        //画面向きチェック
+        SetOrientation();
+    }
+
+    //シーン遷移時イベント
+    void OnActiveSceneChanged(Scene prevScene, Scene nextScene)
+    {
+        AdjustScreen();
     }
 
     public void SceneLoad(string sceneName, string message = MESSAGE_LOADING)
@@ -76,7 +88,6 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
 
     IEnumerator LoadProccess(string sceneName, string message = "")
     {
-        Debug.Log(sceneName);
         Image[] imgs = new Image[] { fadeImg };
 
         isSceneFade = true;
@@ -96,7 +107,8 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         yield return fadeIn;
 
         //メッセージ非表示
-        if (message != "") CloseMessage();
+        CloseMessage();
+
         isSceneFade = false;
     }
 
@@ -117,9 +129,14 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
             endColor = (isFadeIn) ? invisibleColor : visibleColor;
             foreach (Image img in imgs)
             {
+                img.enabled = true;
                 img.raycastTarget = isBlackOut;
                 img.color = Color.Lerp(startColor, endColor, procRate);
-                if (procRate >= 1) img.raycastTarget = !isBlackOut;
+                if (procRate >= 1)
+                {
+                    img.raycastTarget = !isBlackOut;
+                    img.enabled = false;
+                }
             }
             if (procRate >= 1) break;
             yield return null;
@@ -354,8 +371,8 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         if (targetRatio > nowRatio)
         {
             //横に合わせる
-            float targetR = (float)Screen.width / Common.CO.SCREEN_WIDTH;
-            float targetL = Common.CO.SCREEN_HEIGHT * targetR;
+            sizeRate = (float)Screen.width / Common.CO.SCREEN_WIDTH;
+            float targetL = Common.CO.SCREEN_HEIGHT * sizeRate;
             float r = (Screen.height - targetL) / Screen.height;
             y = r / 2;
             h -= r;
@@ -363,13 +380,59 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         else if (targetRatio < nowRatio)
         {
             //縦に合わせる
-            float targetR = (float)Screen.height / Common.CO.SCREEN_HEIGHT;
-            float targetL = Common.CO.SCREEN_WIDTH * targetR;
+            sizeRate = (float)Screen.height / Common.CO.SCREEN_HEIGHT;
+            float targetL = Common.CO.SCREEN_WIDTH * sizeRate;
             float r = (Screen.width - targetL) / Screen.width;
             x = r / 2;
             w -= r;
         }
-        cam.rect = new Rect(x, y, w, h);
+        else
+        {
+            sizeRate = 1.0f;
+        }
+        Camera.main.rect = new Rect(x, y, w, h);
+    }
+    public float GetSizeRate()
+    {
+        return sizeRate;
+    }
+    //###　画面向き ###
+
+    private void SetOrientation()
+    {
+        DeviceOrientation nowOrientation = Input.deviceOrientation;
+        if (preOrientation == nowOrientation) return;
+
+        ScreenOrientation screen = Screen.orientation;
+        preOrientation = nowOrientation;
+
+        switch (nowOrientation)
+        {
+            case DeviceOrientation.LandscapeLeft:
+                screen = ScreenOrientation.LandscapeLeft;
+                break;
+
+            case DeviceOrientation.LandscapeRight:
+                screen = ScreenOrientation.LandscapeRight;
+                break;
+
+            case DeviceOrientation.Portrait:
+            case DeviceOrientation.PortraitUpsideDown:
+                if (Input.acceleration.x > 0)
+                {
+                    screen = ScreenOrientation.LandscapeRight;
+                }
+                else
+                {
+                    screen = ScreenOrientation.LandscapeLeft;
+                }
+                break;
+
+            default:
+                screen = ScreenOrientation.Landscape;
+                break;
+        }
+        Screen.orientation = screen;
     }
 }
 
