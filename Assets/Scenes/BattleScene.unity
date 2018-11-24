@@ -5712,7 +5712,7 @@ Prefab:
     - target: {fileID: 114150025535811106, guid: 0e5f6a4e3d38158438514d5b18d85f88,
         type: 2}
       propertyPath: dragBorder
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 114150025535811106, guid: 0e5f6a4e3d38158438514d5b18d85f88,
         type: 2}

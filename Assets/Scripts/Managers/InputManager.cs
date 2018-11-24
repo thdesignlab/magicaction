@@ -76,7 +76,8 @@ public class GesturePointer
             if (line == null) continue;
             if (isMultiPoints && !isTapPlayer)
             {
-                if (Vector2.Distance(line.GetPosition(line.positionCount - 1), pos) < 0.2f) continue;
+                Vector2 preLine = line.GetPosition(line.positionCount - 1);
+                if (InputManager.Instance.GetFixDistance(preLine, pos) < 0.5f) continue;
                 line.positionCount += 1;
                 line.SetPosition(line.positionCount - 1, pos);
                 InputManager.Instance.linePositionList.Add(pos);
@@ -266,7 +267,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
             }
             if (isLongPressing)
             {
-                if (dragBorder > Vector2.Distance(startPoint, endPoint))
+                if (dragBorder > GetFixDistance(startPoint, endPoint))
                 {
                     //長押しレベル
                     SetPressLevel();
@@ -541,7 +542,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
         if (gesture.NumPointers == 1)
         {
-            if (dragBorder <= Vector2.Distance(point, gesture.ScreenPosition) || isDraging)
+            if (dragBorder <= GetFixDistance(startPoint, nowPoint) || isDraging)
             {
                 //ドラッグ
                 isDraging = true;
@@ -677,7 +678,13 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         Debug.Log(obj);
     }
 
-    //のオブジェクト取得
+    //指定解像度換算した２点間距離
+    public float GetFixDistance(Vector2 pos1, Vector2 pos2)
+    {
+        return (pos1 - pos2).magnitude / ScreenManager.Instance.GetSizeRate();
+    }
+
+    //指定座標のオブジェクト取得
     public GameObject GetTapObject(Vector2 pos, int layerMask = 0, Camera cam = null)
     {
         GameObject obj = null;
