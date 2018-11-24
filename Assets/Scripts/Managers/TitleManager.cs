@@ -1,13 +1,21 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections;
 
 public class TitleManager : SingletonMonoBehaviour<TitleManager>
 {
+    private Transform titleCanvasTran;
+    private Text msgTxt; 
+
     protected override void Awake()
     {
         isDontDestroyOnLoad = false;
         base.Awake();
+
+        titleCanvasTran = GameObject.Find("TitleCanvas").transform;
+        msgTxt = titleCanvasTran.Find("Message").GetComponent<Text>();
+        msgTxt.gameObject.SetActive(false);
     }
 
     IEnumerator Start()
@@ -24,7 +32,9 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
         }
 
         //BgmManager.Instance.PlayBgm();
-        ScreenManager.Instance.OpenMessage("Tap to Start");
+        //ScreenManager.Instance.OpenMessage("Tap to Start");
+        msgTxt.text = "Tap to Start";
+        msgTxt.gameObject.SetActive(true);
 
         //TapAction
         InputManager.Instance.SetTapAction(Demo);

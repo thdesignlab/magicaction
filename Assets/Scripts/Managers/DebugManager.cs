@@ -4,14 +4,10 @@ using System.Collections;
 public class DebugManager : SingletonMonoBehaviour<DebugManager>
 {
     [SerializeField]
-    private bool isFps;
+    private GameObject debugCanvasObj;
 
     private Queue logQueue = new Queue();
     private int logCount = 100;
-    private int btnDownTime = 3;
-    private float btnDown = 0;
-    private bool dispLog = false;
-
     private string preCondition = "";
     private float preLogTime = 0;
 
@@ -67,10 +63,12 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
     private int space = Screen.height / 16;
     private float fpsTimer = 0;
     private float fps = 0;
+    private int btnDownTime = 3;
+    private float btnDown = 0;
+    private bool dispLog = false;
 
     void OnGUI()
     {
-        return;
         if (!AppManager.Instance.isDebug && !UserManager.isAdmin) return;
 
         float sizeRate = ScreenManager.Instance.GetSizeRate();
@@ -108,16 +106,13 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
         }
 
         //FPS
-        if (isFps)
-        {
-            fpsTimer += Time.deltaTime;
-            if (fpsTimer >= 0.5f) {
-                fpsTimer -= 0.5f;
-                fps = Mathf.Round(10 / Time.deltaTime) / 10.0f;
-            }
-            Rect fpsRect = new Rect(0, 0, 150, 50);
-            GUI.Label(fpsRect, fps.ToString());
+        fpsTimer += Time.deltaTime;
+        if (fpsTimer >= 0.5f) {
+            fpsTimer -= 0.5f;
+            fps = Mathf.Round(10 / Time.deltaTime) / 10.0f;
         }
+        Rect fpsRect = new Rect(0, 0, 150, 50);
+        GUI.Label(fpsRect, fps.ToString());
     }
 
     private void SetGuiSkin()

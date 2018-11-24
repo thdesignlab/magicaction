@@ -25,7 +25,7 @@ public class DialogManager : SingletonMonoBehaviour<DialogManager>
         base.Awake();
 
         commonCanvasTran = GameObject.Find("CommonCanvas").transform;
-        background = commonCanvasTran.Find("Background").gameObject;
+        background = commonCanvasTran.Find("DialogBg").gameObject;
         background.SetActive(false);
     }
 

@@ -17,6 +17,8 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
     private GameObject msgObj;
     private Image msgImg;
     private Text msgTxt;
+    private GameObject vpMask;
+    private List<RectTransform> vpMaskList;
 
     [SerializeField]
     private float fadeTime = 0.5f;
@@ -61,6 +63,14 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         targetRatio = Mathf.Round(Common.CO.SCREEN_WIDTH * 100 / Common.CO.SCREEN_HEIGHT);
         preWidth = Common.CO.SCREEN_WIDTH;
         preHeight = Common.CO.SCREEN_HEIGHT;
+        Transform vpMaskTran = commonCanvas.Find("VeiwPortMasks");
+        vpMask = vpMaskTran.gameObject;
+        vpMaskList = new List<RectTransform>();
+        vpMaskList.Add(vpMaskTran.Find("Up").GetComponent<RectTransform>());
+        vpMaskList.Add(vpMaskTran.Find("Right").GetComponent<RectTransform>());
+        vpMaskList.Add(vpMaskTran.Find("Down").GetComponent<RectTransform>());
+        vpMaskList.Add(vpMaskTran.Find("Left").GetComponent<RectTransform>());
+        vpMask.SetActive(false);
 
         //画面向き
         preOrientation = Input.deviceOrientation;
@@ -335,9 +345,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
     public void CloseMessage()
     {
         msgImg.sprite = null;
-        msgImg.enabled = false;
         msgTxt.text = "";
-        msgTxt.enabled = false;
         msgObj.SetActive(false);
     }
 
@@ -378,6 +386,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         float w = 1;
         float h = 1;
 
+        vpMask.SetActive(false);
         if (targetRatio > nowRatio)
         {
             //横に合わせる
@@ -402,6 +411,14 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         }
 
         Camera.main.rect = new Rect(x, y, w, h);
+        if (sizeRate != 1.0f)
+        {
+            vpMaskList[0].localScale = new Vector2(1, y);
+            vpMaskList[1].localScale = new Vector2(x, 1);
+            vpMaskList[2].localScale = new Vector2(1, y);
+            vpMaskList[3].localScale = new Vector2(x, 1);
+            vpMask.SetActive(true);
+        }
     }
 
     public float GetSizeRate()
