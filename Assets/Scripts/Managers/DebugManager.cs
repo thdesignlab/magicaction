@@ -3,9 +3,6 @@ using System.Collections;
 
 public class DebugManager : SingletonMonoBehaviour<DebugManager>
 {
-    [SerializeField]
-    private GameObject debugCanvasObj;
-
     private Queue logQueue = new Queue();
     private int logCount = 100;
     private string preCondition = "";
@@ -58,37 +55,34 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
         PushLog(log, false);
     }
 
-    private int textAreaWidth = Screen.width;
-    private int textAreaheight = Screen.height / 2;
-    private int space = Screen.height / 16;
+    private float textAreaWidth = Screen.width * 0.7f;
+    private float textAreaheight = Screen.height * 0.7f;
+    private float space = Screen.height * 0.1f;
     private float fpsTimer = 0;
     private float fps = 0;
     private int btnDownTime = 3;
     private float btnDown = 0;
-    private bool dispLog = false;
+    private bool isDispLog = false;
+    private float sizeRate = 1.0f;
 
     void OnGUI()
     {
         if (!AppManager.Instance.isDebug && !UserManager.isAdmin) return;
 
-        float sizeRate = ScreenManager.Instance.GetSizeRate();
+        sizeRate = ScreenManager.Instance.GetSizeRate();
         SetGuiSkin();
         
         //ログ
         Rect btnRect = new Rect(0, 0, space, space);
         Rect logRect = new Rect(0, space, textAreaWidth, textAreaheight);
-        if (dispLog)
+        if (isDispLog)
         {
             //ログ表示中
-            string logText = "";
-            foreach (string log in logQueue)
-            {
-                logText = log + logText;
-            }
+            string logText = GetLogText(15000);
             GUI.TextArea(logRect, logText);
             if (GUI.Button(btnRect, "-"))
             {
-                dispLog = false;
+                isDispLog = false;
                 btnDown = 0;
             }
         }
@@ -100,7 +94,8 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
                 btnDown += Time.deltaTime;
                 if (btnDown >= btnDownTime)
                 {
-                    dispLog = true;
+                    isDispLog = true;
+                    GUIUtility.systemCopyBuffer = GetLogText();
                 }
             }
         }
@@ -114,15 +109,32 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
         Rect fpsRect = new Rect(0, 0, 150, 50);
         GUI.Label(fpsRect, fps.ToString());
     }
-
-    private void SetGuiSkin()
+    private void SetGuiSkin(float sizeRate = 1)
     {
         GUI.skin.button.normal.background = null;
         GUI.skin.button.hover.background = null;
         GUI.skin.button.active.background = null;
-        GUI.skin.label.fontSize = 36;
-        //GUI.skin.label.fontSize = Mathf.RoundToInt(36 * ScreenManager.Instance.GetSizeRate());
-        //Debug.Log(ScreenManager.Instance.GetSizeRate()+" >> "+ GUI.skin.label.fontSize);
+        GUI.skin.label.fontSize = GetFixSize(36);
+        GUI.skin.textArea.fontSize = GetFixSize(36);
+    }
+    private float GetFixSize(float size)
+    {
+        return size * sizeRate;
+    }
+    private int GetFixSize(int size)
+    {
+        float sizef = GetFixSize((float)size);
+        return Mathf.RoundToInt(sizef);
+    }
+    private string GetLogText(int limit = 0)
+    {
+        string logText = "";
+        foreach (string log in logQueue)
+        {
+            logText = log + logText;
+            if (limit > 0 && logText.Length >= limit) break;
+        }
+        return logText;
     }
 
     /**
