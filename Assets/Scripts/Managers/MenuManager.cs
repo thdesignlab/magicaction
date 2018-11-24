@@ -43,10 +43,15 @@ public class MenuManager : SingletonMonoBehaviour<MenuManager>
     //ヘルプ
     public void OnHelpButton()
     {
-        DialogManager.Instance.Open("Help!");
+        menu.transform.Find("Help").gameObject.SetActive(true);
+    }
+    public void OnHelpCloseButton()
+    {
+        menu.transform.Find("Help").gameObject.SetActive(false);
     }
 
-    //ヘルプ
+
+    //コンフィグ
     public void OnConfigButton()
     {
         DialogManager.Instance.Open("Config!");
