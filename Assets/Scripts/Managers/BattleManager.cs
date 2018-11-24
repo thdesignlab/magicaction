@@ -17,6 +17,8 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private Text scoreText;
     private Text messageText;
     private bool isBattleStart = false;
+    private int score = 0;
+    private int spawn = 0;
 
     private PlayerController playerCtrl;
 
@@ -31,7 +33,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         mpSlider = battleCanvas.transform.Find("MP").GetComponent<Slider>();
         mpSlider.value = 1;
         scoreText = battleCanvas.transform.Find("Score").GetComponent<Text>();
-        scoreText.text = "0";
+        SetScoreText();
         messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
     }
 
@@ -119,14 +121,28 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         float diffTime = battleTime - popTime[index];
         if (diffTime >= popInterval[index])
         {
+            AddSpawn();
+            Vector3 diffPos = new Vector3(Common.FUNC.GetRandom(1), Common.FUNC.GetRandom(5), 0);
             popTime[index] = battleTime;
-            Instantiate(popEnemy[index], popTransform[index].position, popTransform[index].rotation);
+            Instantiate(popEnemy[index], popTransform[index].position + diffPos, popTransform[index].rotation);
         }
     }
 
     public void AddScore()
     {
-        scoreText.text = (int.Parse(scoreText.text) + 1).ToString();
+        score += 1;
+        SetScoreText();
+    }
+
+    public void AddSpawn()
+    {
+        spawn += 1;
+        SetScoreText();
+    }
+
+    protected void SetScoreText()
+    {
+        scoreText.text = score.ToString()+" / "+spawn.ToString();
     }
 
     public void SetMessage(string txt, float limit = 0)

@@ -11,7 +11,6 @@ public class PhysicsController : ObjectController
     protected Rigidbody2D myBody;
     protected Vector2 myVelocity = Vector2.zero;
     protected Vector2 gVelocity = Vector2.zero;
-    protected bool isBreakable;
     protected Vector2 myG;
     protected bool isGround = false;
     protected GameObject groundObj;
@@ -22,7 +21,6 @@ public class PhysicsController : ObjectController
     {
         base.Awake();
         myBody = GetComponent<Rigidbody2D>();
-        isBreakable = (strength > 0);
         myG = Physics2D.gravity;
     }
 
@@ -161,18 +159,11 @@ public class PhysicsController : ObjectController
     }
 
     //耐久値削減
-    public void Scrape(int power = 1, PhysicsController phyCtrl = null)
+    public void Scrape(int power = 0)
     {
-        if (!isBreakable || power <= 0) return;
-
-        //相手の耐久値
-        if (phyCtrl != null)
-        {
-            phyCtrl.Scrape(strength);
-        }
-
-        //自分の耐久値
-        strength -= power;
+        if (power < 0) return;
+        
+        strength -= (power == 0) ? strength : power;
         if (strength <= 0)
         {
             Break();
@@ -224,6 +215,7 @@ public class PhysicsController : ObjectController
 
     public int GetStrength()
     {
+        if (tag == Common.CO.TAG_EFFECT && strength == 0) return -1;
         return strength;
     }
 

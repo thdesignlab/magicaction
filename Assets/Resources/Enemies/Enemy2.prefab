@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeLimit: 0
-  spawnObj: {fileID: 0}
+  spawnObj: {fileID: 1512747981796668, guid: cfc8ad8387379bd4688214c6276450cc, type: 2}
   isGravity: 0
   strength: 1
   maxHp: 0

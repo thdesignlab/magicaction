@@ -21,32 +21,18 @@ public class DamageObjectController : PhysicsController
     {
         base.HitUnit(obj);
 
-        bool isScrape = true;
-        switch (obj.tag)
+        if (obj.tag == Common.CO.TAG_PLAYER && IsPlayer()) return;
+        if (obj.tag != Common.CO.TAG_PLAYER && !IsPlayer()) return;
+
+        UnitController unitCtrl = obj.GetComponent<UnitController>();
+        int enemyStrength = unitCtrl.GetStrength();
+        if (damage > 0)
         {
-            case Common.CO.TAG_PLAYER:
-                if (IsPlayer()) return;
-                isScrape = false;
-                break;
-
-            case Common.CO.TAG_ENEMY:
-                if (!IsPlayer()) return;
-                isScrape = true;
-                break;
-
-            default:
-                break;
+            unitCtrl.Damage(damage);
         }
-
-        UnitController unitCtrl = null;
-        if (damage > 0 || isScrape) unitCtrl = obj.GetComponent<UnitController>();
-        if (damage > 0) unitCtrl.Damage(damage);
-        if (isScrape)
+        if (tag != Common.CO.TAG_EFFECT)
         {
-            Scrape(unitCtrl.GetStrength());
-        } else if (isBreakable)
-        {
-            Break();
+            Scrape(enemyStrength);
         }
     }
 
@@ -55,7 +41,27 @@ public class DamageObjectController : PhysicsController
     {
         base.HitDamageObject(obj);
 
-        //DamageObjectController dmgObjCtrl = obj.GetComponent<DamageObjectController>();
+        //弾同士の衝突はプレイヤー側が行う
+        if (!IsPlayer()) return;
+
+        DamageObjectController dmgObjCtrl = obj.GetComponent<DamageObjectController>();
+
+        //自分の弾同士はスルー
+        if (dmgObjCtrl.IsPlayer()) return;
+
+        int myStrength = GetStrength();
+        int enemyStrength = dmgObjCtrl.GetStrength();
+
+        if (tag != Common.CO.TAG_EFFECT)
+        {
+            //相手の弾による耐久値減少
+            Scrape(enemyStrength);
+        }
+        if (obj.tag != Common.CO.TAG_EFFECT)
+        {
+            //相手の弾の耐久値減少
+            dmgObjCtrl.Scrape(myStrength);
+        }
     }
 
     //ステージに衝突
@@ -63,18 +69,23 @@ public class DamageObjectController : PhysicsController
     {
         base.HitStage(obj);
 
+        //エフェクトの場合スルー
+        if (tag == Common.CO.TAG_EFFECT) return;
+
         switch (obj.tag)
         {
             case Common.CO.TAG_OBJECT:
                 PhysicsController phyCtrl = obj.GetComponent<PhysicsController>();
                 if (phyCtrl.IsPlayer() != IsPlayer())
                 {
-                    phyCtrl.Scrape(strength, this);
+                    int myStrength = GetStrength();
+                    int enemyStrength = phyCtrl.GetStrength();
+                    Scrape(enemyStrength);
+                    phyCtrl.Scrape(myStrength);
                 }
                 break;
 
             default:
-                if (tag == Common.CO.TAG_EFFECT) return;
                 Break();
                 break;
         }

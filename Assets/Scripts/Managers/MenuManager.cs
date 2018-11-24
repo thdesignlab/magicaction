@@ -50,7 +50,6 @@ public class MenuManager : SingletonMonoBehaviour<MenuManager>
         menu.transform.Find("Help").gameObject.SetActive(false);
     }
 
-
     //コンフィグ
     public void OnConfigButton()
     {
