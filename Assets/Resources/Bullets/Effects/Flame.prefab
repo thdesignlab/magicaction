@@ -188,7 +188,7 @@ MonoBehaviour:
   isGravity: 0
   strength: 0
   damage: 10
-  useMp: 250
+  useMp: 200
 --- !u!198 &198067072932872856
 ParticleSystem:
   m_ObjectHideFlags: 1

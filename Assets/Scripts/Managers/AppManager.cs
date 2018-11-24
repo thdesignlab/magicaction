@@ -10,6 +10,8 @@ public class AppManager : SingletonMonoBehaviour<AppManager>
     [HideInInspector]
     public bool isFinishedSplash = false;
 
+    public int stageNo = 0;
+
     IEnumerator Start()
     {
 #if UNITY_EDITOR

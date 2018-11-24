@@ -5,11 +5,13 @@ using System.Collections.Generic;
 
 public class BattleManager : SingletonMonoBehaviour<BattleManager>
 {
+    private int stageNo;
     private float battleTime = 0;
     private Dictionary<int, GameObject> popEnemy = new Dictionary<int, GameObject>();
-    private Dictionary<int, Transform> popTransform = new Dictionary<int, Transform>();
     private Dictionary<int, float> popInterval = new Dictionary<int, float>();
     private Dictionary<int, float> popTime = new Dictionary<int, float>();
+    private GameObject[] enemyPops;
+    private GameObject[] enemyGroundPops;
 
     private Canvas battleCanvas;
     private Slider hpSlider;
@@ -19,6 +21,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private bool isBattleStart = false;
     private int score = 0;
     private int spawn = 0;
+    private int loss = 0;
 
     private PlayerController playerCtrl;
 
@@ -27,6 +30,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         isDontDestroyOnLoad = false;
         base.Awake();
 
+        stageNo = AppManager.Instance.stageNo;
         battleCanvas = GameObject.Find("BattleCanvas").GetComponent<Canvas>();
         hpSlider = battleCanvas.transform.Find("HP").GetComponent<Slider>();
         hpSlider.value = 1;
@@ -35,27 +39,28 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         scoreText = battleCanvas.transform.Find("Score").GetComponent<Text>();
         SetScoreText();
         messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
-    }
 
-    private void Start()
-    {
         BgmManager.Instance.PlayBgm();
 
         //敵情報（仮）
         popEnemy.Add(1, Resources.Load<GameObject>("Enemies/Enemy"));
-        popTransform.Add(1, GameObject.Find("EnemyPops/Pop1").transform);
-        popInterval.Add(1, 1.5f);
+        popInterval.Add(1, (stageNo == 1) ? 1.5f : 1.0f);
         popTime.Add(1, 0);
 
         popEnemy.Add(2, Resources.Load<GameObject>("Enemies/Enemy2"));
-        popTransform.Add(2, GameObject.Find("EnemyPops/Pop2").transform);
-        popInterval.Add(2, 0.75f);
+        popInterval.Add(2, (stageNo == 1) ? 0.75f: 0.5f);
         popTime.Add(2, 0);
 
         popEnemy.Add(3, Resources.Load<GameObject>("Enemies/Enemy3"));
-        popTransform.Add(3, GameObject.Find("EnemyPops/Pop3").transform);
         popInterval.Add(3, 0.5f);
         popTime.Add(3, 0);
+
+        enemyPops = GameObject.FindGameObjectsWithTag(Common.CO.TAG_ENEMY_POP);
+        enemyGroundPops = GameObject.FindGameObjectsWithTag(Common.CO.TAG_ENEMY_POP_GROUND);
+    }
+
+    private void Start()
+    {
 
         StartCoroutine(BattleStart());
     }
@@ -75,9 +80,10 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         if (!isBattleStart) return;
 
         battleTime += Time.deltaTime;
-        EnemyPop(1);
-        EnemyPop(2);
-        EnemyPop(3);
+        foreach (int i in popEnemy.Keys)
+        {
+            EnemyPop(i);
+        }
     }
 
     IEnumerator BattleStart()
@@ -102,7 +108,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     {
         GameObject player = Resources.Load<GameObject>("Players/Player");
         GameObject summon = Resources.Load<GameObject>("Directions/SummonPlayer");
-        Transform pPopTran = GameObject.Find("PlayerPop").transform;
+        Transform pPopTran = GameObject.FindGameObjectWithTag(Common.CO.TAG_PLAYER_POP).transform;
 
         //召喚演出
         GameObject summonObj = Instantiate(summon, pPopTran.position - Vector3.up * 0.5f, pPopTran.rotation);
@@ -122,9 +128,16 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         if (diffTime >= popInterval[index])
         {
             AddSpawn();
-            Vector3 diffPos = new Vector3(Common.FUNC.GetRandom(1), Common.FUNC.GetRandom(5), 0);
+            Vector3 diffPos = Vector3.zero;
+            GameObject[] pops = enemyGroundPops;
+            if (!popEnemy[index].GetComponent<UnitController>().IsGravity())
+            {
+                diffPos = new Vector3(Common.FUNC.GetRandom(1), Common.FUNC.GetRandom(10), 0);
+                pops =  enemyPops;
+            }
+            GameObject pop = Common.FUNC.RandomArray(pops);
             popTime[index] = battleTime;
-            Instantiate(popEnemy[index], popTransform[index].position + diffPos, popTransform[index].rotation);
+            Instantiate(popEnemy[index], pop.transform.position + diffPos, pop.transform.rotation);
         }
     }
 
@@ -140,9 +153,19 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         SetScoreText();
     }
 
+    public void AddLoss()
+    {
+        loss += 1;
+        SetScoreText();
+    }
+
     protected void SetScoreText()
     {
         scoreText.text = score.ToString()+" / "+spawn.ToString();
+        if (loss > 0)
+        {
+            scoreText.text += " (loss:"+loss.ToString()+")";
+        }
     }
 
     public void SetMessage(string txt, float limit = 0)

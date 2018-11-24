@@ -775,7 +775,7 @@ MonoBehaviour:
   maxHp: 1000
   maxMp: 2000
   recoverHp: 0
-  recoverMp: 300
+  recoverMp: 500
   walkSpeed: 3
   tapWeapon: {fileID: 1963503696641010, guid: e0e46350d142e9547843f2ebd9d8d6fb, type: 2}
   playerTapWeapon: {fileID: 1668641894421584, guid: f4f5fa758ea9e5a46bde0e127789df83,
@@ -786,7 +786,11 @@ MonoBehaviour:
   - {fileID: 1613901059813988, guid: bd1a290617b03a846a489b7341859b6e, type: 2}
   - {fileID: 1849405888717946, guid: f61d5fc60f22c054c8e7d0d320aebff7, type: 2}
   - {fileID: 1437253651016208, guid: 615580006638a524a85c92c8fed6ba6c, type: 2}
-  playerLongTapWeaponList: []
+  playerLongTapWeaponList:
+  - {fileID: 0}
+  - {fileID: 1275805080978512, guid: 186ddae800b0ca74390140eaa6a92d9d, type: 2}
+  - {fileID: 1275805080978512, guid: 186ddae800b0ca74390140eaa6a92d9d, type: 2}
+  - {fileID: 1465901182435794, guid: b20d9ff991919fa4d9bfcfa27324e4b2, type: 2}
   dragWeaponList:
   - {fileID: 1693163762052908, guid: 836c899a7b862954cae14f65a7fedf81, type: 2}
   - {fileID: 1112668793167936, guid: 6fab912d6d6d61949841b51b49bb826f, type: 2}

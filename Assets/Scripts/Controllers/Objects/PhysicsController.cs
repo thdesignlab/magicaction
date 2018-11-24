@@ -219,4 +219,8 @@ public class PhysicsController : ObjectController
         return strength;
     }
 
+    public bool IsGravity()
+    {
+        return isGravity;
+    }
 }

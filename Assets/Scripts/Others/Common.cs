@@ -22,6 +22,13 @@ namespace Common
         //シーン名
         public const string SCENE_TITLE = "TitleScene";
         public const string SCENE_BATTLE = "BattleScene";
+        public const string SCENE_BATTLE_LARGE = "BattleLargeScene";
+        public static string[] scenes = new string[]
+        {
+            SCENE_TITLE,
+            SCENE_BATTLE,
+            SCENE_BATTLE_LARGE
+        };
 
         //レイヤー
         public const string LAYER_PLAYER = "Player";
@@ -37,6 +44,10 @@ namespace Common
         public const string TAG_EFFECT = "Effect";
         public const string TAG_LASER = "Laser";
         public const string TAG_MUZZLE = "Muzzle";
+        public const string TAG_PLAYER_POP = "PlayerPop";
+        public const string TAG_ENEMY_POP = "EnemyPop";
+        public const string TAG_ENEMY_POP_GROUND = "EnemyPopGround";
+        public const string TAG_ENEMY_POP_BOSS = "EnemyPopBoss";
 
         //ユニットタグ
         public static string[] unitTags = new string[]
@@ -166,6 +177,10 @@ namespace Common
         public static T RandomList<T>(List<T> list)
         {
             return list.ElementAt(Random.Range(0, list.Count));
+        }
+        public static T RandomArray<T>(T[] array)
+        {
+            return array.ElementAt(Random.Range(0, array.Length));
         }
 
         //三角関数

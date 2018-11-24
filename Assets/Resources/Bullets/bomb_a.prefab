@@ -92,7 +92,7 @@ MonoBehaviour:
   timeLimit: 2
   spawnObj: {fileID: 1178076260195342, guid: 96b6d5545e1834e479f68f8bc3145008, type: 2}
   isGravity: 0
-  strength: 1
+  strength: 3
   damage: 15
   speed: 20
 --- !u!212 &212757821199282826

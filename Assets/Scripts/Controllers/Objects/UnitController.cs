@@ -32,6 +32,7 @@ public class UnitController : PhysicsController
     //被弾
     public virtual void Damage(int damage)
     {
+        if (hp <= 0) return;
         SetHp(-damage);
         if (hp <= 0) Dead();
     }

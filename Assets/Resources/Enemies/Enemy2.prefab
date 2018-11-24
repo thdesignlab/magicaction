@@ -122,8 +122,8 @@ MonoBehaviour:
   spawnObj: {fileID: 1512747981796668, guid: cfc8ad8387379bd4688214c6276450cc, type: 2}
   isGravity: 0
   strength: 1
-  maxHp: 0
-  speed: 5
+  maxHp: 3
+  speed: 2
   bullet: {fileID: 1660847698679210, guid: e10a5b05db7508543a013e161e925741, type: 2}
   attackInterval: 2.5
   rapidCount: 1

@@ -5,11 +5,6 @@ using UnityEditor.SceneManagement;
 
 public class Shortcut
 {
-    private static string[] sceneList = new string[]
-    {
-        Common.CO.SCENE_TITLE,      //1
-        Common.CO.SCENE_BATTLE,      //2
-    };
 
     [MenuItem("Tools/PlayGame &q")]
     public static void PlayGame()
@@ -65,7 +60,7 @@ public class Shortcut
     }
     private static bool OpenScene(int sceneIndex)
     {
-        return OpenScene("Assets/Scenes/" + sceneList[sceneIndex - 1]);
+        return OpenScene("Assets/Scenes/" + Common.CO.scenes[sceneIndex - 1]);
     }
 
     [MenuItem("Tools/OpenScene/Title &1")]

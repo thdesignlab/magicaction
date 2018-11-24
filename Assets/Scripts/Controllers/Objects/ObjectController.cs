@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ObjectController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class ObjectController : MonoBehaviour
     protected PlayerController player;
     protected float deltaTime;
     protected float liveTime = 0;
+    protected List<Transform> muzzles = new List<Transform>();
 
     const float LIMIT_AREA = 50.0f;
 
@@ -19,6 +21,16 @@ public class ObjectController : MonoBehaviour
     {
         myTran = transform;
         player = GetComponent<PlayerController>();
+        SetMuzzles();
+    }
+
+    protected void SetMuzzles()
+    {
+        foreach (Transform child in myTran)
+        {
+            if (child.tag != Common.CO.TAG_MUZZLE) continue;
+            muzzles.Add(child);
+        }
     }
 
     protected virtual void Start()
@@ -39,17 +51,32 @@ public class ObjectController : MonoBehaviour
         }
         if (Mathf.Abs(myTran.position.x) >= LIMIT_AREA || Mathf.Abs(myTran.position.y) >= LIMIT_AREA)
         {
-            Destroy(gameObject);
-            return;
+            OutOfArea();
         }
+    }
+
+    protected virtual void OutOfArea()
+    {
+        Destroy(gameObject);
     }
 
     public virtual void Break()
     {
         if (spawnObj != null)
         {
-            GameObject obj = Instantiate(spawnObj, myTran.position, Quaternion.identity);
-            obj.GetComponent<ObjectController>().SetPlayer(player);
+            if (muzzles.Count > 0)
+            {
+                foreach (Transform muzzle in muzzles)
+                {
+                    GameObject obj = Instantiate(spawnObj, muzzle.position, muzzle.rotation);
+                    obj.GetComponent<ObjectController>().SetPlayer(player);
+                }
+            }
+            else
+            {
+                GameObject obj = Instantiate(spawnObj, myTran.position, Quaternion.identity);
+                obj.GetComponent<ObjectController>().SetPlayer(player);
+            }
         }
         Destroy(gameObject);
     }

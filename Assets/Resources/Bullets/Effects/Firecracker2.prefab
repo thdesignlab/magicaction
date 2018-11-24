@@ -9,30 +9,30 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1112668793167936}
+  m_RootGameObject: {fileID: 1508503044505168}
   m_IsPrefabAsset: 1
---- !u!1 &1112668793167936
+--- !u!1 &1508503044505168
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4726540373398012}
-  - component: {fileID: 114722814994765666}
+  - component: {fileID: 4272043076920614}
+  - component: {fileID: 114508821132141978}
   m_Layer: 0
-  m_Name: LineBomb1
-  m_TagString: Untagged
+  m_Name: Firecracker2
+  m_TagString: Effect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4726540373398012
+--- !u!4 &4272043076920614
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1112668793167936}
+  m_GameObject: {fileID: 1508503044505168}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,20 +40,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114722814994765666
+--- !u!114 &114508821132141978
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1112668793167936}
+  m_GameObject: {fileID: 1508503044505168}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e8618ea7f3323e4d85cd996a36aa2e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 94b72c8019fb96a40af8aee3b3524fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawn: {fileID: 1774582503790038, guid: c1630611af0963d498a0c71bec386354, type: 2}
-  useMp: 50
-  maxCount: 15
-  perLength: 0
-  multiInterval: 0.2
-  spawnAngle: 0
+  timeLimit: 0.5
+  spawnObj: {fileID: 1178076260195342, guid: 96b6d5545e1834e479f68f8bc3145008, type: 2}
+  isGravity: 0
+  strength: 0
+  damage: 0
+  speed: 0

@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4276017168954318}
-  - component: {fileID: 114667976727568686}
+  - component: {fileID: 114615552479982650}
   m_Layer: 0
   m_Name: FlameRadiation
   m_TagString: Untagged
@@ -69,7 +69,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114667976727568686
+--- !u!114 &114615552479982650
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,8 +77,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1413776660065308}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e0d30eeb55adc34fa3018e07aaeeec6, type: 3}
+  m_Script: {fileID: 11500000, guid: 69a5371c07acc594cb3e906de19b2a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawn: {fileID: 1638577697223092, guid: 9ac95ea495c2d044abf97dc1f78ff095, type: 2}
-  useMp: 300
+  useMp: 150
+  rapidCount: 0
+  rapidInterval: 0
+  deviation: 0

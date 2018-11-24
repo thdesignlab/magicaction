@@ -71,10 +71,13 @@ public class EnemyController : UnitController
     protected void Assault(GameObject obj)
     {
         int d = (strength == 0) ? hp * hp : hp * strength;
-        GameObject spawn = Resources.Load<GameObject>("Effects/Assault");
-        obj.GetComponent<UnitController>().Damage(d);
-        if (spawn != null) Instantiate(spawn, myTran.position, Quaternion.identity);
         base.Dead();
+    }
+
+    protected override void OutOfArea()
+    {
+        BattleManager.Instance.AddLoss();
+        base.OutOfArea();
     }
 
     //### イベントハンドラ ###
