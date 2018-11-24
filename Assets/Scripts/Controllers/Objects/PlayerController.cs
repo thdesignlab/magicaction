@@ -209,13 +209,27 @@ public class PlayerController : UnitController
     //タップ(base)
     private void TapAction(InputStatus input)
     {
-        Fire(tapWeaponCtrl, input);
+        if (input.isTapPlayer)
+        {
+            Fire(playerTapWeaponCtrl, input);
+        }
+        else
+        {
+            Fire(tapWeaponCtrl, input);
+        }
     }
 
     //ロングタップ(base)
     private void LongTapAction(InputStatus input)
     {
-        Fire(longTapWeaponCtrlList, input);
+        if (input.isTapPlayer)
+        {
+            Fire(playerLongTapWeaponCtrlList, input);
+        }
+        else
+        {
+            Fire(longTapWeaponCtrlList, input);
+        }
     }
 
     //フリック(base)

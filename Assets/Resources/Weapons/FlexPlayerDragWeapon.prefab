@@ -55,7 +55,7 @@ MonoBehaviour:
     type: 2}
   frontWeapon: {fileID: 1413776660065308, guid: 78ca5bdc3c193c448a067c382084b871,
     type: 2}
-  underWeapon: {fileID: 1849405888717946, guid: f61d5fc60f22c054c8e7d0d320aebff7,
+  underWeapon: {fileID: 1738318336749316, guid: 87d8ee7b283c8e746b6709d6088f10d8,
     type: 2}
   borderAngle: 35
   isDrag: 1

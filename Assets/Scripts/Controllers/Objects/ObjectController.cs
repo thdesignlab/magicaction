@@ -48,7 +48,7 @@ public class ObjectController : MonoBehaviour
     {
         if (spawnObj != null)
         {
-            GameObject obj = Instantiate(spawnObj, myTran.position, myTran.rotation);
+            GameObject obj = Instantiate(spawnObj, myTran.position, Quaternion.identity);
             obj.GetComponent<ObjectController>().SetPlayer(player);
         }
         Destroy(gameObject);
