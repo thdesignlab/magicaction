@@ -59,19 +59,26 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
             yield return null;
         }
 
-        //BgmManager.Instance.PlayBgm();
-        //ScreenManager.Instance.OpenMessage("Tap to Start");
-        msgTxt.text = "Tap to Start";
-        msgTxt.gameObject.SetActive(true);
+        if (!AppManager.Instance.isOnTapToStart)
+        {
+            msgTxt.text = "Tap to Start";
+            msgTxt.gameObject.SetActive(true);
 
-        //TapAction
-        InputManager.Instance.SetTapAction(DispStageList);
+            //TapAction
+            InputManager.Instance.SetTapAction(DispStageList);
+        }
+        else
+        {
+            DispStageList(null);
+        }
+
 
         InputManager.Instance.SetActive(true);
     }
 
     private void DispStageList(InputStatus input)
     {
+        AppManager.Instance.isOnTapToStart = true;
         msgTxt.gameObject.SetActive(false);
         stageList.SetActive(true);
     }

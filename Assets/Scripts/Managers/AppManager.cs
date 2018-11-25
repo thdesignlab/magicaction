@@ -6,9 +6,11 @@ public class AppManager : SingletonMonoBehaviour<AppManager>
     public bool isDebug;
 
     [HideInInspector]
+    public bool isFinishedSplash = false;
+    [HideInInspector]
     public bool isReadyGame = false;
     [HideInInspector]
-    public bool isFinishedSplash = false;
+    public bool isOnTapToStart = false;
 
     public int stageNo = 0;
 

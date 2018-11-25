@@ -92,7 +92,7 @@ MonoBehaviour:
   timeLimit: 0
   spawnObj: {fileID: 0}
   isGravity: 0
-  strength: 100
+  strength: 1000
   damage: 100
   speed: 100
 --- !u!212 &212947400851972218
