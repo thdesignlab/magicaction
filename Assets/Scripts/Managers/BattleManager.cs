@@ -36,15 +36,15 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
         stageNo = AppManager.Instance.stageNo;
         battleCanvas = GameObject.Find("BattleCanvas").GetComponent<Canvas>();
-        hpSlider = battleCanvas.transform.Find("HP").GetComponent<Slider>();
+        hpSlider = battleCanvas.transform.Find("BattleStatus/PlayerStatus/HP").GetComponent<Slider>();
         hpSlider.value = 1;
-        mpSlider = battleCanvas.transform.Find("MP").GetComponent<Slider>();
+        mpSlider = battleCanvas.transform.Find("BattleStatus/PlayerStatus/MP").GetComponent<Slider>();
         mpSlider.value = 1;
-        Transform scoresTran = battleCanvas.transform.Find("Scores");
+        Transform scoresTran = battleCanvas.transform.Find("BattleStatus");
         totalText = scoresTran.Find("Total/Score").GetComponent<Text>();
-        killText = scoresTran.Find("Kill/Score").GetComponent<Text>();
-        lostText = scoresTran.Find("Lost/Score").GetComponent<Text>();
-        hitText = scoresTran.Find("Hit/Score").GetComponent<Text>();
+        killText = scoresTran.Find("Scores/Kill/Score").GetComponent<Text>();
+        lostText = scoresTran.Find("Scores/Lost/Score").GetComponent<Text>();
+        hitText = scoresTran.Find("Scores/Hit/Score").GetComponent<Text>();
         SetScoreText();
         messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
 

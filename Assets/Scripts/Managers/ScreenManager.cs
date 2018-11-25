@@ -408,6 +408,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         else
         {
             sizeRate = 1.0f;
+            sizeRate = (float)Screen.height / Common.CO.SCREEN_HEIGHT;
         }
 
         Camera.main.rect = new Rect(x, y, w, h);

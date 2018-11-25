@@ -57,5 +57,5 @@ MonoBehaviour:
     type: 2}
   underWeapon: {fileID: 1738318336749316, guid: 87d8ee7b283c8e746b6709d6088f10d8,
     type: 2}
-  borderAngle: 35
+  borderAngle: 30
   isDrag: 1

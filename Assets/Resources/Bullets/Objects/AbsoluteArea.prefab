@@ -19,9 +19,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4927722925308980}
-  - component: {fileID: 114728007600519570}
   - component: {fileID: 50006896921905262}
   - component: {fileID: 58104512459037746}
+  - component: {fileID: 114077420319483120}
   m_Layer: 0
   m_Name: AbsoluteArea
   m_TagString: Object
@@ -108,7 +108,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 7
---- !u!114 &114728007600519570
+--- !u!114 &114077420319483120
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1462893953017958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3542805a0f35ce4f973fd0f7d71a8da, type: 3}
+  m_Script: {fileID: 11500000, guid: daa7211de47dcda478e52be8780dd3df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   timeLimit: 20
