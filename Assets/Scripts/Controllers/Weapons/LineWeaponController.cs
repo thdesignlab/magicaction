@@ -24,9 +24,8 @@ public class LineWeaponController : SpawnWeaponController
     {
         foreach (Vector2 pos in posList)
         {
-            UseMp();
             GameObject obj = Spawn(spawn, startPos + pos, Quaternion.identity);
-            //TODO 向き替え
+            if (obj != null) UseMp();
             yield return new WaitForSeconds(multiInterval);
         }
     }

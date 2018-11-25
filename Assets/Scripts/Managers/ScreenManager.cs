@@ -449,18 +449,9 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
 
             case DeviceOrientation.Portrait:
             case DeviceOrientation.PortraitUpsideDown:
-                if (Input.acceleration.x > 0)
-                {
-                    screen = ScreenOrientation.LandscapeRight;
-                }
-                else
-                {
-                    screen = ScreenOrientation.LandscapeLeft;
-                }
                 break;
 
             default:
-                screen = ScreenOrientation.Landscape;
                 break;
         }
         Screen.orientation = screen;

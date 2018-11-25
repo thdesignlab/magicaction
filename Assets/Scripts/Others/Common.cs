@@ -40,6 +40,7 @@ namespace Common
         public const string TAG_ENEMY = "Enemy";
         public const string TAG_STAGE = "Stage";
         public const string TAG_OBJECT = "Object";
+        public const string TAG_EQUIP_OBJECT = "EquipObject";
         public const string TAG_PHYSICS = "Physics";
         public const string TAG_EFFECT = "Effect";
         public const string TAG_LASER = "Laser";
@@ -69,6 +70,7 @@ namespace Common
         {
             TAG_STAGE,
             TAG_OBJECT,
+            TAG_EQUIP_OBJECT,
         };
 
         //レベル接頭文字

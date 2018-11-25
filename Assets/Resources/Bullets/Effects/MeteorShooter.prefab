@@ -85,4 +85,4 @@ MonoBehaviour:
   targetType: 0
   spawnCount: 150
   spawnInterval: 0.05
-  deviation: {x: 40, y: 0}
+  deviation: {x: 30, y: 0}

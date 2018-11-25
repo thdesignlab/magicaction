@@ -75,6 +75,7 @@ public class DamageObjectController : PhysicsController
         switch (obj.tag)
         {
             case Common.CO.TAG_OBJECT:
+            case Common.CO.TAG_EQUIP_OBJECT:
                 PhysicsController phyCtrl = obj.GetComponent<PhysicsController>();
                 if (phyCtrl.IsPlayer() != IsPlayer())
                 {

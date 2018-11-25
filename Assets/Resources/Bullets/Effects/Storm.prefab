@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efc59f83004935d498c1ca7d33c83922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 3
+  timeLimit: 5
   spawnObj: {fileID: 0}
   isGravity: 0
   strength: 10

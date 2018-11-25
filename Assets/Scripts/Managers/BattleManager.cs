@@ -36,6 +36,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
         stageNo = AppManager.Instance.stageNo;
         battleCanvas = GameObject.Find("BattleCanvas").GetComponent<Canvas>();
+        battleCanvas.worldCamera = Camera.main;
         hpSlider = battleCanvas.transform.Find("BattleStatus/PlayerStatus/HP").GetComponent<Slider>();
         hpSlider.value = 1;
         mpSlider = battleCanvas.transform.Find("BattleStatus/PlayerStatus/MP").GetComponent<Slider>();
@@ -203,12 +204,10 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     public void Pause()
     {
-        MenuManager.Instance.SwitchMenu(true);
         Time.timeScale = 0;
     }
     public void ResetPause()
     {
-        MenuManager.Instance.SwitchMenu(false);
         Time.timeScale = 1;
     }
 

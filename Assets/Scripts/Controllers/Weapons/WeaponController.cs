@@ -28,16 +28,4 @@ public class WeaponController : MonoBehaviour
     {
         return input.GetPoint();
     }
-
-    protected virtual bool IsSpawnPosition(Transform tran)
-    {
-        //if (player != null)
-        //{
-        //    foreach (Collider2D col in Physics2D.OverlapCircleAll(player.transform.position, player.GetColliderRadius()))
-        //    {
-        //        Debug.Log(col.name);
-        //    }
-        //}
-        return false;
-    }
 }

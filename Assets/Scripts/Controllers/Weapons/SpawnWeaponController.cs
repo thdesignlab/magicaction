@@ -10,6 +10,8 @@ public class SpawnWeaponController : WeaponController
     protected int useMp;
 
     protected List<Transform> muzzules = new List<Transform>();
+    protected Camera _mainCam;
+    protected Camera mainCam { get { return _mainCam ? _mainCam : _mainCam = Camera.main; } }
 
     protected override void Awake()
     {
@@ -43,7 +45,6 @@ public class SpawnWeaponController : WeaponController
     public override void Fire(InputStatus input)
     {
         UseMp();
-
         Transform tran = muzzules.Count > 0 ? muzzules[0] : myTran;
         Spawn(spawn, tran.position, tran.rotation);
     }
@@ -51,10 +52,20 @@ public class SpawnWeaponController : WeaponController
     //生成
     protected GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua)
     {
+        if (spawnObj.tag == Common.CO.TAG_OBJECT)
+        {
+            if (!IsEnableSpawnPosition(pos)) return null;
+        }
+
         GameObject obj = Instantiate(spawnObj, pos, qua);
         ObjectController objCtrl = obj.GetComponent<ObjectController>();
         objCtrl.SetPlayer(player);
         objCtrl.SetWeapon(this);
         return obj;
+    }
+
+    protected virtual bool IsEnableSpawnPosition(Vector3 pos)
+    {
+        return ((player.transform.position - pos).magnitude > player.GetColliderRadius() * 1.5f);
     }
 }

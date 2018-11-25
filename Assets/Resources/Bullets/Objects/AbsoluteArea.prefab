@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 50006896921905262}
   - component: {fileID: 58104512459037746}
   - component: {fileID: 114077420319483120}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AbsoluteArea
-  m_TagString: Object
+  m_TagString: EquipObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4002010040408632}
   - component: {fileID: 198070648225490426}
   - component: {fileID: 199798360770097864}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}

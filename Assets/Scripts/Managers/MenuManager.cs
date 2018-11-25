@@ -4,15 +4,15 @@ using UnityEngine.Events;
 
 public class MenuManager : SingletonMonoBehaviour<MenuManager>
 {
-    [SerializeField]
     private GameObject menu;
-
-    private Transform myTran;
 
     protected override void Awake()
     {
         isDontDestroyOnLoad = false;
         base.Awake();
+
+        transform.GetComponent<Canvas>().worldCamera = Camera.main;
+        menu = transform.Find("MenuDialog").gameObject;
         menu.SetActive(false);
     }
 
@@ -21,6 +21,14 @@ public class MenuManager : SingletonMonoBehaviour<MenuManager>
     //メニュー
     public void SwitchMenu(bool flg)
     {
+        if (flg)
+        {
+            BattleManager.Instance.Pause();
+        }
+        else
+        {
+            BattleManager.Instance.ResetPause();
+        }
         menu.SetActive(flg);
     }
 
@@ -43,11 +51,11 @@ public class MenuManager : SingletonMonoBehaviour<MenuManager>
     //ヘルプ
     public void OnHelpButton()
     {
-        menu.transform.Find("Help").gameObject.SetActive(true);
+        transform.Find("Help").gameObject.SetActive(true);
     }
     public void OnHelpCloseButton()
     {
-        menu.transform.Find("Help").gameObject.SetActive(false);
+        transform.Find("Help").gameObject.SetActive(false);
     }
 
     //コンフィグ

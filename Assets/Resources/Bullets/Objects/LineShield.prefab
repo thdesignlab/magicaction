@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4962950939528114}
   - component: {fileID: 198283950768387892}
   - component: {fileID: 199607421873216084}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ErekiSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4840860429060772}
   - component: {fileID: 198021839694218790}
   - component: {fileID: 199761672346216376}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Spark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 114816141779111138}
   - component: {fileID: 50208277412431022}
   - component: {fileID: 58229016029077628}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: LineShield
   m_TagString: Object
   m_Icon: {fileID: 0}

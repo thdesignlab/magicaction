@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114152123934681088}
   - component: {fileID: 50718531732279290}
   - component: {fileID: 61481834565678950}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Shield
   m_TagString: Object
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4221665575593786}
   - component: {fileID: 212237687930196558}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,6 @@ MonoBehaviour:
   spawnObj: {fileID: 0}
   isGravity: 0
   strength: 500
-  useMp: 0
 --- !u!212 &212237687930196558
 SpriteRenderer:
   m_ObjectHideFlags: 1
