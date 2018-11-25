@@ -89,12 +89,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b72c8019fb96a40af8aee3b3524fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 2
+  timeLimit: 0
   spawnObj: {fileID: 1014406778121664, guid: 4f8777b7969165b45b050b8c97156f8d, type: 2}
   isGravity: 0
   strength: 3
   damage: 15
-  speed: 20
+  speed: 10
 --- !u!212 &212757821199282826
 SpriteRenderer:
   m_ObjectHideFlags: 1

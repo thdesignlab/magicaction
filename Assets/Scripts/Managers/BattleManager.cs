@@ -16,12 +16,16 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private Canvas battleCanvas;
     private Slider hpSlider;
     private Slider mpSlider;
-    private Text scoreText;
+    private Text totalText;
+    private Text killText;
+    private Text lostText;
+    private Text hitText;
     private Text messageText;
     private bool isBattleStart = false;
-    private int score = 0;
-    private int spawn = 0;
-    private int loss = 0;
+    private int totalScore = 0;
+    private int killScore = 0;
+    private int lostScore = 0;
+    private int hitScore = 0;
 
     private PlayerController playerCtrl;
 
@@ -36,7 +40,11 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         hpSlider.value = 1;
         mpSlider = battleCanvas.transform.Find("MP").GetComponent<Slider>();
         mpSlider.value = 1;
-        scoreText = battleCanvas.transform.Find("Score").GetComponent<Text>();
+        Transform scoresTran = battleCanvas.transform.Find("Scores");
+        totalText = scoresTran.Find("Total/Score").GetComponent<Text>();
+        killText = scoresTran.Find("Kill/Score").GetComponent<Text>();
+        lostText = scoresTran.Find("Lost/Score").GetComponent<Text>();
+        hitText = scoresTran.Find("Hit/Score").GetComponent<Text>();
         SetScoreText();
         messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
 
@@ -44,7 +52,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
         //敵情報（仮）
         popEnemy.Add(1, Resources.Load<GameObject>("Enemies/Enemy"));
-        popInterval.Add(1, (stageNo == 1) ? 1.5f : 1.0f);
+        popInterval.Add(1, (stageNo == 1) ? 1.5f : 1.2f);
         popTime.Add(1, 0);
 
         popEnemy.Add(2, Resources.Load<GameObject>("Enemies/Enemy2"));
@@ -127,7 +135,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         float diffTime = battleTime - popTime[index];
         if (diffTime >= popInterval[index])
         {
-            AddSpawn();
             Vector3 diffPos = Vector3.zero;
             GameObject[] pops = enemyGroundPops;
             if (!popEnemy[index].GetComponent<UnitController>().IsGravity())
@@ -141,31 +148,29 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         }
     }
 
-    public void AddScore()
+    public void AddKill()
     {
-        score += 1;
+        killScore += 1;
         SetScoreText();
     }
 
-    public void AddSpawn()
+    public void AddLost()
     {
-        spawn += 1;
+        lostScore += 1;
         SetScoreText();
     }
-
-    public void AddLoss()
+    public void AddHit()
     {
-        loss += 1;
+        hitScore += 1;
         SetScoreText();
     }
 
     protected void SetScoreText()
     {
-        scoreText.text = score.ToString()+" / "+spawn.ToString();
-        if (loss > 0)
-        {
-            scoreText.text += " (loss:"+loss.ToString()+")";
-        }
+        //totalText.text = totalScore.ToString();
+        killText.text = killScore.ToString();
+        lostText.text = lostScore.ToString();
+        hitText.text = hitScore.ToString();
     }
 
     public void SetMessage(string txt, float limit = 0)

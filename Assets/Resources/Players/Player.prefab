@@ -916,7 +916,7 @@ MonoBehaviour:
   playerLongTapWeaponList:
   - {fileID: 0}
   - {fileID: 1275805080978512, guid: 186ddae800b0ca74390140eaa6a92d9d, type: 2}
-  - {fileID: 1465901182435794, guid: b20d9ff991919fa4d9bfcfa27324e4b2, type: 2}
+  - {fileID: 1457459018339202, guid: 90c2ffeef245db542bdc5f23653748d2, type: 2}
   - {fileID: 1465901182435794, guid: b20d9ff991919fa4d9bfcfa27324e4b2, type: 2}
   dragWeaponList:
   - {fileID: 1693163762052908, guid: 836c899a7b862954cae14f65a7fedf81, type: 2}
@@ -925,7 +925,7 @@ MonoBehaviour:
   - {fileID: 1260481762692094, guid: 389558da90aea1f459e1c304f48e324a, type: 2}
   playerDragWeaponList:
   - {fileID: 1687817729819396, guid: 972d73eca8156c14188e211d3701a118, type: 2}
-  - {fileID: 1687817729819396, guid: 972d73eca8156c14188e211d3701a118, type: 2}
+  - {fileID: 1592601442713254, guid: 763ecb83276f02a4ea298c78399f7e25, type: 2}
   - {fileID: 1452018075268276, guid: d90d097c908d59c42819bdcc5eb6e254, type: 2}
   - {fileID: 1619228401842482, guid: 5fba693281a1f9444a615cd078960602, type: 2}
   flickWeapon: {fileID: 1599299109696230, guid: 95c1b0c2a6bc83f47b8788c1512136ef,

@@ -125,7 +125,7 @@ MonoBehaviour:
   maxHp: 3
   speed: 2
   bullet: {fileID: 1660847698679210, guid: e10a5b05db7508543a013e161e925741, type: 2}
-  attackInterval: 2.5
+  attackInterval: 3.5
   rapidCount: 1
 --- !u!212 &212878014703937998
 SpriteRenderer:

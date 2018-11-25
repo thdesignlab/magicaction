@@ -153,7 +153,8 @@ MonoBehaviour:
   timeLimit: 10
   spawnObj: {fileID: 0}
   isGravity: 0
-  strength: 50
+  strength: 100
+  useMp: 0
 --- !u!198 &198021839694218790
 ParticleSystem:
   m_ObjectHideFlags: 1

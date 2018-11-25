@@ -131,7 +131,8 @@ MonoBehaviour:
   timeLimit: 10
   spawnObj: {fileID: 0}
   isGravity: 0
-  strength: 300
+  strength: 500
+  useMp: 0
 --- !u!212 &212237687930196558
 SpriteRenderer:
   m_ObjectHideFlags: 1

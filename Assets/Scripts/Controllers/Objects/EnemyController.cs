@@ -48,7 +48,7 @@ public class EnemyController : UnitController
 
     IEnumerator Rapid(Vector2 targetPos)
     {
-        float diff = 5.0f;
+        float diff = 4.0f;
         for (int i = 0; i < rapidCount; i++)
         {
             Vector2 target = targetPos + new Vector2(Random.Range(-diff, diff), Random.Range(-diff, diff));
@@ -64,19 +64,20 @@ public class EnemyController : UnitController
 
     protected override void Dead()
     {
-        BattleManager.Instance.AddScore();
+        BattleManager.Instance.AddKill();
         base.Dead();
     }
 
     protected void Assault(GameObject obj)
     {
         int d = (strength == 0) ? hp * hp : hp * strength;
+        obj.GetComponent<UnitController>().Damage(d);
         base.Dead();
     }
 
     protected override void OutOfArea()
     {
-        BattleManager.Instance.AddLoss();
+        BattleManager.Instance.AddLost();
         base.OutOfArea();
     }
 

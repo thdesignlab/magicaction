@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4766973581241244}
   - component: {fileID: 114820995902990720}
   m_Layer: 0
-  m_Name: ShockWave2
+  m_Name: ShockWave1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

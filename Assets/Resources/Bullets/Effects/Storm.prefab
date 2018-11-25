@@ -236,7 +236,7 @@ MonoBehaviour:
   timeLimit: 3
   spawnObj: {fileID: 0}
   isGravity: 0
-  strength: 0
+  strength: 10
   damage: 10
 --- !u!114 &114871289281957916
 MonoBehaviour:

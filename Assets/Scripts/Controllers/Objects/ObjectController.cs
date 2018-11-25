@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class ObjectController : MonoBehaviour
 {
     [SerializeField]
-    private float timeLimit;
+    protected float timeLimit;
     [SerializeField]
-    private GameObject spawnObj;
+    protected GameObject spawnObj;
 
     protected Transform myTran;
     protected PlayerController player;
@@ -16,7 +16,7 @@ public class ObjectController : MonoBehaviour
     protected float liveTime = 0;
     protected List<Transform> muzzles = new List<Transform>();
 
-    const float LIMIT_AREA = 50.0f;
+    protected const float LIMIT_AREA = 50.0f;
 
     protected virtual void Awake()
     {
@@ -69,17 +69,22 @@ public class ObjectController : MonoBehaviour
             {
                 foreach (Transform muzzle in muzzles)
                 {
-                    GameObject obj = Instantiate(spawnObj, muzzle.position, muzzle.rotation);
-                    SetParentCtrl(obj);
+                    Spawn(spawnObj, muzzle.position, muzzle.rotation);
                 }
             }
             else
             {
-                GameObject obj = Instantiate(spawnObj, myTran.position, Quaternion.identity);
-                SetParentCtrl(obj);
+                Spawn(spawnObj, myTran.position);
             }
         }
         Destroy(gameObject);
+    }
+
+    protected void Spawn(GameObject obj, Vector2 pos, Quaternion qua = default(Quaternion))
+    {
+        if (qua == default(Quaternion)) qua = Quaternion.identity;
+        GameObject o = Instantiate(obj, pos, qua);
+        SetParentCtrl(o);
     }
 
     public void SetParentCtrl(GameObject obj)
