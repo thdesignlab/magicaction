@@ -135,6 +135,7 @@ public class PlayerController : UnitController
     //被弾
     public override void Damage(int damage)
     {
+        if (mp > 0) OnBarrier();
         UseMp(damage);
     }
 

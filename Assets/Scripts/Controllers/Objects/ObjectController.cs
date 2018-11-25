@@ -11,6 +11,7 @@ public class ObjectController : MonoBehaviour
 
     protected Transform myTran;
     protected PlayerController player;
+    protected WeaponController weapon;
     protected float deltaTime;
     protected float liveTime = 0;
     protected List<Transform> muzzles = new List<Transform>();
@@ -69,16 +70,23 @@ public class ObjectController : MonoBehaviour
                 foreach (Transform muzzle in muzzles)
                 {
                     GameObject obj = Instantiate(spawnObj, muzzle.position, muzzle.rotation);
-                    obj.GetComponent<ObjectController>().SetPlayer(player);
+                    SetParentCtrl(obj);
                 }
             }
             else
             {
                 GameObject obj = Instantiate(spawnObj, myTran.position, Quaternion.identity);
-                obj.GetComponent<ObjectController>().SetPlayer(player);
+                SetParentCtrl(obj);
             }
         }
         Destroy(gameObject);
+    }
+
+    public void SetParentCtrl(GameObject obj)
+    {
+        ObjectController objCtrl = obj.GetComponent<ObjectController>();
+        objCtrl.SetPlayer(player);
+        objCtrl.SetWeapon(weapon);
     }
 
     //### getter/setter ###
@@ -86,6 +94,11 @@ public class ObjectController : MonoBehaviour
     public virtual void SetPlayer(PlayerController p)
     {
         player = p;
+    }
+
+    public virtual void SetWeapon(WeaponController w)
+    {
+        weapon = w;
     }
 
     public bool IsPlayer()

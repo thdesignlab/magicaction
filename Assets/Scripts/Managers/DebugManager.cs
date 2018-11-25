@@ -106,7 +106,8 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
             fpsTimer -= 0.5f;
             fps = Mathf.Round(10 / Time.deltaTime) / 10.0f;
         }
-        Rect fpsRect = new Rect(0, 0, 150, 50);
+        float fpsW = 40;
+        Rect fpsRect = new Rect(Screen.width - fpsW, 0, fpsW, 30);
         GUI.Label(fpsRect, fps.ToString());
     }
     private void SetGuiSkin(float sizeRate = 1)
@@ -115,6 +116,7 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
         GUI.skin.button.hover.background = null;
         GUI.skin.button.active.background = null;
         GUI.skin.label.fontSize = GetFixSize(36);
+        GUI.skin.label.alignment = TextAnchor.MiddleLeft;
         GUI.skin.textArea.fontSize = GetFixSize(36);
     }
     private float GetFixSize(float size)

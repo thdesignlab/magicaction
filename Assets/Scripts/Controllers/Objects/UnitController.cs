@@ -10,8 +10,18 @@ public class UnitController : PhysicsController
     protected int hp = 0;
     protected float colliderRadius;
     protected float stackTime = 0;
+
+    //詠唱エフェクト
     protected Dictionary<string, ParticleSystem> chantDic = new Dictionary<string, ParticleSystem>();
-    const float ENABLED_OVER_RATE = 0.25f;
+
+    //バリアエフェクト
+    protected GameObject barrier;
+    protected float barrierLeftTime = 0;
+
+    //バリア時間
+    const float BARRIER_LIMIT = 1.0f;
+    //乗り越え制限
+    const float ENABLED_OVER_RATE = 0.2f;
 
     protected override void Awake()
     {
@@ -20,6 +30,7 @@ public class UnitController : PhysicsController
         SetHp(maxHp);
         SetColliderRadius();
         SetChant();
+        SetBarrier();
     }
 
     protected override void Start()
@@ -33,6 +44,7 @@ public class UnitController : PhysicsController
     public virtual void Damage(int damage)
     {
         if (hp <= 0) return;
+        OnBarrier();
         SetHp(-damage);
         if (hp <= 0) Dead();
     }
@@ -136,6 +148,32 @@ public class UnitController : PhysicsController
         }
     }
 
+    //バリアエフェクト
+    protected void SetBarrier()
+    {
+        Transform barrierTran = myTran.Find("Barrier");
+        if (barrierTran == null) return;
+        barrier = barrierTran.gameObject;
+    }
+    protected void OnBarrier()
+    {
+        if (barrier == null) return;
+        float preLeftTime = barrierLeftTime;
+        barrierLeftTime = BARRIER_LIMIT;
+        if (preLeftTime > 0) return;
+        StartCoroutine(OnBarrierProcess());
+    }
+    IEnumerator OnBarrierProcess()
+    {
+        barrier.SetActive(true);
+        for (; ; )
+        {
+            barrierLeftTime -= Time.deltaTime;
+            if (barrierLeftTime <= 0) break;
+            yield return null;
+        }
+        barrier.SetActive(false);
+    }
 
     //### イベントハンドラ ###
 

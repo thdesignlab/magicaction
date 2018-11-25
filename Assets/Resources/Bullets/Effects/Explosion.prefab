@@ -257,7 +257,7 @@ MonoBehaviour:
   spawnObj: {fileID: 0}
   isGravity: 0
   strength: 0
-  damage: 1
+  damage: 3
 --- !u!198 &198150616642696880
 ParticleSystem:
   m_ObjectHideFlags: 1

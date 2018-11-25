@@ -49,10 +49,12 @@ public class SpawnWeaponController : WeaponController
     }
 
     //生成
-    protected virtual GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua)
+    protected GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua)
     {
         GameObject obj = Instantiate(spawnObj, pos, qua);
-        obj.GetComponent<ObjectController>().SetPlayer(player);
+        ObjectController objCtrl = obj.GetComponent<ObjectController>();
+        objCtrl.SetPlayer(player);
+        objCtrl.SetWeapon(this);
         return obj;
     }
 }

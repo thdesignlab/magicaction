@@ -48,7 +48,7 @@ public class EnemyController : UnitController
 
     IEnumerator Rapid(Vector2 targetPos)
     {
-        float diff = 1.0f;
+        float diff = 5.0f;
         for (int i = 0; i < rapidCount; i++)
         {
             Vector2 target = targetPos + new Vector2(Random.Range(-diff, diff), Random.Range(-diff, diff));

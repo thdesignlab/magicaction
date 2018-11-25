@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeLimit: 2
-  spawnObj: {fileID: 1178076260195342, guid: 96b6d5545e1834e479f68f8bc3145008, type: 2}
+  spawnObj: {fileID: 1014406778121664, guid: 4f8777b7969165b45b050b8c97156f8d, type: 2}
   isGravity: 0
   strength: 3
   damage: 15
