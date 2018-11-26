@@ -1300,8 +1300,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 1
-  isReadyGame: 0
   isFinishedSplash: 0
+  isReadyGame: 0
+  isOnTapToStart: 0
   stageNo: 0
 --- !u!114 &958164826
 MonoBehaviour:
@@ -1786,7 +1787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e7ca1f49748ce4882d6f8ae1452e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volume: 0
+  volume: 0.2
 --- !u!4 &1419248986
 Transform:
   m_ObjectHideFlags: 0

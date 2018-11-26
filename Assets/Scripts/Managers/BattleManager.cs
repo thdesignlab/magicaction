@@ -49,8 +49,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         SetScoreText();
         messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
 
-        BgmManager.Instance.PlayBgm();
-
         //敵情報（仮）
         popEnemy.Add(1, Resources.Load<GameObject>("Enemies/Enemy"));
         popInterval.Add(1, (stageNo == 1) ? 1.5f : 1.2f);

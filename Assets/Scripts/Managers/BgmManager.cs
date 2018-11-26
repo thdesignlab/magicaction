@@ -34,8 +34,14 @@ public class BgmManager : SingletonMonoBehaviour<BgmManager>
     void OnActiveSceneChanged(Scene prevScene, Scene nextScene)
     {
         //BGM再生
-        //PlayBgm();
-        StopBgm();
+        if (SceneManager.GetActiveScene().name == Common.CO.SCENE_TITLE)
+        {
+            StopBgm();
+        }
+        else
+        {
+            PlayBgm();
+        }
     }
     
     //BGM再生
