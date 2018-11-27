@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class DebugManager : SingletonMonoBehaviour<DebugManager>
 {
@@ -64,6 +66,7 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
     private float btnDown = 0;
     private bool isDispLog = false;
     private float sizeRate = 1.0f;
+    private List<float> fpsList = new List<float>();
 
     void OnGUI()
     {
@@ -101,11 +104,10 @@ public class DebugManager : SingletonMonoBehaviour<DebugManager>
         }
 
         //FPS
-        fpsTimer += Time.deltaTime;
-        if (fpsTimer >= 0.5f) {
-            fpsTimer -= 0.5f;
-            fps = Mathf.Round(10 / Time.deltaTime) / 10.0f;
-        }
+        fpsList.Add(Time.deltaTime);
+        if (fpsList.Count >= 30) fpsList.RemoveAt(0);
+        fps = Mathf.Round(fpsList.Count / fpsList.Sum());
+        
         float fpsW = 100;
         float fpsH = 50;
         Rect fpsRect = new Rect(Screen.width - fpsW, 0, fpsW, fpsH);
