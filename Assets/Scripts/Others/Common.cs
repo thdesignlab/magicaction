@@ -38,6 +38,7 @@ namespace Common
         //タグ
         public const string TAG_PLAYER = "Player";
         public const string TAG_ENEMY = "Enemy";
+        public const string TAG_ENEMY_BOSS = "EnemyBoss";
         public const string TAG_STAGE = "Stage";
         public const string TAG_OBJECT = "Object";
         public const string TAG_EQUIP_OBJECT = "EquipObject";
@@ -55,6 +56,7 @@ namespace Common
         {
             TAG_PLAYER,
             TAG_ENEMY,
+            TAG_ENEMY_BOSS,
         };
 
         //ダメージオブジェクトタグ

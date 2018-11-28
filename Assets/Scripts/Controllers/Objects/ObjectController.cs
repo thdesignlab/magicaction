@@ -17,12 +17,17 @@ public class ObjectController : MonoBehaviour
     protected List<Transform> muzzles = new List<Transform>();
 
     protected const float LIMIT_AREA = 50.0f;
+    protected const float LIMIT_TIME = 10.0f;
 
     protected virtual void Awake()
     {
         myTran = transform;
         player = GetComponent<PlayerController>();
         SetMuzzles();
+        if (timeLimit <= 0 && !Common.FUNC.IsUnitTag(tag))
+        {
+            timeLimit = LIMIT_TIME;
+        }
     }
 
     protected void SetMuzzles()
