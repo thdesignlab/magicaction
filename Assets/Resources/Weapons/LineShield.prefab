@@ -57,3 +57,4 @@ MonoBehaviour:
   perLength: 2
   multiInterval: 0
   spawnAngle: 0
+  totalLimit: 50
