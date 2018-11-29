@@ -37,7 +37,7 @@ public class Uv_s2 : MonoBehaviour
         ren = GetComponent<Renderer>();
         leftScrollTime = scrollTime;
         ren.sharedMaterial.mainTexture.wrapMode = TextureWrapMode.Repeat;
-        ren.sharedMaterial.SetTextureScale("_MainTex", Vector2.one);
+        //ren.sharedMaterial.SetTextureScale("_MainTex", Vector2.one);
         //defaultOffset = ren.sharedMaterial.GetTextureOffset("_MainTex");
     }
 
