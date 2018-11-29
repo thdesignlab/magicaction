@@ -1874,6 +1874,67 @@ MonoBehaviour:
   m_Spacing: {x: 100, y: 50}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1001 &1595367138
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4305248078802938, guid: 3d828440326febf4bbfc828c92ce57d4, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -4.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305248078802938, guid: 3d828440326febf4bbfc828c92ce57d4, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -7.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305248078802938, guid: 3d828440326febf4bbfc828c92ce57d4, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305248078802938, guid: 3d828440326febf4bbfc828c92ce57d4, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305248078802938, guid: 3d828440326febf4bbfc828c92ce57d4, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305248078802938, guid: 3d828440326febf4bbfc828c92ce57d4, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305248078802938, guid: 3d828440326febf4bbfc828c92ce57d4, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305248078802938, guid: 3d828440326febf4bbfc828c92ce57d4, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d828440326febf4bbfc828c92ce57d4, type: 2}
+  m_IsPrefabAsset: 0
+--- !u!1 &1595367139 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1969357611873034, guid: 3d828440326febf4bbfc828c92ce57d4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1595367138}
+--- !u!114 &1595367140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1595367139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6778e02d1e06ad646854f9d38f072377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollTime: 0
+  scrollSpeedX: 1
+  scrollSpeedY: -1
 --- !u!1 &1625680906
 GameObject:
   m_ObjectHideFlags: 0
