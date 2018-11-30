@@ -17,6 +17,8 @@ public class EnemyController : UnitController
 
     protected override void Awake()
     {
+        maxHp = Mathf.RoundToInt(maxHp * BattleManager.Instance.GetPowRate());
+
         base.Awake();
 
         rapidCount = (rapidCount > 0) ? rapidCount: 1;
@@ -39,6 +41,7 @@ public class EnemyController : UnitController
             nextAttackTime = attackInterval;
         }
     }
+    
     protected override void InitSpeed()
     {
         base.InitSpeed();

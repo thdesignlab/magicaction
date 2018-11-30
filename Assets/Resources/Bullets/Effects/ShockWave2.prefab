@@ -194,7 +194,7 @@ MonoBehaviour:
   timeLimit: 1
   spawnObj: {fileID: 0}
   isGravity: 0
-  strength: 5
+  strength: 100
   damage: 10
 --- !u!198 &198017512572885638
 ParticleSystem:

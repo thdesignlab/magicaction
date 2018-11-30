@@ -6,6 +6,15 @@ public class DamageObjectController : PhysicsController
     [SerializeField]
     protected int damage;
 
+    protected override void Start()
+    {
+        base.Start();
+        if (!IsPlayer())
+        {
+            damage = Mathf.RoundToInt(damage * BattleManager.Instance.GetPowRate());
+        }
+    }
+
     protected override void Update()
     {
         base.Update();

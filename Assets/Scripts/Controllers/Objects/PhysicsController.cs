@@ -16,12 +16,20 @@ public class PhysicsController : ObjectController
     protected GameObject groundObj;
     protected bool isKnockBack = false;
 
-
     protected override void Awake()
     {
         base.Awake();
         myBody = GetComponent<Rigidbody2D>();
         myG = Physics2D.gravity;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        if (!IsPlayer())
+        {
+            strength = Mathf.RoundToInt(strength * BattleManager.Instance.GetPowRate());
+        }
     }
 
     protected override void Update()

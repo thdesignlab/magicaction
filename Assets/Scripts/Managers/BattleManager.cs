@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+using UnityEngine.Assertions;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -26,8 +29,13 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private int killScore = 0;
     private int lostScore = 0;
     private int hitScore = 0;
-
+    private PlayableDirector timeline;
     private PlayerController playerCtrl;
+
+    private bool isEndless = false;
+    private int loopCount = 0;
+    private float powRate = 1.0f;
+    const float POWER_UP_RATE = 1.1f;
 
     protected override void Awake()
     {
@@ -49,21 +57,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         SetScoreText();
         messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
 
-        //敵情報（仮）
-        popEnemy.Add(1, Resources.Load<GameObject>("Enemies/Enemy"));
-        popInterval.Add(1, (stageNo == 1) ? 1.5f : 1.2f);
-        popTime.Add(1, 0);
-
-        popEnemy.Add(2, Resources.Load<GameObject>("Enemies/Enemy2"));
-        popInterval.Add(2, (stageNo == 1) ? 0.75f: 0.5f);
-        popTime.Add(2, 0);
-
-        popEnemy.Add(3, Resources.Load<GameObject>("Enemies/Enemy3"));
-        popInterval.Add(3, 0.5f);
-        popTime.Add(3, 0);
-
-        enemyPops = GameObject.FindGameObjectsWithTag(Common.CO.TAG_ENEMY_POP);
-        enemyGroundPops = GameObject.FindGameObjectsWithTag(Common.CO.TAG_ENEMY_POP_GROUND);
+        SetStageTimeline();
     }
 
     private void Start()
@@ -83,14 +77,25 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         {
             hpSlider.value = 0;
         }
+    }
 
-        if (!isBattleStart) return;
-
-        battleTime += Time.deltaTime;
-        foreach (int i in popEnemy.Keys)
+    //Timelineセット
+    private void SetStageTimeline()
+    {
+        GameObject stage = Resources.Load<GameObject>("Timelines/Stage"+stageNo.ToString());
+        if (stage == null)
         {
-            EnemyPop(i);
+            stage = Resources.Load<GameObject>("Timelines/Stage");
         }
+        GameObject obj = Instantiate(stage);
+        timeline = obj.GetComponent<PlayableDirector>();
+        timeline.playOnAwake = false;
+    }
+    public void TimelineLoop()
+    {
+        if (timeline.state == PlayState.Playing) return;
+        powRate *= POWER_UP_RATE;
+        timeline.Play();
     }
 
     IEnumerator BattleStart()
@@ -109,6 +114,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         SetMessage("START", 3.0f);
 
         isBattleStart = true;
+        timeline.Play();
     }
 
     IEnumerator PlayerSummon()
@@ -129,22 +135,10 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         yield return new WaitForSeconds(1.0f);
     }
 
-    public void EnemyPop(int index)
+    public void SqawnEnemy(GameObject obj, Vector2 pos, Quaternion qua = default(Quaternion))
     {
-        float diffTime = battleTime - popTime[index];
-        if (diffTime >= popInterval[index])
-        {
-            Vector3 diffPos = Vector3.zero;
-            GameObject[] pops = enemyGroundPops;
-            if (!popEnemy[index].GetComponent<UnitController>().IsGravity())
-            {
-                diffPos = new Vector3(Common.FUNC.GetRandom(1), Common.FUNC.GetRandom(10), 0);
-                pops =  enemyPops;
-            }
-            GameObject pop = Common.FUNC.RandomArray(pops);
-            popTime[index] = battleTime;
-            Instantiate(popEnemy[index], pop.transform.position + diffPos, pop.transform.rotation);
-        }
+        if (obj == null) return;
+        Instantiate(obj, pos, qua);
     }
 
     public void AddKill()
@@ -162,6 +156,11 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     {
         hitScore += 1;
         SetScoreText();
+    }
+
+    public float GetPowRate()
+    {
+        return powRate;
     }
 
     protected void SetScoreText()
@@ -194,7 +193,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     {
         if (flg)
         {
-            Pause();
+            MenuManager.Instance.SwitchMenu(true);
         }
     }
 

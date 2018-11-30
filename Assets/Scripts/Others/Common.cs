@@ -241,5 +241,12 @@ namespace Common
         {
             return Vector2.Angle(start, end);
         }
+
+        //座標変換スクリーン>>ワールド
+        public static Vector2 ChangeWorldVector(Vector2 v, Camera mainCam = null)
+        {
+            if (mainCam == null) mainCam = Camera.main;
+            return mainCam.ScreenToWorldPoint(v);
+        }
     }
 }

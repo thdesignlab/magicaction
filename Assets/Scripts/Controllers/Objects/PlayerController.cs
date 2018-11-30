@@ -11,10 +11,6 @@ public class PlayerController : UnitController
     private int recoverHp;
     [SerializeField]
     private int recoverMp;
-    //[SerializeField]
-    //private float runSpeed = 10.0f;
-    //[SerializeField]
-    //private float runLimit = 0.5f;
     [SerializeField]
     private float walkSpeed = 1.0f;
 
@@ -62,6 +58,8 @@ public class PlayerController : UnitController
     private bool isFlying = true;
     private Vector2 returnVelocity = Vector2.zero;
 
+    const float CHARGE_RECOVER_RATE = 0.5f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -93,7 +91,7 @@ public class PlayerController : UnitController
         }
 
         //MP回復
-        rmp += recoverMp * deltaTime * (isCharge ? 0.3f : 1);
+        rmp += recoverMp * deltaTime * (isCharge ? CHARGE_RECOVER_RATE : 1);
         if (rmp >= 1.0f)
         {
             int r = (int)Mathf.Floor(rmp);

@@ -33,6 +33,9 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
     private int preWidth;
     private int preHeight;
 
+    private Vector2 screenMin = Vector2.zero;
+    private Vector2 screenMax = Vector2.zero;
+
     private DeviceOrientation preOrientation;
 
     //メッセージ
@@ -420,11 +423,31 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
             vpMaskList[3].localScale = new Vector2(x, 1);
             vpMask.SetActive(true);
         }
+        SetScreenEdgePos(x, y);
     }
+
+    private void SetScreenEdgePos(float xRate = 0, float yRate = 0)
+    {
+        screenMin = Common.FUNC.ChangeWorldVector(new Vector2(Screen.width * xRate, Screen.height * yRate));
+        screenMax = Common.FUNC.ChangeWorldVector(new Vector2(Screen.width * (1 - xRate), Screen.height * (1 - yRate)));
+    }
+
 
     public float GetSizeRate()
     {
         return sizeRate;
+    }
+
+    public Vector2 GetScreenMinPos()
+    {
+        if (screenMin == Vector2.zero) SetScreenEdgePos();
+        return screenMin;
+    }
+
+    public Vector2 GetScreenMaxPos()
+    {
+        if (screenMax == Vector2.zero) SetScreenEdgePos();
+        return screenMax;
     }
 
     //###　画面向き ###

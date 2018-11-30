@@ -664,7 +664,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     public Vector2 ChangeWorldVector(Vector2 v)
     {
-        return mainCam.ScreenToWorldPoint(v);
+        return Common.FUNC.ChangeWorldVector(v, mainCam);
     }
 
     protected bool IsPressing()
