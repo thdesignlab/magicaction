@@ -223,6 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 0
   spawnObj: {fileID: 0}
+  isBreakInvisible: 0
   isGravity: 1
   strength: 5
   damage: 2

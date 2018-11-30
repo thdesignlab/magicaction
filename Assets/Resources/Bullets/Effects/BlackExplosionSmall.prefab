@@ -276,8 +276,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 1
   spawnObj: {fileID: 0}
+  isBreakInvisible: 1
   isGravity: 0
-  strength: 3
+  strength: 10
   damage: 5
 --- !u!198 &198459359684608956
 ParticleSystem:

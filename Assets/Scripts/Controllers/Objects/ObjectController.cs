@@ -8,12 +8,17 @@ public class ObjectController : MonoBehaviour
     protected float timeLimit;
     [SerializeField]
     protected GameObject spawnObj;
+    [SerializeField]
+    protected bool isBreakInvisible = true;
 
     protected Transform myTran;
+    private Renderer _myRenderer;
+    protected Renderer myRenderer { get { return _myRenderer ? _myRenderer : _myRenderer = GetComponentInChildren<Renderer>(); } }
     protected PlayerController player;
     protected WeaponController weapon;
     protected float deltaTime;
     protected float liveTime = 0;
+    protected bool isPreVisible = false;
     protected List<Transform> muzzles = new List<Transform>();
 
     protected const float LIMIT_AREA = 50.0f;
@@ -46,6 +51,7 @@ public class ObjectController : MonoBehaviour
     protected virtual void Update()
     {
         deltaTime = Time.deltaTime;
+        liveTime += deltaTime;
         if (timeLimit > 0)
         {
             timeLimit -= deltaTime;
@@ -58,17 +64,28 @@ public class ObjectController : MonoBehaviour
         if (Mathf.Abs(myTran.position.x) >= LIMIT_AREA || Mathf.Abs(myTran.position.y) >= LIMIT_AREA)
         {
             OutOfArea();
+            return;
+        }
+
+        if (isBreakInvisible && liveTime > 2.0f && myRenderer != null)
+        {
+            if (isPreVisible && !myRenderer.isVisible)
+            {
+                OutOfArea();
+                return;
+            }
+            isPreVisible = myRenderer.isVisible;
         }
     }
 
     protected virtual void OutOfArea()
     {
-        Destroy(gameObject);
+        Break(false);
     }
 
-    public virtual void Break()
+    public virtual void Break(bool isSpawn = true)
     {
-        if (spawnObj != null)
+        if (spawnObj != null && isSpawn)
         {
             if (muzzles.Count > 0)
             {

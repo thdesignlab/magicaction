@@ -15,9 +15,9 @@ public class ShooterObjectController : ObjectController
 
     const int TARGET_TYPE_ZERO = 0;
 
-    public override void Break()
+    public override void Break(bool isSpawn = true)
     {
-        if (spawnObj != null)
+        if (spawnObj != null && isSpawn)
         {
             StartCoroutine(spawnProcess());
         }

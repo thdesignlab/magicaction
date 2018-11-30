@@ -265,6 +265,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     IEnumerator Result(bool isClear)
     {
         InputManager.Instance.SetActive(false);
+        timeline.Stop();
         isBattleEnd = true;
         Transform resultTran = resultArea.transform;
         resultTran.Find("Text").GetComponent<Text>().text = isClear ? "Clear!" : "Failed!";
@@ -388,6 +389,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     public void Return()
     {
         InputManager.Instance.SetActive(false);
+        if (timeline) timeline.Stop();
         Time.timeScale = 1;
         ScreenManager.Instance.SceneLoad(Common.CO.SCENE_TITLE);
     }
