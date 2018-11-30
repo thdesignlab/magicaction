@@ -16,26 +16,51 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private GameObject[] enemyPops;
     private GameObject[] enemyGroundPops;
 
+    //キャンバス
     private Canvas battleCanvas;
+
+    //プレイヤー情報
     private Slider hpSlider;
+    private Slider hpAlphaSlider;
     private Slider mpSlider;
+    private Slider mpAlphaSlider;
     private Text totalText;
     private Text killText;
     private Text lostText;
     private Text hitText;
+
+    //メッセージ
     private Text messageText;
+
+    //リザルト
+    private GameObject resultArea;
+
     private bool isBattleStart = false;
+    private bool isBattleEnd = false;
     private int totalScore = 0;
     private int killScore = 0;
     private int lostScore = 0;
     private int hitScore = 0;
     private PlayableDirector timeline;
     private PlayerController playerCtrl;
-
+    private bool isPause = false;
     private bool isEndless = false;
     private int loopCount = 0;
     private float powRate = 1.0f;
+    private float mpBonus = 0;
+    private float mpBonusCheckTime = 0;
+    private Dictionary<float, float> scoreBonusByMpDic = new Dictionary<float, float>()
+    {
+        { 0.75f, 1.0f},
+        { 0.5f, 1.1f},
+        { 0.25f, 1.25f},
+        { 0.1f, 1.5f},
+        { 0, 1.8f},
+    };
+
     const float POWER_UP_RATE = 1.1f;
+    const int KILL_POINT = 100;
+    const float MP_BONUS_CHECK_TIME = 0.5f;
 
     protected override void Awake()
     {
@@ -46,36 +71,110 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         battleCanvas = GameObject.Find("BattleCanvas").GetComponent<Canvas>();
         battleCanvas.worldCamera = Camera.main;
         hpSlider = battleCanvas.transform.Find("BattleStatus/PlayerStatus/HP").GetComponent<Slider>();
-        hpSlider.value = 1;
+        hpSlider.value = 0;
         mpSlider = battleCanvas.transform.Find("BattleStatus/PlayerStatus/MP").GetComponent<Slider>();
-        mpSlider.value = 1;
+        mpSlider.value = 0;
         Transform scoresTran = battleCanvas.transform.Find("BattleStatus");
-        totalText = scoresTran.Find("Total/Score").GetComponent<Text>();
+        totalText = scoresTran.Find("Scores/Total/Score").GetComponent<Text>();
         killText = scoresTran.Find("Scores/Kill/Score").GetComponent<Text>();
         lostText = scoresTran.Find("Scores/Lost/Score").GetComponent<Text>();
-        hitText = scoresTran.Find("Scores/Hit/Score").GetComponent<Text>();
+        //hitText = scoresTran.Find("Scores/Hit/Score").GetComponent<Text>();
         SetScoreText();
         messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
-
+        resultArea = battleCanvas.transform.Find("Result").gameObject;
+        resultArea.SetActive(false);
+        mpBonusCheckTime = MP_BONUS_CHECK_TIME;
         SetStageTimeline();
     }
 
     private void Start()
     {
-
         StartCoroutine(BattleStart());
     }
 
     private void Update()
     {
-        if (playerCtrl != null)
+        if (!isBattleStart || isBattleEnd) return;
+        
+        mpBonusCheckTime -= Time.deltaTime;
+        if (mpBonusCheckTime <= 0)
         {
-            hpSlider.value = playerCtrl.GetHpRate();
-            mpSlider.value = playerCtrl.GetMpRate();
+            SetMpRateBonus();
+            mpBonusCheckTime = MP_BONUS_CHECK_TIME;
         }
-        else
+    }
+
+    public int GetEnemyCount()
+    {
+        int cnt = 0;
+        foreach (string tag in Common.CO.enemyTags)
         {
-            hpSlider.value = 0;
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(tag);
+            if (enemies != null) cnt += enemies.Length;
+        }
+        return cnt;
+    }
+
+    IEnumerator SetStatusSlider()
+    {
+        float hpUnit = 0.5f;
+        float mpUnit = 0.5f;
+        float hpRate = 0;
+        float mpRate = 0;
+        float diffHpRate = 0;
+        float diffMpRate = 0;
+        float preHpRate = 0;
+        float preMpRate = 0;
+        for (; ;)
+        {
+            if (isPause)
+            {
+                yield return null;
+                continue;
+            }
+            float deltaTime = Time.deltaTime;
+            mpBonusCheckTime -= deltaTime;
+
+            if (playerCtrl == null || !isBattleStart)
+            {
+                hpRate = 1;
+                mpRate = 1;
+                if (isBattleStart)
+                {
+                    if (preHpRate <= 0) break;
+                    hpRate = 0;
+                    mpRate = 0;
+                }
+            }
+            else
+            {
+                hpRate = playerCtrl.GetHpRate();
+                mpRate = playerCtrl.GetMpRate();
+            }
+            diffHpRate = hpRate - preHpRate;
+            diffMpRate = mpRate - preMpRate;
+
+            //HP
+            if (diffHpRate != 0)
+            {
+                diffHpRate = hpUnit * Mathf.Sign(diffHpRate) * deltaTime;
+                hpSlider.value += diffHpRate;
+                preHpRate = hpSlider.value;
+            }
+
+            //MP
+            if (diffMpRate != 0)
+            {
+                diffMpRate = mpUnit * Mathf.Sign(diffMpRate) * deltaTime;
+                mpSlider.value += diffMpRate;
+                preMpRate = mpSlider.value;
+                if (mpBonusCheckTime <= 0)
+                {
+                    SetMpRateBonus();
+                    mpBonusCheckTime = MP_BONUS_CHECK_TIME;
+                }
+            }
+            yield return new WaitForSeconds(deltaTime);
         }
     }
 
@@ -108,6 +207,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         SetMessage("READY...");
 
         //プレイヤー生成
+        StartCoroutine(SetStatusSlider());
         yield return StartCoroutine(PlayerSummon());
 
         InputManager.Instance.SetActive(true);
@@ -115,6 +215,8 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
         isBattleStart = true;
         timeline.Play();
+
+        StartCoroutine(CheckBattleResult());
     }
 
     IEnumerator PlayerSummon()
@@ -126,13 +228,52 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         //召喚演出
         GameObject summonObj = Instantiate(summon, pPopTran.position - Vector3.up * 0.5f, pPopTran.rotation);
         yield return new WaitForSeconds(0.5f);
-
         GameObject playerObj = Instantiate(player, pPopTran.position + Vector3.up * 1.5f, pPopTran.rotation);
         playerCtrl = playerObj.GetComponent<PlayerController>();
         yield return new WaitForSeconds(2.5f);
-
         Destroy(summonObj);
         yield return new WaitForSeconds(1.0f);
+    }
+
+    IEnumerator CheckBattleResult()
+    {
+        for (; ; )
+        {
+            if (isPause)
+            {
+                yield return null;
+                continue;
+            }
+
+            if (isBattleStart && !isBattleEnd)
+            {
+                if (playerCtrl == null)
+                {
+                    StartCoroutine(Result(false));
+                    break;
+                }
+                if (timeline.state == PlayState.Paused && GetEnemyCount() == 0)
+                {
+                    StartCoroutine(Result(true));
+                    break;
+                }
+            }
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
+
+    IEnumerator Result(bool isClear)
+    {
+        InputManager.Instance.SetActive(false);
+        isBattleEnd = true;
+        Transform resultTran = resultArea.transform;
+        resultTran.Find("Text").GetComponent<Text>().text = isClear ? "Clear!" : "Failed!";
+        resultTran.Find("BtnList/Next").gameObject.SetActive(isClear);
+        resultTran.Find("BtnList/Retry").gameObject.SetActive(!isClear);
+
+        //resultTran.Find("Score").GetComponent<Text>().text = "";
+        resultArea.SetActive(true);
+        yield return null;
     }
 
     public void SqawnEnemy(GameObject obj, Vector2 pos, Quaternion qua = default(Quaternion))
@@ -141,34 +282,47 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         Instantiate(obj, pos, qua);
     }
 
-    public void AddKill()
+    public void AddKill(float bonus = 0)
     {
+        if (isBattleEnd) return;
         killScore += 1;
+        totalScore += Mathf.FloorToInt(KILL_POINT * (1 + bonus + mpBonus));
         SetScoreText();
+    }
+
+    private void SetMpRateBonus()
+    {
+        if (playerCtrl == null) return;
+
+        float mpRate = playerCtrl.GetMpRate();
+        foreach (float r in scoreBonusByMpDic.Keys)
+        {
+            if (mpRate <= r) continue;
+            mpBonus = scoreBonusByMpDic[r];
+            break;
+        }
     }
 
     public void AddLost()
     {
+        if (isBattleEnd) return;
         lostScore += 1;
         SetScoreText();
     }
     public void AddHit()
     {
+        if (isBattleEnd) return;
         hitScore += 1;
         SetScoreText();
     }
 
-    public float GetPowRate()
-    {
-        return powRate;
-    }
-
     protected void SetScoreText()
     {
-        //totalText.text = totalScore.ToString();
+        if (totalScore < 0) totalScore = 0;
+        totalText.text = totalScore.ToString();
         killText.text = killScore.ToString();
         lostText.text = lostScore.ToString();
-        hitText.text = hitScore.ToString();
+        //hitText.text = hitScore.ToString();
     }
 
     public void SetMessage(string txt, float limit = 0)
@@ -189,8 +343,29 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         messageText.text = "";
     }
 
+    public void NextStage()
+    {
+        Return();
+    }
+
+    //### getter/setter ###
+
+    public float GetPowRate()
+    {
+        return powRate;
+    }
+
+    public bool IsBattleEnd()
+    {
+        return isBattleEnd;
+    }
+
+    //### イベント ###
+
     void OnApplicationPause(bool flg)
     {
+        if (isBattleEnd) return;
+
         if (flg)
         {
             MenuManager.Instance.SwitchMenu(true);
@@ -202,15 +377,18 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     public void Pause()
     {
         Time.timeScale = 0;
+        isPause = true;
     }
     public void ResetPause()
     {
         Time.timeScale = 1;
+        isPause = false;
     }
 
     public void Return()
     {
-        ResetPause();
+        InputManager.Instance.SetActive(false);
+        Time.timeScale = 1;
         ScreenManager.Instance.SceneLoad(Common.CO.SCENE_TITLE);
     }
 }

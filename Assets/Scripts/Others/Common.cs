@@ -59,6 +59,13 @@ namespace Common
             TAG_ENEMY_BOSS,
         };
 
+        //エネミータグ
+        public static string[] enemyTags = new string[]
+        {
+            TAG_ENEMY,
+            TAG_ENEMY_BOSS,
+        };
+
         //ダメージオブジェクトタグ
         public static string[] damageObjectTags = new string[]
         {

@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnMin: {x: -1, y: -0.8}
   spawnMax: {x: -1, y: 0.9}
-  isEndless: 1
+  isEndless: 0
 --- !u!320 &320803524034651920
 PlayableDirector:
   m_ObjectHideFlags: 1
@@ -74,6 +74,8 @@ PlayableDirector:
   - key: {fileID: 114756112913657346, guid: c5ea1870563f5c04398a3103a74214d7, type: 2}
     value: {fileID: 0}
   - key: {fileID: 0}
+    value: {fileID: 0}
+  - key: {fileID: 114544159258156760, guid: c5ea1870563f5c04398a3103a74214d7, type: 2}
     value: {fileID: 0}
   m_ExposedReferences:
     m_References: []

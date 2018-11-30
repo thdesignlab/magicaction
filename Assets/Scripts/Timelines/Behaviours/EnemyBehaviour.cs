@@ -12,7 +12,6 @@ public class EnemyBehaviour : PlayableBehaviour
     private GameObject enemy;
     private Vector2 spawnPos = Vector2.zero;
     private Vector2 spawnDiffPos = Vector2.zero;
-    private int spawnCount = 1;
 
     private Quaternion spawnQua = default(Quaternion);
     private float spawnInterval = 1;
@@ -47,7 +46,6 @@ public class EnemyBehaviour : PlayableBehaviour
 	// Called each frame while the state is set to Play
 	public override void PrepareFrame(Playable playable, FrameData info)
     {
-        if (spawnCount <= 0) return;
         intervalTime += info.deltaTime;
         if (intervalTime < spawnInterval) return;
         if (isRandom)
@@ -58,7 +56,6 @@ public class EnemyBehaviour : PlayableBehaviour
         BattleManager.Instance.SqawnEnemy(enemy, spawnPos, spawnQua);
         spawnPos += spawnDiffPos;
         intervalTime = 0;
-        spawnCount--;
     }
 
     //### Asset情報 ###
@@ -66,16 +63,10 @@ public class EnemyBehaviour : PlayableBehaviour
     public void SetAsset(EnemyAsset ea)
     {
         asset = ea;
-        SetInit();
         spawnInterval = asset.interval;
         intervalTime = spawnInterval;
         SetSpawnPos(asset.pos, asset.diffPos);
         SetEnemy(asset.enemy);
-    }
-
-    private void SetInit()
-    {
-        spawnCount = (asset.count <= 0) ? 1 : asset.count;
     }
 
     private void SetSpawnPos(Vector2 v, Vector2 diff)

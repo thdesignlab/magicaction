@@ -15,6 +15,7 @@ TagManager:
   - EnemyPopGround
   - EnemyPopBoss
   - EquipObject
+  - EnemyBoss
   layers:
   - Default
   - TransparentFX

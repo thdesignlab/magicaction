@@ -9,7 +9,6 @@ public class EnemyAsset : PlayableAsset
     public GameObject enemy;
     public Vector2 pos;
     public Vector2 diffPos;
-    public int count;
     public float interval;
 
     // Factory method that generates a playable based on this asset

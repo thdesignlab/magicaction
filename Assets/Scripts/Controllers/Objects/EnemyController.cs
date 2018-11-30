@@ -27,6 +27,7 @@ public class EnemyController : UnitController
 
     protected override void Update()
     {
+        if (BattleManager.Instance.IsBattleEnd()) return;
         base.Update();
 
         if (playerObj == null)

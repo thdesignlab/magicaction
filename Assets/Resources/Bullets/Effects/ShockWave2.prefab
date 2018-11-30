@@ -117,7 +117,7 @@ Transform:
   m_GameObject: {fileID: 1903534511965656}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 2.8, y: 2.8, z: 2.8}
   m_Children:
   - {fileID: 4455920748794564}
   - {fileID: 4252030712098076}
@@ -179,7 +179,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 12
+  m_Radius: 13
 --- !u!114 &114841940193416626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,7 +195,7 @@ MonoBehaviour:
   spawnObj: {fileID: 0}
   isGravity: 0
   strength: 100
-  damage: 10
+  damage: 30
 --- !u!198 &198017512572885638
 ParticleSystem:
   m_ObjectHideFlags: 1

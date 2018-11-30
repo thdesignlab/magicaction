@@ -21,6 +21,8 @@ public class MenuManager : SingletonMonoBehaviour<MenuManager>
     //メニュー
     public void SwitchMenu(bool flg)
     {
+        if (flg && BattleManager.Instance.IsBattleEnd()) return;
+
         if (flg)
         {
             BattleManager.Instance.Pause();

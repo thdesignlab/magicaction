@@ -17,6 +17,11 @@ public class DamageObjectController : PhysicsController
 
     protected override void Update()
     {
+        if (BattleManager.Instance.IsBattleEnd())
+        {
+            Break();
+            return;
+        }
         base.Update();
         if (liveTime > 10.0f)
         {
