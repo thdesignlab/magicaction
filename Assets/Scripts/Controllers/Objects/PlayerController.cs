@@ -49,6 +49,7 @@ public class PlayerController : UnitController
     private GameObject twistWeapon;
     private WeaponController twistWeaponCtrl;
 
+    private Transform weaponsTran;
     private int mp = 0;
     private float rhp = 0;
     private float rmp = 0;
@@ -160,6 +161,7 @@ public class PlayerController : UnitController
     //武器設定
     private void SetWeapon()
     {
+        weaponsTran = myTran.Find(Common.PLAYER.PARTS_WEAPONS);
         tapWeaponCtrl = EquipWeapon(tapWeapon);
         playerTapWeaponCtrl = EquipWeapon(playerTapWeapon);
         enemyTapWeaponCtrl = EquipWeapon(enemyTapWeapon);
@@ -175,8 +177,8 @@ public class PlayerController : UnitController
     public WeaponController EquipWeapon(GameObject weapon)
     {
         if (weapon == null) return null;
-        GameObject weaponObj = Instantiate(weapon, myTran.position, Quaternion.identity);
-        weaponObj.transform.SetParent(myTran, true);
+        GameObject weaponObj = Instantiate(weapon, weaponsTran.position, Quaternion.identity);
+        weaponObj.transform.SetParent(weaponsTran, true);
         WeaponController weaponCtrl = weaponObj.GetComponentInChildren<WeaponController>();
         if (weaponCtrl != null) weaponCtrl.SetPlayer(this);
         return weaponCtrl;

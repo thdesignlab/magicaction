@@ -12,6 +12,7 @@ public class UnitController : PhysicsController
     protected float stackTime = 0;
 
     //詠唱エフェクト
+    protected Dictionary<string, GameObject> chantObjDic = new Dictionary<string, GameObject>();
     protected Dictionary<string, ParticleSystem> chantDic = new Dictionary<string, ParticleSystem>();
 
     //バリアエフェクト
@@ -122,10 +123,11 @@ public class UnitController : PhysicsController
     //詠唱エフェクト設定
     protected void SetChant()
     {
-        Transform parts = myTran.Find(Common.UNIT.PARTS_CHANT);
+        Transform parts = myTran.Find(Common.UNIT.PARTS_CHANTS);
         if (parts == null) return;
         foreach (Transform child in parts) {
-            chantDic.Add(child.name, child.gameObject.GetComponent<ParticleSystem>());
+            chantObjDic.Add(child.name, child.gameObject);
+            //chantDic.Add(child.name, child.gameObject.GetComponentInChildren<ParticleSystem>());
         }
     }
     protected void OnChant(int level, bool flg)
@@ -133,19 +135,19 @@ public class UnitController : PhysicsController
         string targetKey = Common.CO.LEVEL_PREFIX + level.ToString();
         float t = 0;
         ParticleSystem p = null;
-        foreach (string key in chantDic.Keys)
+        foreach (string key in chantObjDic.Keys)
         {
-            if (!chantDic.ContainsKey(key)) continue;
+            if (!chantObjDic.ContainsKey(key)) continue;
             bool isActive = (targetKey == key && flg);
-            if (chantDic[key].gameObject.activeInHierarchy) t = chantDic[key].time;
-            chantDic[key].gameObject.SetActive(isActive);
-            if (chantDic[key].gameObject.activeInHierarchy) p = chantDic[key];
+            //if (chantDic.ContainsKey(key) && chantDic[key].gameObject.activeInHierarchy) t = chantDic[key].time;
+            chantObjDic[key].gameObject.SetActive(isActive);
+            //if (chantDic.ContainsKey(key) && chantDic[key].gameObject.activeInHierarchy) p = chantDic[key];
         }
-        if (p != null)
-        {
-            p.Simulate(t);
-            p.Play();
-        }
+        //if (p != null)
+        //{
+        //    p.Simulate(t);
+        //    p.Play();
+        //}
     }
 
     //バリアエフェクト

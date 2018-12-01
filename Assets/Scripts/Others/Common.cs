@@ -90,12 +90,15 @@ namespace Common
     public static class UNIT
     {
         //詠唱エフェクト
-        public const string PARTS_CHANT = "Chants";
+        public const string PARTS_CHANTS = "Chants";
     }
 
     //### プレイヤー ###
     public static class PLAYER
     {
+        //武器格納
+        public const string PARTS_WEAPONS = "Weapons";
+
         //武器種類
         public const string PARTS_WEAPON_TAP = "TapWeapon";
         public const string PARTS_WEAPON_LONG_TAP = "LongTapWeapon";
