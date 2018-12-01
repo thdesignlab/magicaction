@@ -75,7 +75,7 @@ public class PlayerController : UnitController
         InputManager.Instance.SetReleaseAction(ReleaseAction);
         SetMp(maxMp);
         SetWeapon();
-        popPos = GameObject.Find("PlayerPop").transform.position;
+        popPos = GameObject.FindGameObjectWithTag(Common.CO.TAG_PLAYER_POP).transform.position;
     }
 
     protected override void Update()

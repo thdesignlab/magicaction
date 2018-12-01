@@ -23,7 +23,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private Slider hpSlider;
     private Slider hpAlphaSlider;
     private Slider mpSlider;
-    private Slider mpAlphaSlider;
     private Text totalText;
     private Text killText;
     private Text lostText;
@@ -117,8 +116,8 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     IEnumerator SetStatusSlider()
     {
-        float hpUnit = 0.5f;
-        float mpUnit = 0.5f;
+        float hpUnit = 3.0f;
+        float mpUnit = 3.0f;
         float hpRate = 0;
         float mpRate = 0;
         float diffHpRate = 0;
@@ -158,7 +157,14 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
             if (diffHpRate != 0)
             {
                 diffHpRate = hpUnit * Mathf.Sign(diffHpRate) * deltaTime;
-                hpSlider.value += diffHpRate;
+                if (Mathf.Abs(hpRate - hpSlider.value) > Mathf.Abs(diffHpRate))
+                {
+                    hpSlider.value += diffHpRate;
+                } 
+                else
+                {
+                    hpSlider.value = hpRate;
+                }
                 preHpRate = hpSlider.value;
             }
 
@@ -166,7 +172,14 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
             if (diffMpRate != 0)
             {
                 diffMpRate = mpUnit * Mathf.Sign(diffMpRate) * deltaTime;
-                mpSlider.value += diffMpRate;
+                if (Mathf.Abs(mpRate - mpSlider.value) > Mathf.Abs(diffMpRate))
+                {
+                    mpSlider.value += diffMpRate;
+                }
+                else
+                {
+                    mpSlider.value = mpRate;
+                }
                 preMpRate = mpSlider.value;
                 if (mpBonusCheckTime <= 0)
                 {
@@ -176,6 +189,10 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
             }
             yield return new WaitForSeconds(deltaTime);
         }
+    }
+    private float SliderRate(float f)
+    {
+        return (float)Mathf.Floor(f * 1000) / 1000;
     }
 
     //Timelineセット
