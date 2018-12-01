@@ -1065,7 +1065,7 @@ MonoBehaviour:
   isBreakInvisible: 0
   isGravity: 0
   strength: 0
-  maxHp: 1000
+  maxHp: 2000
   maxMp: 2000
   recoverHp: 0
   recoverMp: 500
@@ -1086,7 +1086,7 @@ MonoBehaviour:
   - {fileID: 1465901182435794, guid: b20d9ff991919fa4d9bfcfa27324e4b2, type: 2}
   dragWeaponList:
   - {fileID: 1693163762052908, guid: 836c899a7b862954cae14f65a7fedf81, type: 2}
-  - {fileID: 1112668793167936, guid: 6fab912d6d6d61949841b51b49bb826f, type: 2}
+  - {fileID: 1513899059552972, guid: f4048af105304404c911785b37c5c038, type: 2}
   - {fileID: 1604644311144064, guid: ec4b61dcec294aa4cbd8663004833f27, type: 2}
   - {fileID: 1260481762692094, guid: 389558da90aea1f459e1c304f48e324a, type: 2}
   playerDragWeaponList:

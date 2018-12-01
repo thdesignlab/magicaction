@@ -9,30 +9,30 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1693163762052908}
+  m_RootGameObject: {fileID: 1513899059552972}
   m_IsPrefabAsset: 1
---- !u!1 &1693163762052908
+--- !u!1 &1513899059552972
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4684539853332820}
-  - component: {fileID: 114103691040809764}
+  - component: {fileID: 4521147879990274}
+  - component: {fileID: 114357651749131086}
   m_Layer: 0
-  m_Name: LineShield
+  m_Name: LineShield2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4684539853332820
+--- !u!4 &4521147879990274
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1693163762052908}
+  m_GameObject: {fileID: 1513899059552972}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,21 +40,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114103691040809764
+--- !u!114 &114357651749131086
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1693163762052908}
+  m_GameObject: {fileID: 1513899059552972}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e8618ea7f3323e4d85cd996a36aa2e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawn: {fileID: 1503602940936532, guid: 6287270ec03b7124881b17323ca1d21c, type: 2}
-  useMp: 50
+  spawn: {fileID: 1852226906058852, guid: 0b636431b7f3e2f4191438a5a17094b8, type: 2}
+  useMp: 100
   maxCount: 0
-  perLength: 3
+  perLength: 5
   multiInterval: 0
-  spawnAngle: 0
-  totalLimit: 50
+  totalLimit: 30
+  isPlayerForward: 1
+  isLineAngle: 0
