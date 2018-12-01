@@ -3,11 +3,15 @@
 public class StageManager : SingletonMonoBehaviour<StageManager>
 {
     [SerializeField]
+    private Common.CO.battleScenes stageName;
+    [SerializeField]
     private Vector2 spawnMin = -Vector2.one;
     [SerializeField]
     private Vector2 spawnMax = Vector2.one;
     [SerializeField]
     private bool isEndless;
+    [SerializeField]
+    private int powerUpRate = 0;
 
     protected override void Awake()
     {
@@ -50,5 +54,21 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
     public bool IsEndless()
     {
         return isEndless;
+    }
+
+    public int GetPowoerUpRate()
+    {
+        return powerUpRate;
+    }
+
+    public string GetStageScene()
+    {
+        int stageIndex = (int)stageName;
+        string sceneName = "";
+        if (Common.CO.scenes.Length > stageIndex)
+        {
+            sceneName = Common.CO.scenes[stageIndex];
+        }
+        return sceneName;
     }
 }

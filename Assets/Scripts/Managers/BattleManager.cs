@@ -2,14 +2,16 @@
 using UnityEngine.UI;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
-using UnityEngine.Assertions;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
 public class BattleManager : SingletonMonoBehaviour<BattleManager>
 {
     private int stageNo;
-    private float battleTime = 0;
+    private float battleEndTime = 0;
+    private int battleLoopCnt = 0;
     private Dictionary<int, GameObject> popEnemy = new Dictionary<int, GameObject>();
     private Dictionary<int, float> popInterval = new Dictionary<int, float>();
     private Dictionary<int, float> popTime = new Dictionary<int, float>();
@@ -28,6 +30,10 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private Text lostText;
     private Text hitText;
 
+    //Stage進捗
+    private Slider progressSlider;
+    private Text progressText;
+
     //メッセージ
     private Text messageText;
 
@@ -41,6 +47,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private int lostScore = 0;
     private int hitScore = 0;
     private PlayableDirector timeline;
+    private TrackAsset[] tracks;
     private PlayerController playerCtrl;
     private bool isPause = false;
     private bool isEndless = false;
@@ -57,9 +64,10 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         { 0, 1.8f},
     };
 
-    const float POWER_UP_RATE = 1.1f;
     const int KILL_POINT = 100;
     const float MP_BONUS_CHECK_TIME = 0.5f;
+    const string PROGRESS_END = "END";
+    const string PROGRESS_WAVE = "Wave";
 
     protected override void Awake()
     {
@@ -73,12 +81,16 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         hpSlider.value = 0;
         mpSlider = battleCanvas.transform.Find("BattleStatus/PlayerStatus/MP").GetComponent<Slider>();
         mpSlider.value = 0;
-        Transform scoresTran = battleCanvas.transform.Find("BattleStatus");
-        totalText = scoresTran.Find("Scores/Total/Score").GetComponent<Text>();
-        killText = scoresTran.Find("Scores/Kill/Score").GetComponent<Text>();
-        lostText = scoresTran.Find("Scores/Lost/Score").GetComponent<Text>();
-        //hitText = scoresTran.Find("Scores/Hit/Score").GetComponent<Text>();
+        Transform battleStatusTran = battleCanvas.transform.Find("BattleStatus");
+        totalText = battleStatusTran.Find("Scores/Total/Score").GetComponent<Text>();
+        killText = battleStatusTran.Find("Scores/Kill/Score").GetComponent<Text>();
+        lostText = battleStatusTran.Find("Scores/Lost/Score").GetComponent<Text>();
+        //hitText = battleStatusTran.Find("Scores/Hit/Score").GetComponent<Text>();
         SetScoreText();
+        progressSlider = battleStatusTran.Find("Progress/Slider").GetComponent<Slider>();
+        progressText = battleStatusTran.Find("Progress/Text").GetComponent<Text>();
+        progressSlider.value = 0;
+        progressText.text = "";
         messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
         resultArea = battleCanvas.transform.Find("Result").gameObject;
         resultArea.SetActive(false);
@@ -94,13 +106,8 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private void Update()
     {
         if (!isBattleStart || isBattleEnd) return;
-        
-        mpBonusCheckTime -= Time.deltaTime;
-        if (mpBonusCheckTime <= 0)
-        {
-            SetMpRateBonus();
-            mpBonusCheckTime = MP_BONUS_CHECK_TIME;
-        }
+
+        SetProgressSlider();
     }
 
     public int GetEnemyCount()
@@ -124,7 +131,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         float diffMpRate = 0;
         float preHpRate = 0;
         float preMpRate = 0;
-        for (; ;)
+        for (; ; )
         {
             if (isPause)
             {
@@ -160,7 +167,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
                 if (Mathf.Abs(hpRate - hpSlider.value) > Mathf.Abs(diffHpRate))
                 {
                     hpSlider.value += diffHpRate;
-                } 
+                }
                 else
                 {
                     hpSlider.value = hpRate;
@@ -198,20 +205,67 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     //Timelineセット
     private void SetStageTimeline()
     {
-        GameObject stage = Resources.Load<GameObject>("Timelines/Stage"+stageNo.ToString());
-        if (stage == null)
+        if (AppManager.Instance.stageObj == null)
         {
-            stage = Resources.Load<GameObject>("Timelines/Stage");
+            Pause();
+            UnityAction callback = () => Return();
+            DialogManager.Instance.OpenMessage("ステージ情報取得に失敗しました。", callback);
+            return;
         }
-        GameObject obj = Instantiate(stage);
+        GameObject obj = Instantiate(AppManager.Instance.stageObj);
         timeline = obj.GetComponent<PlayableDirector>();
         timeline.playOnAwake = false;
+
+        //終了時間
+        tracks = (timeline.playableAsset as TimelineAsset).GetOutputTracks() as TrackAsset[];
+        double end = 0;
+        foreach (TrackAsset track in tracks)
+        {
+            if (end > track.end) continue;
+            end = track.end;
+        }
+        battleEndTime = (float)end;
+        SetPowRate();
+        SetProgressText();
     }
     public void TimelineLoop()
     {
-        if (timeline.state == PlayState.Playing) return;
-        powRate *= POWER_UP_RATE;
+        if (timeline.state == PlayState.Playing || isBattleEnd) return;
+        battleLoopCnt++;
+        SetPowRate();
+        SetProgressText();
         timeline.Play();
+    }
+    private void SetPowRate()
+    {
+        float rate = StageManager.Instance.GetPowoerUpRate();
+        if (StageManager.Instance.IsEndless())
+        {
+            rate *= battleLoopCnt;
+        }
+        powRate = 1 + rate / 100;
+    }
+    private void SetProgressText()
+    {
+        string txt = PROGRESS_END;
+        if (StageManager.Instance.IsEndless())
+        {
+            txt = PROGRESS_WAVE + (battleLoopCnt + 1).ToString();
+        }
+        progressText.text = txt;
+    }
+    private void SetProgressSlider()
+    {
+        float value = 0;
+        if (timeline.state == PlayState.Playing)
+        {
+            value = (float)timeline.time / battleEndTime;
+        }
+        else if (isBattleStart)
+        {
+            value = 1;
+        }
+        progressSlider.value = value;
     }
 
     IEnumerator BattleStart()
@@ -364,6 +418,11 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     public void NextStage()
     {
         Return();
+    }
+
+    public void Retry()
+    {
+        ScreenManager.Instance.SceneLoad(SceneManager.GetActiveScene().name);
     }
 
     //### getter/setter ###

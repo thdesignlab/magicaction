@@ -30,12 +30,16 @@ public class DialogManager : SingletonMonoBehaviour<DialogManager>
     }
 
     //メッセージダイアログ
-    public void OpenSelect(string message, UnityAction decisionAction, string decisionText = TEXT_DECISION)
+    public void OpenMessage(string message, UnityAction decisionAction, string decisionText = TEXT_DECISION)
     {
-        Open(message, "", decisionText, decisionAction, true);
+        Open(message, "", decisionText, decisionAction);
     }
 
     //選択ダイアログ
+    public void OpenSelect(string message, UnityAction decisionAction, string decisionText = TEXT_DECISION, string cancelText = TEXT_CANCEL)
+    {
+        Open(message, "", decisionText, decisionAction, true, cancelText);
+    }
 
     public void Open (
         string message,

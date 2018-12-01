@@ -26,17 +26,14 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
         GameObject stageObj = Resources.Load<GameObject>("UIs/Stage");
         for (int i = 1; i < 20; i++)
         {
+            int stageNo = i;
             GameObject obj = Instantiate(stageObj, Vector2.zero, Quaternion.identity);
             Button btn = obj.GetComponent<Button>();
             obj.transform.Find("No").GetComponent<Text>().text = STAGE_PREFIX+i.ToString();
             obj.transform.Find("Star").GetComponent<Text>().text = "☆☆☆";
-            if (i == 1)
+            if (stageNo <= 2)
             {
-                btn.onClick.AddListener(() => Demo());
-            }
-            else if (i == 2)
-            {
-                btn.onClick.AddListener(() => Demo2());
+                btn.onClick.AddListener(() => StageSelect(stageNo));
             }
             else
             {
@@ -72,7 +69,6 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
             DispStageList(null);
         }
 
-
         InputManager.Instance.SetActive(true);
     }
 
@@ -82,15 +78,39 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
         msgTxt.gameObject.SetActive(false);
         stageList.SetActive(true);
     }
-    private void Demo()
+
+    private void StageSelect(int stageNo)
     {
-        AppManager.Instance.stageNo = 1;
-        ScreenManager.Instance.SceneLoad(Common.CO.SCENE_BATTLE);
-    }
-    private void Demo2()
-    {
-        AppManager.Instance.stageNo = 2;
-        ScreenManager.Instance.SceneLoad(Common.CO.SCENE_BATTLE_LARGE);
+        GameObject stage = Resources.Load<GameObject>("Timelines/Stage" + stageNo.ToString());
+        if (stage == null)
+        {
+            if (AppManager.Instance.isDebug)
+            {
+                stageNo = 0;
+                stage = Resources.Load<GameObject>("Timelines/StageExtra");
+            }
+            else
+            {
+                //error
+                ErrorStageSelect();
+                return;
+            }
+        }
+        string sceneName = stage.GetComponent<StageManager>().GetStageScene();
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            //error
+            ErrorStageSelect();
+            return;
+        }
+        AppManager.Instance.stageNo = stageNo;
+        AppManager.Instance.stageObj = stage;
+        ScreenManager.Instance.SceneLoad(sceneName);
     }
 
+    private void ErrorStageSelect()
+    {
+        UnityAction callback = () => ScreenManager.Instance.SceneLoad(Common.CO.SCENE_TITLE);
+        DialogManager.Instance.OpenMessage("ステージ情報取得に失敗しました。", callback);
+    }
 }

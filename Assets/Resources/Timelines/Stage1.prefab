@@ -52,9 +52,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b93b2718c499bc4ea9ecd99e6459dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageName: 1
   spawnMin: {x: -1, y: -0.8}
   spawnMax: {x: -1, y: 0.9}
   isEndless: 0
+  powerUpRate: 0
 --- !u!320 &320803524034651920
 PlayableDirector:
   m_ObjectHideFlags: 1

@@ -12,7 +12,10 @@ public class AppManager : SingletonMonoBehaviour<AppManager>
     [HideInInspector]
     public bool isOnTapToStart = false;
 
-    public int stageNo = 0;
+    [HideInInspector]
+    public int stageNo;
+    [HideInInspector]
+    public GameObject stageObj;
 
     IEnumerator Start()
     {

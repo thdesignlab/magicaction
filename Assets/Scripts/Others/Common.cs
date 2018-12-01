@@ -29,6 +29,11 @@ namespace Common
             SCENE_BATTLE,
             SCENE_BATTLE_LARGE
         };
+        public enum battleScenes
+        {
+            SCENE_BATTLE = 1,
+            SCENE_BATTLE_LARGE = 2
+        };
 
         //レイヤー
         public const string LAYER_PLAYER = "Player";

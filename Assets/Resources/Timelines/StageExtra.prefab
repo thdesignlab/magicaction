@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 320107974898898994}
   - component: {fileID: 114411964026285250}
   m_Layer: 0
-  m_Name: Stage
+  m_Name: StageExtra
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,9 +52,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b93b2718c499bc4ea9ecd99e6459dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageName: 2
   spawnMin: {x: -1, y: -0.7}
   spawnMax: {x: 1, y: 0.9}
   isEndless: 1
+  powerUpRate: 20
 --- !u!320 &320107974898898994
 PlayableDirector:
   m_ObjectHideFlags: 1
