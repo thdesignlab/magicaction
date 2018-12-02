@@ -91,12 +91,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 0
   spawnObj: {fileID: 1512747981796668, guid: cfc8ad8387379bd4688214c6276450cc, type: 2}
+  isBreakInvisible: 1
   isGravity: 0
   strength: 10
   maxHp: 3
   speed: 5
   bullet: {fileID: 1429345886998256, guid: 0c7874c33fdb67042a20a2fd77b72d33, type: 2}
-  attackInterval: 2.5
+  attackInterval: 3
   rapidCount: 1
 --- !u!212 &212741989172126626
 SpriteRenderer:

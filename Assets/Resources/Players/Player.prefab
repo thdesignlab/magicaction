@@ -1065,10 +1065,10 @@ MonoBehaviour:
   isBreakInvisible: 0
   isGravity: 0
   strength: 0
-  maxHp: 2000
-  maxMp: 2000
+  maxHp: 3000
+  maxMp: 1000
   recoverHp: 0
-  recoverMp: 500
+  recoverMp: 300
   walkSpeed: 3
   tapWeapon: {fileID: 1963503696641010, guid: e0e46350d142e9547843f2ebd9d8d6fb, type: 2}
   playerTapWeapon: {fileID: 1668641894421584, guid: f4f5fa758ea9e5a46bde0e127789df83,

@@ -56,7 +56,7 @@ MonoBehaviour:
   spawnMin: {x: -1, y: -0.7}
   spawnMax: {x: 1, y: 0.9}
   isEndless: 1
-  powerUpRate: 20
+  powerUpRate: 30
 --- !u!320 &320107974898898994
 PlayableDirector:
   m_ObjectHideFlags: 1

@@ -59,7 +59,7 @@ public class PlayerController : UnitController
     private bool isFlying = true;
     private Vector2 returnVelocity = Vector2.zero;
 
-    const float CHARGE_RECOVER_RATE = 0.5f;
+    const float CHARGE_RECOVER_RATE = 0.75f;
 
     protected override void Awake()
     {

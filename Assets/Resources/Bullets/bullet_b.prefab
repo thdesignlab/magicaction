@@ -91,9 +91,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 0
   spawnObj: {fileID: 0}
+  isBreakInvisible: 1
   isGravity: 0
-  strength: 1
-  damage: 2
+  strength: 5
+  damage: 10
   speed: 10
 --- !u!212 &212411620123890196
 SpriteRenderer:

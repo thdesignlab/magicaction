@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawn: {fileID: 1384977128114338, guid: aa45084a2f864a54eb2e643ac06289b3, type: 2}
-  useMp: 500
+  useMp: 300
   rapidCount: 1
   rapidInterval: 0
   deviation: 0

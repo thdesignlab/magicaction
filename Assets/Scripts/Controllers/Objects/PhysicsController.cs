@@ -26,10 +26,6 @@ public class PhysicsController : ObjectController
     protected override void Start()
     {
         base.Start();
-        if (!IsPlayer())
-        {
-            strength = Mathf.RoundToInt(strength * BattleManager.Instance.GetPowRate());
-        }
     }
 
     protected override void Update()

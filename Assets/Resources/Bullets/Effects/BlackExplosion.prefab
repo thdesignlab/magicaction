@@ -743,7 +743,7 @@ MonoBehaviour:
   isBreakInvisible: 1
   isGravity: 0
   strength: 100
-  damage: 10
+  damage: 30
 --- !u!198 &198167321545435516
 ParticleSystem:
   m_ObjectHideFlags: 1

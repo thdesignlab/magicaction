@@ -185,10 +185,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 3
   spawnObj: {fileID: 0}
+  isBreakInvisible: 1
   isGravity: 0
   strength: 0
-  damage: 10
-  useMp: 200
+  damage: 50
+  useMp: 100
 --- !u!198 &198067072932872856
 ParticleSystem:
   m_ObjectHideFlags: 1
