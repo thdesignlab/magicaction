@@ -233,6 +233,14 @@ namespace Common
         {
             return Random.Range(-num, num);
         }
+        public static Vector2 GetTargetWithDeviation(Vector2 sPos, Vector2 ePos, float diff)
+        {
+            if (diff <= 0) return ePos;
+            Vector2 v = (ePos - sPos).normalized * 20;
+            v.x += GetRandom(diff);
+            v.y += GetRandom(diff);
+            return sPos + v;
+        }
 
         //2DLookAt
         public static void LookAt(Transform tran, Vector3 target)

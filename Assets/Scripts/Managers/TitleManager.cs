@@ -20,6 +20,7 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
         msgTxt = titleCanvasTran.Find("Message").GetComponent<Text>();
         msgTxt.gameObject.SetActive(false);
 
+        //ステージリストセット
         Transform stageListTran = titleCanvasTran.Find("StageList");
         stageList = stageListTran.gameObject;
         Transform stageContentTran = stageListTran.Find("Viewport/Content");
@@ -31,14 +32,8 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
             Button btn = obj.GetComponent<Button>();
             obj.transform.Find("No").GetComponent<Text>().text = STAGE_PREFIX+i.ToString();
             obj.transform.Find("Star").GetComponent<Text>().text = "☆☆☆";
-            if (stageNo <= 2)
-            {
-                btn.onClick.AddListener(() => StageSelect(stageNo));
-            }
-            else
-            {
-                btn.interactable = false;
-            }
+            btn.onClick.AddListener(() => StageSelect(stageNo));
+            //btn.interactable = false;
             obj.transform.SetParent(stageContentTran, false);
         }
     }

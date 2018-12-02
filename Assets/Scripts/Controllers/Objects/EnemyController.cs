@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyController : UnitController
 {
     [SerializeField]
     private float speed;
-    [SerializeField]
+    [SerializeField, HeaderAttribute("NormalAttack")]
     private GameObject bullet;
     [SerializeField]
     private float attackInterval;
     [SerializeField]
     private float rapidCount;
+    [SerializeField]
+    private float rapidInterval;
+    [SerializeField]
+    private float deviation;
+
     private float nextAttackTime;
 
     protected GameObject playerObj;
@@ -42,7 +48,7 @@ public class EnemyController : UnitController
             nextAttackTime = attackInterval;
         }
     }
-    
+
     protected override void InitSpeed()
     {
         base.InitSpeed();
@@ -50,19 +56,29 @@ public class EnemyController : UnitController
         SetSpeed(GetForward() * speed);
     }
 
-    IEnumerator Rapid(Vector2 targetPos)
+    protected virtual IEnumerator Rapid(Vector2 targetPos)
     {
-        float diff = 4.0f;
+        if (OnChant(1, true))
+        {
+            yield return new WaitForSeconds(3.0f);
+        }
+
         for (int i = 0; i < rapidCount; i++)
         {
-            Vector2 target = targetPos + new Vector2(Random.Range(-diff, diff), Random.Range(-diff, diff));
-            Spawn(bullet, target);
-            yield return new WaitForSeconds(0.1f);
+            foreach (Transform muzzle in muzzles)
+            {
+                Vector2 target = Common.FUNC.GetTargetWithDeviation(muzzle.position, targetPos, deviation);
+                Spawn(bullet, target, muzzle);
+                yield return null;
+            }
+            yield return new WaitForSeconds(rapidInterval);
         }
+
+        OnChant(1, false);
     }
-    private void Spawn(GameObject spawnObj, Vector2 target)
+    private void Spawn(GameObject spawnObj, Vector2 target, Transform muzzleTran)
     {
-        GameObject obj = Instantiate(spawnObj, myTran.position + new Vector3(1, 0, 0), myTran.rotation);
+        GameObject obj = Instantiate(spawnObj, muzzleTran.position + new Vector3(1, 0, 0), muzzleTran.rotation);
         Common.FUNC.LookAt(obj.transform, target);
     }
 
@@ -72,7 +88,7 @@ public class EnemyController : UnitController
         base.Dead();
     }
 
-    protected void Assault(GameObject obj)
+    protected virtual void Assault(GameObject obj)
     {
         int d = (strength == 0) ? hp * hp : hp * strength;
         obj.GetComponent<UnitController>().Damage(d);

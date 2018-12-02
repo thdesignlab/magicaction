@@ -128,6 +128,8 @@ MonoBehaviour:
   bullet: {fileID: 1660847698679210, guid: e10a5b05db7508543a013e161e925741, type: 2}
   attackInterval: 5
   rapidCount: 1
+  rapidInterval: 0
+  deviation: 3
 --- !u!212 &212878014703937998
 SpriteRenderer:
   m_ObjectHideFlags: 1

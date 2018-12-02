@@ -32,21 +32,15 @@ public class ShootingWeaponController : SpawnWeaponController
     {
         for (int i = 0; i < rapidCount; i++)
         {
-            Common.FUNC.LookAt(myTran, target + GetDeviation());
-            foreach (Transform muzzule in muzzules)
+            Vector2 targetPos = Common.FUNC.GetTargetWithDeviation(myTran.position, target, deviation);
+            Common.FUNC.LookAt(myTran, targetPos);
+            foreach (Transform muzzle in muzzles)
             {
-                Spawn(spawn, muzzule.position, muzzule.rotation);
+                Spawn(spawn, muzzle.position, muzzle.rotation);
                 yield return null;
             }
             yield return new WaitForSeconds(rapidInterval);
         }
     }
 
-    //誤差取得
-    protected Vector2 GetDeviation()
-    {
-        if (deviation == 0) return Vector2.zero;
-        return new Vector2(Common.FUNC.GetRandom(deviation), Common.FUNC.GetRandom(deviation));
-
-    }
 }

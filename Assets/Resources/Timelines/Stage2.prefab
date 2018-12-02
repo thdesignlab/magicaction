@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1192693232700576}
+  m_IsPrefabAsset: 1
+--- !u!1 &1192693232700576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4557634221686538}
+  - component: {fileID: 320427095042956350}
+  - component: {fileID: 114020495594296838}
+  m_Layer: 0
+  m_Name: Stage2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4557634221686538
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1192693232700576}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114020495594296838
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1192693232700576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b93b2718c499bc4ea9ecd99e6459dd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageName: 1
+  spawnMin: {x: -1, y: -0.8}
+  spawnMax: {x: -1, y: 0.9}
+  isBoss: 1
+  isEndless: 1
+  powerUpRate: 0
+--- !u!320 &320427095042956350
+PlayableDirector:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1192693232700576}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 831d306c7815577458b6322c6e243971, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 114964660907518954, guid: 02cf7077188e75747899190c637a9ad4, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 114756112913657346, guid: c5ea1870563f5c04398a3103a74214d7, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 0}
+    value: {fileID: 0}
+  - key: {fileID: 114544159258156760, guid: c5ea1870563f5c04398a3103a74214d7, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 114756112913657346, guid: 831d306c7815577458b6322c6e243971, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 114544159258156760, guid: 831d306c7815577458b6322c6e243971, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 114921155504415954, guid: 831d306c7815577458b6322c6e243971, type: 2}
+    value: {fileID: 0}
+  m_ExposedReferences:
+    m_References: []

@@ -6,11 +6,12 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class BattleManager : SingletonMonoBehaviour<BattleManager>
 {
     private int stageNo;
-    private float battleEndTime = 0;
+    private float battleEndProgress = 0;
     private int battleLoopCnt = 0;
     private Dictionary<int, GameObject> popEnemy = new Dictionary<int, GameObject>();
     private Dictionary<int, float> popInterval = new Dictionary<int, float>();
@@ -49,7 +50,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private int lostScore = 0;
     private int hitScore = 0;
     private PlayableDirector timeline;
-    private TrackAsset[] tracks;
     private PlayerController playerCtrl;
     private bool isPause = false;
     private bool isEndless = false;
@@ -65,6 +65,8 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         { 0.1f, 1.5f},
         { 0, 1.8f},
     };
+
+    private Dictionary<string, EnemyBossController> bossDic = new Dictionary<string, EnemyBossController>();
 
     const int KILL_POINT = 100;
     const float MP_BONUS_CHECK_TIME = 0.5f;
@@ -219,25 +221,43 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         timeline = obj.GetComponent<PlayableDirector>();
         timeline.playOnAwake = false;
 
-        //終了時間
-        tracks = (timeline.playableAsset as TimelineAsset).GetOutputTracks() as TrackAsset[];
-        double end = 0;
+        //プログレスバー
+        string startTxt = PROGRESS_START;
+        string endTxt = PROGRESS_END;
+        TrackAsset[] tracks = (timeline.playableAsset as TimelineAsset).GetOutputTracks() as TrackAsset[];
         foreach (TrackAsset track in tracks)
         {
-            if (end > track.end) continue;
-            end = track.end;
+            if (StageManager.Instance.IsBoss())
+            {
+                //ボス戦の場合はHP
+                IEnumerable<TimelineClip> clips = track.GetClips();
+                TimelineClip clip = clips.FirstOrDefault(x => x.asset is EnemyBossAsset);
+                if (clip == null) continue;
+                EnemyBossAsset eba = (EnemyBossAsset)clip.asset;
+                Debug.Log(eba.name + " >> " + eba.GetBossHp());
+                battleEndProgress += eba.GetBossHp();
+            }
+            else
+            {
+                //通常戦の場合はタイムライン終了時間
+                if (battleEndProgress > track.end) continue;
+                battleEndProgress = (float)track.end;
+            }
         }
-        battleEndTime = (float)end;
+        Debug.Log("battleEndProgress >> " + battleEndProgress);
         SetPowRate();
-        progressStartText.text = !StageManager.Instance.IsEndless() ? PROGRESS_START : "";
-        progressEndText.text = !StageManager.Instance.IsEndless() ? PROGRESS_END : PROGRESS_WAVE + "1";
+        progressStartText.text = startTxt;
+        progressEndText.text = endTxt;
     }
     public void TimelineLoop()
     {
         if (timeline.state == PlayState.Playing || isBattleEnd) return;
-        battleLoopCnt++;
-        SetPowRate();
-        progressEndText.text = PROGRESS_WAVE + (battleLoopCnt + 1).ToString();
+        if (!StageManager.Instance.IsBoss())
+        {
+            battleLoopCnt++;
+            SetPowRate();
+            progressEndText.text = PROGRESS_WAVE + (battleLoopCnt + 1).ToString();
+        }
         timeline.Play();
     }
     private void SetPowRate()
@@ -254,7 +274,19 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         float value = 0;
         if (timeline.state == PlayState.Playing)
         {
-            value = (float)timeline.time / battleEndTime;
+            if (StageManager.Instance.IsBoss())
+            {
+                int totalDamage = 0;
+                foreach (string bossName in bossDic.Keys)
+                {
+                    totalDamage += bossDic[bossName].GetDamage();
+                }
+                value = totalDamage / battleEndProgress;
+            }
+            else
+            {
+                value = (float)timeline.time / battleEndProgress;
+            }
         }
         else if (isBattleStart)
         {
@@ -318,10 +350,21 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
                     StartCoroutine(Result(false));
                     break;
                 }
-                if (timeline.state == PlayState.Paused && GetEnemyCount() == 0)
+                if (StageManager.Instance.IsBoss())
                 {
-                    StartCoroutine(Result(true));
-                    break;
+                    if (progressSlider.value == 1)
+                    {
+                        StartCoroutine(Result(true));
+                        break;
+                    }
+                }
+                else if (timeline.state == PlayState.Paused)
+                {
+                    if (GetEnemyCount() == 0)
+                    {
+                        StartCoroutine(Result(true));
+                        break;
+                    }
                 }
             }
             yield return new WaitForSeconds(1.0f);
@@ -343,10 +386,21 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         yield return null;
     }
 
-    public void SqawnEnemy(GameObject obj, Vector2 pos, Quaternion qua = default(Quaternion))
+    public GameObject SqawnEnemy(GameObject obj, Vector2 pos, Quaternion qua)
+    {
+        if (obj == null) return null;
+        return Instantiate(obj, pos, qua);
+    }
+
+    public void SqawnEnemyBoss(GameObject obj, Vector2 pos, Quaternion qua)
     {
         if (obj == null) return;
-        Instantiate(obj, pos, qua);
+        if (bossDic.ContainsKey(obj.name)) return;
+
+        //召喚演出
+        GameObject bossObj = SqawnEnemy(obj, pos, qua);
+        EnemyBossController bossCtrl = bossObj.GetComponent<EnemyBossController>();
+        bossDic.Add(obj.name, bossCtrl);
     }
 
     public void AddKill(float bonus = 0)

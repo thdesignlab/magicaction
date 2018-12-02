@@ -9,7 +9,7 @@ public class SpawnWeaponController : WeaponController
     [SerializeField]
     protected int useMp;
 
-    protected List<Transform> muzzules = new List<Transform>();
+    protected List<Transform> muzzles = new List<Transform>();
     protected Camera _mainCam;
     protected Camera mainCam { get { return _mainCam ? _mainCam : _mainCam = Camera.main; } }
 
@@ -26,9 +26,9 @@ public class SpawnWeaponController : WeaponController
         foreach (Transform child in myTran)
         {
             if (child.tag != Common.CO.TAG_MUZZLE) continue;
-            muzzules.Add(child);
+            muzzles.Add(child);
         }
-        if (muzzules.Count == 0) muzzules.Add(myTran);
+        if (muzzles.Count == 0) muzzles.Add(myTran);
     }
 
     //MP消費
@@ -46,7 +46,7 @@ public class SpawnWeaponController : WeaponController
     {
         index++;
         UseMp();
-        Transform tran = muzzules.Count > 0 ? muzzules[0] : myTran;
+        Transform tran = muzzles.Count > 0 ? muzzles[0] : myTran;
         Spawn(spawn, tran.position, tran.rotation);
     }
 

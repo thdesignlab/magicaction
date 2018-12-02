@@ -9,6 +9,8 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
     [SerializeField]
     private Vector2 spawnMax = Vector2.one;
     [SerializeField]
+    private bool isBoss;
+    [SerializeField]
     private bool isEndless;
     [SerializeField]
     private int powerUpRate = 0;
@@ -28,9 +30,9 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
         return GetPoint(new Vector2(x, y));
     }
 
-    public Vector2 GetPoint(Vector2 v, bool isAbsolute = true)
+    public Vector2 GetPoint(Vector2 v, bool isAbsolute = true, bool isBoss = false)
     {
-        if (isAbsolute)
+        if (isAbsolute && !isBoss)
         {
             v.x = Mathf.Clamp(v.x, spawnMin.x, spawnMax.x);
             v.y = Mathf.Clamp(v.y, spawnMin.y, spawnMax.y);
@@ -49,6 +51,11 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
         Quaternion qua = Quaternion.identity;
         if (v.x > 0) qua.eulerAngles = Vector2.up * 180;
         return qua;
+    }
+
+    public bool IsBoss()
+    {
+        return isBoss;
     }
 
     public bool IsEndless()

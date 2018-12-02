@@ -43,6 +43,7 @@ public class ObjectController : MonoBehaviour
             if (child.tag != Common.CO.TAG_MUZZLE) continue;
             muzzles.Add(child);
         }
+        if (muzzles.Count == 0) muzzles.Add(myTran);
     }
 
     protected virtual void Start()

@@ -135,8 +135,10 @@ public class UnitController : PhysicsController
             //chantDic.Add(child.name, child.gameObject.GetComponentInChildren<ParticleSystem>());
         }
     }
-    protected void OnChant(int level, bool flg)
+    protected bool OnChant(int level, bool flg)
     {
+        if (chantObjDic.Count == 0) return false;
+
         string targetKey = Common.CO.LEVEL_PREFIX + level.ToString();
         float t = 0;
         ParticleSystem p = null;
@@ -153,6 +155,7 @@ public class UnitController : PhysicsController
         //    p.Simulate(t);
         //    p.Play();
         //}
+        return true;
     }
 
     //バリアエフェクト
@@ -232,5 +235,15 @@ public class UnitController : PhysicsController
     public float GetColliderRadius()
     {
         return colliderRadius;
+    }
+
+    public int GetMaxHp()
+    {
+        return maxHp;
+    }
+
+    public int GetDamage()
+    {
+        return maxHp - hp;
     }
 }
