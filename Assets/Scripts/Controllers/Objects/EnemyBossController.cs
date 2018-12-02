@@ -57,20 +57,20 @@ public class EnemyBossController : EnemyController
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!Common.FUNC.IsStageTag(collision.gameObject.tag)) return;
-        BreakableObjectController breakableObjCtrl = collision.gameObject.GetComponent<BreakableObjectController>();
-        if (breakableObjCtrl == null) return;
-
-        
+        //if (!Common.FUNC.IsStageTag(collision.gameObject.tag)) return;
+        //BreakableObjectController breakableObjCtrl = collision.gameObject.GetComponent<BreakableObjectController>();
+        //if (breakableObjCtrl == null) return;
+        base.OnCollisionEnter2D(collision);
     }
     protected override void OnCollisionStay2D(Collision2D collision)
     {
-        if (!Common.FUNC.IsStageTag(collision.gameObject.tag)) return;
+        //if (!Common.FUNC.IsStageTag(collision.gameObject.tag)) return;
 
-        foreach (ContactPoint2D contact in collision.contacts)
-        {
-            Vector2 p = contact.point - Common.FUNC.ParseVector2(myTran.position);
-            FlickFromStage(p);
-        }
+        //foreach (ContactPoint2D contact in collision.contacts)
+        //{
+        //    Vector2 p = contact.point - Common.FUNC.ParseVector2(myTran.position);
+        //    FlickFromStage(p);
+        //}
+        base.OnCollisionStay2D(collision);
     }
 }

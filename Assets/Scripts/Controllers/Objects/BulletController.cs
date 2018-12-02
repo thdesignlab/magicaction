@@ -11,4 +11,9 @@ public class BulletController : DamageObjectController
         base.Start();
         SetSpeed(GetForward() * speed);
     }
+
+    public int GetSpeed()
+    {
+        return speed;
+    }
 }

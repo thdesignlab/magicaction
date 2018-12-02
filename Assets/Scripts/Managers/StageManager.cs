@@ -26,7 +26,7 @@ public class StageManager : SingletonMonoBehaviour<StageManager>
         float x = Random.Range(spawnMin.x, spawnMax.x);
         x = (x >= 0) ? Mathf.Ceil(x) : Mathf.Floor(x);
         if (x == 0) x = 1;
-        float y = isGround ? -1 : Random.Range(spawnMin.y, spawnMax.y);
+        float y = isGround ? -0.5f : Random.Range(spawnMin.y, spawnMax.y);
         return GetPoint(new Vector2(x, y));
     }
 

@@ -18,6 +18,8 @@ public class EnemyController : UnitController
     private float deviation;
 
     private float nextAttackTime;
+    private bool isBulletGravity = false;
+    private int bulletSpeed;
 
     protected GameObject playerObj;
 
@@ -29,6 +31,15 @@ public class EnemyController : UnitController
 
         rapidCount = (rapidCount > 0) ? rapidCount: 1;
         nextAttackTime = attackInterval;
+        if (bullet != null)
+        {
+            BulletController bulletCtrl = bullet.GetComponent<BulletController>();
+            if (bulletCtrl != null)
+            {
+                isBulletGravity = bulletCtrl.IsGravity();
+                bulletSpeed = bulletCtrl.GetSpeed();
+            }
+        }
     }
 
     protected override void Update()
@@ -63,6 +74,11 @@ public class EnemyController : UnitController
             yield return new WaitForSeconds(3.0f);
         }
 
+        
+        if (isBulletGravity)
+        {
+            targetPos += Vector2.up * ((Vector2)myTran.position - targetPos).magnitude * 2;
+        }
         for (int i = 0; i < rapidCount; i++)
         {
             foreach (Transform muzzle in muzzles)

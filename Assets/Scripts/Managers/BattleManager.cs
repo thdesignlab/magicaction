@@ -234,7 +234,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
                 TimelineClip clip = clips.FirstOrDefault(x => x.asset is EnemyBossAsset);
                 if (clip == null) continue;
                 EnemyBossAsset eba = (EnemyBossAsset)clip.asset;
-                Debug.Log(eba.name + " >> " + eba.GetBossHp());
                 battleEndProgress += eba.GetBossHp();
             }
             else
@@ -244,7 +243,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
                 battleEndProgress = (float)track.end;
             }
         }
-        Debug.Log("battleEndProgress >> " + battleEndProgress);
         SetPowRate();
         progressStartText.text = startTxt;
         progressEndText.text = endTxt;
