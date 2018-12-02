@@ -9,30 +9,30 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1668641894421584}
+  m_RootGameObject: {fileID: 1260481762692094}
   m_IsPrefabAsset: 1
---- !u!1 &1668641894421584
+--- !u!1 &1260481762692094
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4744465638751206}
-  - component: {fileID: 114004691921913300}
+  - component: {fileID: 4153031532375226}
+  - component: {fileID: 114178980172047938}
   m_Layer: 0
-  m_Name: ShockWave
+  m_Name: LineBomb Lv.2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4744465638751206
+--- !u!4 &4153031532375226
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1668641894421584}
+  m_GameObject: {fileID: 1260481762692094}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,16 +40,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114004691921913300
+--- !u!114 &114178980172047938
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1668641894421584}
+  m_GameObject: {fileID: 1260481762692094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e0d30eeb55adc34fa3018e07aaeeec6, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e8618ea7f3323e4d85cd996a36aa2e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawn: {fileID: 1243268846173756, guid: bca5125bdafe5df4fbe535b97b07cbc4, type: 2}
-  useMp: 400
+  spawn: {fileID: 1642625439397002, guid: 861680efc003c274b8e14ae98f077576, type: 2}
+  useMp: 100
+  maxCount: 10
+  perLength: 20
+  multiInterval: 0.05
+  totalLimit: 0
+  isPlayerForward: 0
+  isLineAngle: 0

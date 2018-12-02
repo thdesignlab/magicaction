@@ -22,8 +22,8 @@ public class ShootingWeaponController : SpawnWeaponController
     //発射
     public override void Fire(InputStatus input)
     {
+        index++;
         UseMp();
-
         StartCoroutine(FireProcess(GetTarget(input)));
     }
 

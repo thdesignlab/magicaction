@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4139735043940812}
   - component: {fileID: 114691196059373088}
   m_Layer: 0
-  m_Name: LineBomb2
+  m_Name: LineBomb Lv.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

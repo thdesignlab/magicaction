@@ -42,12 +42,17 @@ public class UnitController : PhysicsController
     }
 
     //被弾
-    public virtual void Damage(int damage)
+    public virtual bool Damage(int damage)
     {
-        if (hp <= 0) return;
+        if (hp <= 0) return false;
         OnBarrier();
         SetHp(-damage);
-        if (hp <= 0) Dead();
+        if (hp <= 0)
+        {
+            Dead();
+            return true;
+        }
+        return false;
     }
 
     //死亡

@@ -42,7 +42,11 @@ public class DamageObjectController : PhysicsController
         int enemyStrength = unitCtrl.GetStrength();
         if (damage > 0)
         {
-            unitCtrl.Damage(damage);
+            bool isKill = unitCtrl.Damage(damage);
+            if (IsPlayer() && weapon != null)
+            {
+                weapon.AddDamageWR(index, damage, isKill);
+            }
         }
         if (tag != Common.CO.TAG_EFFECT)
         {

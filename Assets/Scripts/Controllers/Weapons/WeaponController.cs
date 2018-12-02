@@ -6,10 +6,13 @@ public class WeaponController : MonoBehaviour
 {
     protected Transform myTran;
     protected PlayerController player;
+    protected WeaponResult weaponResult;
+    protected int index = -1;
 
     protected virtual void Awake()
     {
         myTran = transform;
+        weaponResult = new WeaponResult(name);
     }
 
     //Player設定
@@ -28,4 +31,11 @@ public class WeaponController : MonoBehaviour
     {
         return input.GetPoint();
     }
+    
+    //ダメージ情報追加
+    public void AddDamageWR(int i, int damage, bool isKill = false)
+    {
+        weaponResult.AddDamage(i, damage, isKill);
+    }
+
 }

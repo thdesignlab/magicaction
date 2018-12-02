@@ -20,6 +20,7 @@ public class ObjectController : MonoBehaviour
     protected float liveTime = 0;
     protected bool isPreVisible = false;
     protected List<Transform> muzzles = new List<Transform>();
+    protected int index;
 
     protected const float LIMIT_AREA = 50.0f;
     protected const float LIMIT_TIME = 10.0f;
@@ -113,7 +114,7 @@ public class ObjectController : MonoBehaviour
     {
         ObjectController objCtrl = obj.GetComponent<ObjectController>();
         objCtrl.SetPlayer(player);
-        objCtrl.SetWeapon(weapon);
+        objCtrl.SetWeapon(weapon, index);
     }
 
     //### getter/setter ###
@@ -123,9 +124,10 @@ public class ObjectController : MonoBehaviour
         player = p;
     }
 
-    public virtual void SetWeapon(WeaponController w)
+    public virtual void SetWeapon(WeaponController w, int i)
     {
         weapon = w;
+        index = i;
     }
 
     public bool IsPlayer()

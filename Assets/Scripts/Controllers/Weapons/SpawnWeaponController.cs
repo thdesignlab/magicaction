@@ -44,6 +44,7 @@ public class SpawnWeaponController : WeaponController
     //発射
     public override void Fire(InputStatus input)
     {
+        index++;
         UseMp();
         Transform tran = muzzules.Count > 0 ? muzzules[0] : myTran;
         Spawn(spawn, tran.position, tran.rotation);
@@ -60,7 +61,7 @@ public class SpawnWeaponController : WeaponController
         GameObject obj = Instantiate(spawnObj, pos, qua);
         ObjectController objCtrl = obj.GetComponent<ObjectController>();
         objCtrl.SetPlayer(player);
-        objCtrl.SetWeapon(this);
+        objCtrl.SetWeapon(this, index);
         return obj;
     }
 

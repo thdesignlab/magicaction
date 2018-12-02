@@ -34,6 +34,7 @@ public class LineWeaponController : SpawnWeaponController
     //発射
     public override void Fire(InputStatus input)
     {
+        index++;
         if (totalLimit > 0) objList.RemoveAll(o => o == null);
         LineRendererStatus lineStatus = new LineRendererStatus(input.linePositions);
         StartCoroutine(ContinuousSpawn(input.GetStartPoint(), lineStatus.GetEvenlySpacedPoints(maxCount, perLength)));

@@ -32,13 +32,15 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     //Stage進捗
     private Slider progressSlider;
-    private Text progressText;
+    private Text progressStartText;
+    private Text progressEndText;
 
     //メッセージ
     private Text messageText;
 
     //リザルト
     private GameObject resultArea;
+    private Dictionary<string, List<WeaponResult>> weaponResults = new Dictionary<string, List<WeaponResult>>();
 
     private bool isBattleStart = false;
     private bool isBattleEnd = false;
@@ -66,7 +68,8 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     const int KILL_POINT = 100;
     const float MP_BONUS_CHECK_TIME = 0.5f;
-    const string PROGRESS_END = "END";
+    const string PROGRESS_START = "Start";
+    const string PROGRESS_END = "End";
     const string PROGRESS_WAVE = "Wave";
 
     protected override void Awake()
@@ -88,9 +91,9 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         //hitText = battleStatusTran.Find("Scores/Hit/Score").GetComponent<Text>();
         SetScoreText();
         progressSlider = battleStatusTran.Find("Progress/Slider").GetComponent<Slider>();
-        progressText = battleStatusTran.Find("Progress/Text").GetComponent<Text>();
+        progressStartText = battleStatusTran.Find("Progress/Texts/Start").GetComponent<Text>();
+        progressEndText = battleStatusTran.Find("Progress/Texts/End").GetComponent<Text>();
         progressSlider.value = 0;
-        progressText.text = "";
         messageText = battleCanvas.transform.Find("Message").GetComponent<Text>();
         resultArea = battleCanvas.transform.Find("Result").gameObject;
         resultArea.SetActive(false);
@@ -226,14 +229,15 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         }
         battleEndTime = (float)end;
         SetPowRate();
-        SetProgressText();
+        progressStartText.text = !StageManager.Instance.IsEndless() ? PROGRESS_START : "";
+        progressEndText.text = !StageManager.Instance.IsEndless() ? PROGRESS_END : PROGRESS_WAVE + "1";
     }
     public void TimelineLoop()
     {
         if (timeline.state == PlayState.Playing || isBattleEnd) return;
         battleLoopCnt++;
         SetPowRate();
-        SetProgressText();
+        progressEndText.text = PROGRESS_WAVE + (battleLoopCnt + 1).ToString();
         timeline.Play();
     }
     private void SetPowRate()
@@ -244,15 +248,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
             rate *= battleLoopCnt;
         }
         powRate = 1 + rate / 100;
-    }
-    private void SetProgressText()
-    {
-        string txt = PROGRESS_END;
-        if (StageManager.Instance.IsEndless())
-        {
-            txt = PROGRESS_WAVE + (battleLoopCnt + 1).ToString();
-        }
-        progressText.text = txt;
     }
     private void SetProgressSlider()
     {
@@ -424,6 +419,9 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     {
         ScreenManager.Instance.SceneLoad(SceneManager.GetActiveScene().name);
     }
+
+    //### WeaponResult ###
+
 
     //### getter/setter ###
 

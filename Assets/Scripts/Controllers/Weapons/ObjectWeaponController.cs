@@ -13,6 +13,7 @@ public class ObjectWeaponController : SpawnWeaponController
     //発射
     public override void Fire(InputStatus input)
     {
+        index++;
         UseMp();
 
         Vector2 startPoint = input.GetStartPoint();
