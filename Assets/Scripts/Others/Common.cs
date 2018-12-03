@@ -50,6 +50,7 @@ namespace Common
         public const string TAG_PHYSICS = "Physics";
         public const string TAG_EFFECT = "Effect";
         public const string TAG_LASER = "Laser";
+        public const string TAG_LASER_HEAD = "LaserHead";
         public const string TAG_MUZZLE = "Muzzle";
         public const string TAG_PLAYER_POP = "PlayerPop";
         public const string TAG_ENEMY_POP = "EnemyPop";

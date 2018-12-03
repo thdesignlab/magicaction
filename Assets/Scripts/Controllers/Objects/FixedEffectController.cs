@@ -8,13 +8,13 @@ public class FixedEffectController : DamageObjectController
 
     private float ump = 0;
 
-    public override void SetPlayer(PlayerController p)
+    public override void SetWeapon(WeaponController w, int i)
     {
-        base.SetPlayer(p);
+        base.SetWeapon(w, i);
 
-        if (player != null)
+        if (w != null)
         {
-            myTran.SetParent(player.transform, true);
+            myTran.SetParent(w.transform, true);
         }
     }
 

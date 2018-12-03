@@ -9,16 +9,16 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1353957859673988}
+  m_RootGameObject: {fileID: 1336121265940952}
   m_IsPrefabAsset: 1
---- !u!1 &1023990696826418
+--- !u!1 &1238264218590998
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4604902156985532}
+  - component: {fileID: 4992846433995880}
   m_Layer: 0
   m_Name: Muzzle
   m_TagString: Muzzle
@@ -26,62 +26,62 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1353957859673988
+--- !u!1 &1336121265940952
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4003930175282802}
-  - component: {fileID: 114384982270679696}
+  - component: {fileID: 4575994016966892}
+  - component: {fileID: 114877196403943748}
   m_Layer: 0
-  m_Name: FlameRadiation
+  m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4003930175282802
+--- !u!4 &4575994016966892
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1353957859673988}
+  m_GameObject: {fileID: 1336121265940952}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4604902156985532}
+  - {fileID: 4992846433995880}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4604902156985532
+--- !u!4 &4992846433995880
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1023990696826418}
+  m_GameObject: {fileID: 1238264218590998}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4003930175282802}
+  m_Father: {fileID: 4575994016966892}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114384982270679696
+--- !u!114 &114877196403943748
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1353957859673988}
+  m_GameObject: {fileID: 1336121265940952}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c9ff066b706cf8408d386fe6a25bf87, type: 3}
+  m_Script: {fileID: 11500000, guid: da599835bb563c649b5d5e91fa1d0352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isDrag: 1
-  spawn: {fileID: 1638577697223092, guid: 9ac95ea495c2d044abf97dc1f78ff095, type: 2}
-  useMp: 100
-  rapidInterval: 0
-  deviation: 0
+  spawn: {fileID: 1583857083937172, guid: 22812fd49bee6c34cae3d8a4cd013e0d, type: 2}
+  useMp: 50
+  rapidInterval: 0.1
+  deviation: 2

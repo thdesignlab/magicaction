@@ -16,26 +16,26 @@ public class PlayerController : UnitController
 
     //武器
     [SerializeField]
-    private GameObject tapWeapon;
-    private WeaponController tapWeaponCtrl;
-    [SerializeField]
-    private GameObject playerTapWeapon;
-    private WeaponController playerTapWeaponCtrl;
-    [SerializeField]
     private GameObject enemyTapWeapon;
     private WeaponController enemyTapWeaponCtrl;
     [SerializeField]
-    private List<GameObject> longTapWeaponList = new List<GameObject>();
-    private List<WeaponController> longTapWeaponCtrlList = new List<WeaponController>();
+    private List<GameObject> tapWeaponList = new List<GameObject>();
+    private List<WeaponController> tapWeaponCtrlList = new List<WeaponController>();
     [SerializeField]
-    private List<GameObject> playerLongTapWeaponList = new List<GameObject>();
-    private List<WeaponController> playerLongTapWeaponCtrlList = new List<WeaponController>();
+    private List<GameObject> playerTapWeaponList = new List<GameObject>();
+    private List<WeaponController> playerTapWeaponCtrlList = new List<WeaponController>();
     [SerializeField]
     private List<GameObject> dragWeaponList = new List<GameObject>();
     private List<WeaponController> dragWeaponCtrlList = new List<WeaponController>();
     [SerializeField]
+    private List<GameObject> dragingWeaponList = new List<GameObject>();
+    private List<WeaponController> dragingWeaponCtrlList = new List<WeaponController>();
+    [SerializeField]
     private List<GameObject> playerDragWeaponList = new List<GameObject>();
     private List<WeaponController> playerDragWeaponCtrlList = new List<WeaponController>();
+    [SerializeField]
+    private List<GameObject> playerDragingWeaponList = new List<GameObject>();
+    private List<WeaponController> playerDragingWeaponCtrlList = new List<WeaponController>();
     [SerializeField]
     private GameObject flickWeapon;
     private WeaponController flickWeaponCtrl;
@@ -68,6 +68,7 @@ public class PlayerController : UnitController
         InputManager.Instance.SetLongTapAction(LongTapAction);
         InputManager.Instance.SetFlickAction(FlickAction);
         InputManager.Instance.SetDragAction(DragAction);
+        InputManager.Instance.SetDragingAction(DragingAction);
         InputManager.Instance.SetPinchAction(PinchAction);
         InputManager.Instance.SetTwistAction(TwistAction);
 
@@ -163,13 +164,13 @@ public class PlayerController : UnitController
     private void SetWeapon()
     {
         weaponsTran = myTran.Find(Common.PLAYER.PARTS_WEAPONS);
-        tapWeaponCtrl = EquipWeapon(tapWeapon);
-        playerTapWeaponCtrl = EquipWeapon(playerTapWeapon);
         enemyTapWeaponCtrl = EquipWeapon(enemyTapWeapon);
-        longTapWeaponCtrlList = EquipWeapon(longTapWeaponList);
-        playerLongTapWeaponCtrlList = EquipWeapon(playerLongTapWeaponList);
+        tapWeaponCtrlList = EquipWeapon(tapWeaponList);
+        playerTapWeaponCtrlList = EquipWeapon(playerTapWeaponList);
         dragWeaponCtrlList = EquipWeapon(dragWeaponList);
+        dragingWeaponCtrlList = EquipWeapon(dragingWeaponList);
         playerDragWeaponCtrlList = EquipWeapon(playerDragWeaponList);
+        playerDragingWeaponCtrlList = EquipWeapon(playerDragingWeaponList);
         flickWeaponCtrl = EquipWeapon(flickWeapon);
         playerFlickWeaponCtrl = EquipWeapon(playerFlickWeapon);
         pinchWeaponCtrl = EquipWeapon(pinchWeapon);
@@ -214,11 +215,11 @@ public class PlayerController : UnitController
     {
         if (input.isTapPlayer)
         {
-            Fire(playerTapWeaponCtrl, input);
+            Fire(playerTapWeaponCtrlList, input);
         }
         else
         {
-            Fire(tapWeaponCtrl, input);
+            Fire(tapWeaponCtrlList, input);
         }
     }
 
@@ -227,11 +228,11 @@ public class PlayerController : UnitController
     {
         if (input.isTapPlayer)
         {
-            Fire(playerLongTapWeaponCtrlList, input);
+            Fire(playerTapWeaponCtrlList, input);
         }
         else
         {
-            Fire(longTapWeaponCtrlList, input);
+            Fire(tapWeaponCtrlList, input);
         }
     }
 
@@ -253,6 +254,19 @@ public class PlayerController : UnitController
         else
         {
             Fire(dragWeaponCtrlList, input);
+        }
+    }
+
+    //ドラッグ中
+    private void DragingAction(InputStatus input)
+    {
+        if (input.isTapPlayer)
+        {
+            Fire(playerDragingWeaponCtrlList, input);
+        }
+        else
+        {
+            Fire(dragingWeaponCtrlList, input);
         }
     }
 

@@ -183,13 +183,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4d92dddedf09e49913927168f5dfd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 3
+  timeLimit: 0
   spawnObj: {fileID: 0}
   isBreakInvisible: 1
   isGravity: 0
   strength: 0
   damage: 50
-  useMp: 100
+  useMp: 500
 --- !u!198 &198067072932872856
 ParticleSystem:
   m_ObjectHideFlags: 1

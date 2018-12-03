@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69a5371c07acc594cb3e906de19b2a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDrag: 0
   spawn: {fileID: 1831097429608110, guid: 666021322ca5e5047ae716f7f58a3f2e, type: 2}
   useMp: 200
   rapidCount: 10

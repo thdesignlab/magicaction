@@ -194,7 +194,7 @@ public class PhysicsController : ObjectController
     //### イベントハンドラ ###
 
     //衝突判定
-    protected void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         GameObject targetObj = other.gameObject;
         string targetTag = targetObj.tag;

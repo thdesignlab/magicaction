@@ -23,7 +23,7 @@ public class DamageObjectController : PhysicsController
             return;
         }
         base.Update();
-        if (liveTime > 10.0f)
+        if (liveTime > 30.0f)
         {
             Break();
             return;

@@ -10,6 +10,7 @@ using TouchScript.Pointers;
 
 public class InputStatus
 {
+    public bool isReset;
     public bool isLongPressing;
     public bool isTransform;
     public bool isDraging;
@@ -267,13 +268,21 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
             }
             if (isLongPressing)
             {
-                if (dragBorder > GetFixDistance(startPoint, endPoint))
+                if (isLongDraging)
                 {
-                    //長押しレベル
-                    SetPressLevel();
-                } else
+                    ActionInvoke(dragingAction);
+                }
+                else
                 {
-                    isLongDraging = true;
+                    if (dragBorder > GetFixDistance(startPoint, endPoint))
+                    {
+                        //長押しレベル
+                        SetPressLevel();
+                    }
+                    else
+                    {
+                        isLongDraging = true;
+                    }
                 }
             }
         }
@@ -613,7 +622,9 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected void ResetState()
     {
+        ActionInvoke(releaseAction);
         ResetPointer();
+        inputStatus.isReset = true;
         isLongPressing = false;
         isTransform = false;
         isDraging = false;
@@ -631,11 +642,11 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         SetPressLevel(0);
         linePositionList = new List<Vector2>();
         isTapUI = false;
-        ActionInvoke(releaseAction);
     }
 
     protected void SetInputStatus()
     {
+        inputStatus.isReset = false;
         inputStatus.isLongPressing = isLongPressing;
         inputStatus.isTransform = isTransform;
         inputStatus.isDraging = isDraging;

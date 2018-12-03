@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ec2e1624f081744c8c212c46c1d85ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDrag: 1
   upwardWeapon: {fileID: 1772461855685576, guid: 4d7e2478d1866474ebeeff93f4bf994a,
     type: 2}
   frontWeapon: {fileID: 1413776660065308, guid: 78ca5bdc3c193c448a067c382084b871,

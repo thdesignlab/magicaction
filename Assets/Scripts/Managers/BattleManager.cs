@@ -10,7 +10,6 @@ using System.Linq;
 
 public class BattleManager : SingletonMonoBehaviour<BattleManager>
 {
-    private int stageNo;
     private float battleEndProgress = 0;
     private int battleLoopCnt = 0;
     private Dictionary<int, GameObject> popEnemy = new Dictionary<int, GameObject>();
@@ -79,7 +78,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         isDontDestroyOnLoad = false;
         base.Awake();
 
-        stageNo = AppManager.Instance.stageNo;
         battleCanvas = GameObject.Find("BattleCanvas").GetComponent<Canvas>();
         battleCanvas.worldCamera = Camera.main;
         hpSlider = battleCanvas.transform.Find("BattleStatus/PlayerStatus/HP").GetComponent<Slider>();
@@ -464,7 +462,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     public void NextStage()
     {
-        Return();
+        AppManager.Instance.NextStage();
     }
 
     public void Retry()

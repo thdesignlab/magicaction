@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class WeaponController : MonoBehaviour
 {
+    [SerializeField]
+    protected bool isDrag;
     protected Transform myTran;
     protected PlayerController player;
     protected WeaponResult weaponResult;
@@ -29,9 +31,17 @@ public class WeaponController : MonoBehaviour
     //目標ポイント取得
     protected virtual Vector2 GetTarget(InputStatus input)
     {
-        return input.GetPoint();
+        Vector2 target = input.GetPoint();
+        if (isDrag)
+        {
+            Vector2 direction = input.GetStartPoint() - input.GetEndPoint();
+            target = direction + Common.FUNC.ParseVector2(myTran.position);
+        }
+        return target;
+
+
     }
-    
+
     //ダメージ情報追加
     public void AddDamageWR(int i, int damage, bool isKill = false)
     {

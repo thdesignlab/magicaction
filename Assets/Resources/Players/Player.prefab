@@ -1070,30 +1070,28 @@ MonoBehaviour:
   recoverHp: 0
   recoverMp: 300
   walkSpeed: 3
-  tapWeapon: {fileID: 1963503696641010, guid: e0e46350d142e9547843f2ebd9d8d6fb, type: 2}
-  playerTapWeapon: {fileID: 1668641894421584, guid: f4f5fa758ea9e5a46bde0e127789df83,
-    type: 2}
   enemyTapWeapon: {fileID: 0}
-  longTapWeaponList:
-  - {fileID: 0}
+  tapWeaponList:
+  - {fileID: 1963503696641010, guid: e0e46350d142e9547843f2ebd9d8d6fb, type: 2}
   - {fileID: 1613901059813988, guid: bd1a290617b03a846a489b7341859b6e, type: 2}
   - {fileID: 1849405888717946, guid: f61d5fc60f22c054c8e7d0d320aebff7, type: 2}
   - {fileID: 1437253651016208, guid: 615580006638a524a85c92c8fed6ba6c, type: 2}
-  playerLongTapWeaponList:
-  - {fileID: 0}
-  - {fileID: 1275805080978512, guid: 186ddae800b0ca74390140eaa6a92d9d, type: 2}
+  playerTapWeaponList:
+  - {fileID: 1668641894421584, guid: f4f5fa758ea9e5a46bde0e127789df83, type: 2}
   - {fileID: 1457459018339202, guid: 90c2ffeef245db542bdc5f23653748d2, type: 2}
+  - {fileID: 1275805080978512, guid: 186ddae800b0ca74390140eaa6a92d9d, type: 2}
   - {fileID: 1465901182435794, guid: b20d9ff991919fa4d9bfcfa27324e4b2, type: 2}
   dragWeaponList:
   - {fileID: 1693163762052908, guid: 836c899a7b862954cae14f65a7fedf81, type: 2}
   - {fileID: 1513899059552972, guid: f4048af105304404c911785b37c5c038, type: 2}
   - {fileID: 1604644311144064, guid: ec4b61dcec294aa4cbd8663004833f27, type: 2}
   - {fileID: 1260481762692094, guid: 389558da90aea1f459e1c304f48e324a, type: 2}
-  playerDragWeaponList:
-  - {fileID: 1687817729819396, guid: 972d73eca8156c14188e211d3701a118, type: 2}
-  - {fileID: 1592601442713254, guid: 763ecb83276f02a4ea298c78399f7e25, type: 2}
-  - {fileID: 1452018075268276, guid: d90d097c908d59c42819bdcc5eb6e254, type: 2}
-  - {fileID: 1619228401842482, guid: 5fba693281a1f9444a615cd078960602, type: 2}
+  dragingWeaponList: []
+  playerDragWeaponList: []
+  playerDragingWeaponList:
+  - {fileID: 1336121265940952, guid: 22f79f21a36fd9a44b4ffc3e0f8e5054, type: 2}
+  - {fileID: 1252677556055486, guid: 0fc2746a4d631184eb6dcf6ae3561aaf, type: 2}
+  - {fileID: 1017301927834702, guid: 6759d3dd5ce6cf447bfbe29a55f219cf, type: 2}
   flickWeapon: {fileID: 1963503696641010, guid: e0e46350d142e9547843f2ebd9d8d6fb,
     type: 2}
   playerFlickWeapon: {fileID: 0}
