@@ -199,7 +199,7 @@ public class PlayerController : UnitController
     private void Fire(List<WeaponController> weaponCtrlList, InputStatus input)
     {
         if (weaponCtrlList.Count == 0) return;
-        int level = (weaponCtrlList.Count < input.pressLevel) ? weaponCtrlList.Count - 1 : input.pressLevel;
+        int level = (weaponCtrlList.Count <= input.pressLevel) ? weaponCtrlList.Count - 1 : input.pressLevel;
         Fire(weaponCtrlList[level], input);
     }
     private void Fire(WeaponController weaponCtrl, InputStatus input)

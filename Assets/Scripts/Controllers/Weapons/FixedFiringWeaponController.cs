@@ -17,7 +17,6 @@ public class FixedFiringWeaponController : FiringWeaponController
     //発射処理
     protected override IEnumerator Firing(InputStatus input)
     {
-        Debug.Log("Firing");
         objList = new List<GameObject>();
         foreach (Transform muzzle in muzzles)
         {
@@ -26,10 +25,11 @@ public class FixedFiringWeaponController : FiringWeaponController
             objList.Add(obj);
             yield return null;
         }
+        float preTime = 0;
         float subMp = 0;
         for (; ; )
         {
-            if (input.isReset) break;
+            if (preTime >= input.pressTime) break;
             Vector2 targetPos = Common.FUNC.GetTargetWithDeviation(myTran.position, GetTarget(input), deviation);
             Common.FUNC.LookAt(myTran, targetPos);
             subMp += defaultUseMp * Time.deltaTime;
@@ -39,14 +39,14 @@ public class FixedFiringWeaponController : FiringWeaponController
                 subMp -= useMp;
                 UseMp();
             }
+            preTime = input.pressTime;
             yield return null;
         }
-        //foreach (GameObject obj in objList)
-        //{
-        //    if (obj == null) continue;
-        //    obj.GetComponent<ObjectController>().Break();
-        //}
-        Debug.Log("break");
+        foreach (GameObject obj in objList)
+        {
+            if (obj == null) continue;
+            obj.GetComponent<ObjectController>().Break();
+        }
         fireCoroutine = null;
     }
 }
