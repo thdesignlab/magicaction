@@ -62,17 +62,29 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
     private void DispStageList(InputStatus input)
     {
         GameObject stageObj = Resources.Load<GameObject>("UIs/Stage");
-
+        Sprite activeStar = Resources.Load<Sprite>("Sprites/UI_ster_on");
         for (int i = 1; i <= 10; i++)
         {
             int stageNo = i;
             GameObject obj = Instantiate(stageObj, Vector2.zero, Quaternion.identity);
             Button btn = obj.GetComponent<Button>();
             obj.transform.Find("No").GetComponent<Text>().text = STAGE_PREFIX + i.ToString();
-            //obj.transform.Find("Star").GetComponent<Text>().text = "☆☆☆";
-            btn.onClick.AddListener(() => AppManager.Instance.StageSelect(stageNo));
-            //btn.interactable = false;
             obj.transform.SetParent(stageContentTran, false);
+            if (stageNo <= 5)
+            {
+                obj.GetComponent<Button>().interactable = true;
+                int temp = stageNo % 4;
+                for (int j = 1; j <= temp; j++)
+                {
+                    obj.transform.Find("Stars/Star" + j.ToString()).GetComponent<Image>().sprite = activeStar;
+                }
+                btn.onClick.AddListener(() => AppManager.Instance.StageSelect(stageNo));
+            }
+            else
+            {
+                btn.interactable = false;
+            }
+
         }
 
         AppManager.Instance.isOnTapToStart = true;
