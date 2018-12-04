@@ -51,10 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8618ea7f3323e4d85cd996a36aa2e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDrag: 0
   spawn: {fileID: 1503602940936532, guid: 6287270ec03b7124881b17323ca1d21c, type: 2}
-  useMp: 25
+  useMp: 10
   maxCount: 0
-  perLength: 1
+  perLength: 2
   multiInterval: 0
   totalLimit: 50
   isPlayerForward: 1

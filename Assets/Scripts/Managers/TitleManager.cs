@@ -69,7 +69,7 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
             GameObject obj = Instantiate(stageObj, Vector2.zero, Quaternion.identity);
             Button btn = obj.GetComponent<Button>();
             obj.transform.Find("No").GetComponent<Text>().text = STAGE_PREFIX + i.ToString();
-            obj.transform.Find("Star").GetComponent<Text>().text = "☆☆☆";
+            //obj.transform.Find("Star").GetComponent<Text>().text = "☆☆☆";
             btn.onClick.AddListener(() => AppManager.Instance.StageSelect(stageNo));
             //btn.interactable = false;
             obj.transform.SetParent(stageContentTran, false);

@@ -299,8 +299,8 @@ MonoBehaviour:
   spawnObj: {fileID: 1687126525106678, guid: 473e9d4208c32ae4883ee1d13e985c36, type: 2}
   isBreakInvisible: 1
   isGravity: 0
-  strength: 30
-  damage: 5
+  strength: 1
+  damage: 10
   speed: 50
 --- !u!114 &114402348298181916
 MonoBehaviour:
