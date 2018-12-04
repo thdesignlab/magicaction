@@ -106,8 +106,8 @@ public class EnemyController : UnitController
 
     protected virtual void Assault(GameObject obj)
     {
-        int d = (strength == 0) ? hp * hp : hp * strength;
-        obj.GetComponent<UnitController>().Damage(d);
+        float d = (strength == 0) ? hp * hp : hp * strength;
+        obj.GetComponent<UnitController>().Damage((int)d);
         base.Dead();
     }
 

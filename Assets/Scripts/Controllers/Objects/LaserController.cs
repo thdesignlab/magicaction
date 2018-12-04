@@ -11,8 +11,8 @@ public class LaserController : DamageObjectController
     protected float scaleTime;
 
     protected BoxCollider2D boxCollider;
-    protected int defaultDamage;
-    protected int defaultStrength;
+    protected float defaultDamage;
+    protected float defaultStrength;
 
 
     protected override void Awake()
@@ -74,9 +74,7 @@ public class LaserController : DamageObjectController
                 PhysicsController phyCtrl = obj.GetComponent<PhysicsController>();
                 if (phyCtrl.IsPlayer() != IsPlayer())
                 {
-                    int myStrength = GetStrength();
-                    int enemyStrength = phyCtrl.GetStrength();
-                    Scrape(enemyStrength);
+                    float myStrength = GetStrength();
                     phyCtrl.Scrape(myStrength);
                 }
                 break;
@@ -96,8 +94,8 @@ public class LaserController : DamageObjectController
     {
         GameObject targetObj = other.gameObject;
         string targetTag = targetObj.tag;
-        //damage = defaultDamage * deltaTime;
-        //strength = GetStrength() * deltaTime;
+        damage = defaultDamage * deltaTime;
+        strength = defaultStrength * deltaTime;
 
         //衝突対象判定
         if (Common.FUNC.IsUnitTag(targetTag))
@@ -106,6 +104,7 @@ public class LaserController : DamageObjectController
         }
         else if (Common.FUNC.IsDamageObjectTag(targetTag))
         {
+            Debug.Log(strength);
             HitDamageObject(targetObj);
         }
         else if (Common.FUNC.IsStageTag(targetTag))

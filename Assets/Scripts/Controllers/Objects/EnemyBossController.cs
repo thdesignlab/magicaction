@@ -7,7 +7,7 @@ public class EnemyBossController : EnemyController
     [SerializeField]
     protected List<GameObject> weaponList = new List<GameObject>();
 
-    protected int maxStrength;
+    protected float maxStrength;
     protected bool isReady = false;
 
     protected override void Awake()

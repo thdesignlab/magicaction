@@ -25,6 +25,7 @@ public class FiringWeaponController : SpawnWeaponController
         float preTime = 0;
         for (; ; )
         {
+            Debug.Log(preTime +" >> "+input.pressTime);
             if (preTime >= input.pressTime) break;
             Vector2 targetPos = Common.FUNC.GetTargetWithDeviation(myTran.position, GetTarget(input), deviation);
             Common.FUNC.LookAt(myTran, targetPos);

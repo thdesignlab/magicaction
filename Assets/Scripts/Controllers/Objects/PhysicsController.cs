@@ -6,7 +6,7 @@ public class PhysicsController : ObjectController
     [SerializeField]
     private bool isGravity;
     [SerializeField]
-    protected int strength;
+    protected float strength;
 
     protected Rigidbody2D myBody;
     protected Vector2 myVelocity = Vector2.zero;
@@ -15,6 +15,7 @@ public class PhysicsController : ObjectController
     protected bool isGround = false;
     protected GameObject groundObj;
     protected bool isKnockBack = false;
+    protected float floatPower = 0;
 
     protected override void Awake()
     {
@@ -173,6 +174,15 @@ public class PhysicsController : ObjectController
             Break();
         }
     }
+    public void Scrape(float power)
+    {
+        floatPower += power;
+        if (floatPower < 1) return;
+
+        int p = Mathf.FloorToInt(floatPower);
+        Scrape(p);
+        floatPower -= p;
+    }
 
     //接地処理
     protected void SetGround(GameObject ground = null)
@@ -217,7 +227,7 @@ public class PhysicsController : ObjectController
 
     //### getter/setter ###
 
-    public int GetStrength()
+    public float GetStrength()
     {
         if (tag == Common.CO.TAG_EFFECT && strength == 0) return -1;
         return strength;

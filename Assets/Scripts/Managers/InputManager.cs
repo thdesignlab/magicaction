@@ -141,21 +141,81 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     protected GestureAction twistingAction;
 
     //一時格納
-    protected bool isLongPressing = false;
-    protected bool isTransform = false;
-    protected bool isDraging = false;
-    protected bool isPinching = false;
-    protected bool isTwisting = false;
-    protected bool isLongDraging = false;
-    protected bool isTapPlayer = false;
-    protected Vector2 point = Vector2.zero;
-    protected Vector2 prePoint = Vector2.zero;
-    protected Vector2 startPoint = Vector2.zero;
-    protected Vector2 endPoint = Vector2.zero;
-    protected float totalPinch = 0;
-    protected float totalTwist = 0;
-    protected float pressTime = 0;
-    protected int pressLevel = 0;
+    protected bool isLongPressing
+    {
+        get { return inputStatus.isLongPressing; }
+        set { inputStatus.isLongPressing = value; }
+    }
+    protected bool isTransform
+    {
+        get { return inputStatus.isTransform; }
+        set { inputStatus.isTransform = value; }
+    }
+    protected bool isDraging
+    {
+        get { return inputStatus.isDraging; }
+        set { inputStatus.isDraging = value; }
+    }
+    protected bool isPinching
+    {
+        get { return inputStatus.isPinching; }
+        set { inputStatus.isPinching = value; }
+    }
+    protected bool isTwisting
+    {
+        get { return inputStatus.isTwisting; }
+        set { inputStatus.isTwisting = value; }
+    }
+    protected bool isLongDraging
+    {
+        get { return inputStatus.isLongDraging; }
+        set { inputStatus.isLongDraging = value; }
+    }
+    protected bool isTapPlayer
+    {
+        get { return inputStatus.isTapPlayer; }
+        set { inputStatus.isTapPlayer = value; }
+    }
+    protected Vector2 point
+    {
+        get { return inputStatus.point; }
+        set { inputStatus.point = value; }
+    }
+    protected Vector2 prePoint
+    {
+        get { return inputStatus.prePoint; }
+        set { inputStatus.prePoint = value; }
+    }
+    protected Vector2 startPoint
+    {
+        get { return inputStatus.startPoint; }
+        set { inputStatus.startPoint = value; }
+    }
+    protected Vector2 endPoint
+    {
+        get { return inputStatus.endPoint; }
+        set { inputStatus.endPoint = value; }
+    }
+    protected float totalPinch
+    {
+        get { return inputStatus.totalPinch; }
+        set { inputStatus.totalPinch = value; }
+    }
+    protected float totalTwist
+    {
+        get { return inputStatus.totalTwist; }
+        set { inputStatus.totalTwist = value; }
+    }
+    protected float pressTime
+    {
+        get { return inputStatus.pressTime; }
+        set { inputStatus.pressTime = value; }
+    }
+    protected int pressLevel
+    {
+        get { return inputStatus.pressLevel; }
+        set { inputStatus.pressLevel = value; }
+    }
 
     protected InputStatus inputStatus;
     protected Camera mainCam;
@@ -187,6 +247,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         pointerObj = GetPointer(pointer);
         pointerStartObj = GetPointer(pointerStart, isMultiLineStartPointer);
         pointerLongObj = GetPointer(pointerLong, isMultiLineLongPointer);
+        ResetState(false);
     }
 
     public void SetActive(bool flg)
@@ -619,9 +680,9 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         ResetState();
     }
 
-    protected void ResetState()
+    protected void ResetState(bool isAction = true)
     {
-        ActionInvoke(releaseAction);
+        if (isAction) ActionInvoke(releaseAction);
         ResetPointer();
         isLongPressing = false;
         isTransform = false;
@@ -644,21 +705,6 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected void SetInputStatus()
     {
-        inputStatus.isLongPressing = isLongPressing;
-        inputStatus.isTransform = isTransform;
-        inputStatus.isDraging = isDraging;
-        inputStatus.isPinching = isPinching;
-        inputStatus.isTwisting = isTwisting;
-        inputStatus.isLongDraging = isLongDraging;
-        inputStatus.isTapPlayer = isTapPlayer;
-        inputStatus.point = point;
-        inputStatus.prePoint = prePoint;
-        inputStatus.startPoint = startPoint;
-        inputStatus.endPoint = endPoint;
-        inputStatus.totalPinch = totalPinch;
-        inputStatus.totalTwist = totalTwist;
-        inputStatus.pressTime = pressTime;
-        inputStatus.pressLevel = pressLevel;
         inputStatus.linePositions = linePositionList;
     }
 

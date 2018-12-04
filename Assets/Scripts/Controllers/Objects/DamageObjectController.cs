@@ -4,7 +4,7 @@ using System.Collections;
 public class DamageObjectController : PhysicsController
 {
     [SerializeField]
-    protected int damage;
+    protected float damage;
 
     protected override void Start()
     {
@@ -39,7 +39,7 @@ public class DamageObjectController : PhysicsController
         if (obj.tag != Common.CO.TAG_PLAYER && !IsPlayer()) return;
 
         UnitController unitCtrl = obj.GetComponent<UnitController>();
-        int enemyStrength = unitCtrl.GetStrength();
+        float enemyStrength = unitCtrl.GetStrength();
         if (damage > 0)
         {
             bool isKill = unitCtrl.Damage(damage);
@@ -50,7 +50,7 @@ public class DamageObjectController : PhysicsController
         }
         if (tag != Common.CO.TAG_EFFECT)
         {
-            Scrape(enemyStrength);
+            Scrape((int)enemyStrength);
         }
     }
 
@@ -67,9 +67,8 @@ public class DamageObjectController : PhysicsController
         //自分の弾同士はスルー
         if (dmgObjCtrl.IsPlayer()) return;
 
-        int myStrength = GetStrength();
-        int enemyStrength = dmgObjCtrl.GetStrength();
-
+        float myStrength = GetStrength();
+        float enemyStrength = dmgObjCtrl.GetStrength();
         if (tag != Common.CO.TAG_EFFECT)
         {
             //相手の弾による耐久値減少
@@ -97,8 +96,8 @@ public class DamageObjectController : PhysicsController
                 PhysicsController phyCtrl = obj.GetComponent<PhysicsController>();
                 if (phyCtrl.IsPlayer() != IsPlayer())
                 {
-                    int myStrength = GetStrength();
-                    int enemyStrength = phyCtrl.GetStrength();
+                    float myStrength = GetStrength();
+                    float enemyStrength = phyCtrl.GetStrength();
                     Scrape(enemyStrength);
                     phyCtrl.Scrape(myStrength);
                 }

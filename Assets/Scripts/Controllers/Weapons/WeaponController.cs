@@ -43,7 +43,7 @@ public class WeaponController : MonoBehaviour
     }
 
     //ダメージ情報追加
-    public void AddDamageWR(int i, int damage, bool isKill = false)
+    public void AddDamageWR(int i, float damage, bool isKill = false)
     {
         weaponResult.AddDamage(i, damage, isKill);
     }

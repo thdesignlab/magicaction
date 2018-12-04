@@ -58,7 +58,7 @@ public class UnitController : PhysicsController
     public virtual bool Damage(float damage)
     {
         floatDamage += damage;
-        if (floatDamage <= 0) return false;
+        if (floatDamage < 1) return false;
 
         int d = Mathf.FloorToInt(floatDamage);
         bool isKill = Damage(d);
