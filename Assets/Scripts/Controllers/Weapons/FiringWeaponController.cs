@@ -22,9 +22,10 @@ public class FiringWeaponController : SpawnWeaponController
     //発射処理
     protected virtual IEnumerator Firing(InputStatus input)
     {
+        float preTime = 0;
         for (; ; )
         {
-            if (input.isReset) break;
+            if (preTime >= input.pressTime) break;
             Vector2 targetPos = Common.FUNC.GetTargetWithDeviation(myTran.position, GetTarget(input), deviation);
             Common.FUNC.LookAt(myTran, targetPos);
             foreach (Transform muzzle in muzzles)
@@ -33,6 +34,7 @@ public class FiringWeaponController : SpawnWeaponController
                 yield return null;
             }
             UseMp();
+            preTime = input.pressTime;
             yield return new WaitForSeconds(rapidInterval);
         }
         fireCoroutine = null;

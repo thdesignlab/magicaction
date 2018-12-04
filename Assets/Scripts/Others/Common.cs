@@ -39,6 +39,7 @@ namespace Common
         public const string LAYER_PLAYER = "Player";
         public const string LAYER_PLAYER_BODY = "PlayerBody";
         public const string LAYER_UI = "UI";
+        public const string LAYER_OBJECT = "Object";
 
         //タグ
         public const string TAG_PLAYER = "Player";

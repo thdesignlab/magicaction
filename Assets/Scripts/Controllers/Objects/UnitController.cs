@@ -10,6 +10,7 @@ public class UnitController : PhysicsController
     protected int hp = 0;
     protected float colliderRadius;
     protected float stackTime = 0;
+    protected float floatDamage = 0;
 
     //詠唱エフェクト
     protected Dictionary<string, GameObject> chantObjDic = new Dictionary<string, GameObject>();
@@ -53,6 +54,16 @@ public class UnitController : PhysicsController
             return true;
         }
         return false;
+    }
+    public virtual bool Damage(float damage)
+    {
+        floatDamage += damage;
+        if (floatDamage <= 0) return false;
+
+        int d = Mathf.FloorToInt(floatDamage);
+        bool isKill = Damage(d);
+        floatDamage -= d;
+        return isKill;
     }
 
     //死亡

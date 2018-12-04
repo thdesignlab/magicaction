@@ -10,7 +10,6 @@ using TouchScript.Pointers;
 
 public class InputStatus
 {
-    public bool isReset;
     public bool isLongPressing;
     public bool isTransform;
     public bool isDraging;
@@ -624,7 +623,6 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     {
         ActionInvoke(releaseAction);
         ResetPointer();
-        inputStatus.isReset = true;
         isLongPressing = false;
         isTransform = false;
         isDraging = false;
@@ -646,7 +644,6 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 
     protected void SetInputStatus()
     {
-        inputStatus.isReset = false;
         inputStatus.isLongPressing = isLongPressing;
         inputStatus.isTransform = isTransform;
         inputStatus.isDraging = isDraging;

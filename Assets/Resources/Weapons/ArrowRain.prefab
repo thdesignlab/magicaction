@@ -256,6 +256,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDrag: 1
   spawn: {fileID: 1847883947003740, guid: 17caf87870290d448af34437c6e96587, type: 2}
-  useMp: 70
+  useMp: 50
   rapidInterval: 0.1
   deviation: 1

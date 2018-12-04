@@ -11,12 +11,17 @@ public class LaserController : DamageObjectController
     protected float scaleTime;
 
     protected BoxCollider2D boxCollider;
+    protected int defaultDamage;
+    protected int defaultStrength;
+
 
     protected override void Awake()
     {
         base.Awake();
 
         boxCollider = myTran.GetComponent<BoxCollider2D>();
+        defaultDamage = damage;
+        defaultStrength = GetStrength();
         SetLaserHead(maxLength);
     }
 
@@ -32,6 +37,18 @@ public class LaserController : DamageObjectController
     protected override void Update()
     {
         base.Update();
+        if (player != null) liveTime = 0;
+        LayerMask mask = Common.FUNC.GetLayerMask(Common.CO.LAYER_OBJECT);
+        RaycastHit2D hit = Physics2D.Raycast(myTran.position, GetForward(), maxLength, mask);
+        if (hit)
+        {
+            SetLaserHead(hit.point);
+        }
+        else
+        {
+            SetLaserHead(maxLength);
+        }
+
     }
 
     protected void SetLaserHead(Vector2 pos)
@@ -42,9 +59,28 @@ public class LaserController : DamageObjectController
     protected void SetLaserHead(float length)
     {
         if (length > maxLength) length = maxLength;
-        laserHead.position = new Vector2(length, 0);
+        laserHead.localPosition = new Vector2(length, 0);
         boxCollider.size = new Vector2(length, boxCollider.size.y);
         boxCollider.offset = new Vector2(length / 2, boxCollider.offset.y);
+    }
+
+    //ステージに衝突
+    protected override void HitStage(GameObject obj)
+    {
+        switch (obj.tag)
+        {
+            case Common.CO.TAG_OBJECT:
+            case Common.CO.TAG_EQUIP_OBJECT:
+                PhysicsController phyCtrl = obj.GetComponent<PhysicsController>();
+                if (phyCtrl.IsPlayer() != IsPlayer())
+                {
+                    int myStrength = GetStrength();
+                    int enemyStrength = phyCtrl.GetStrength();
+                    Scrape(enemyStrength);
+                    phyCtrl.Scrape(myStrength);
+                }
+                break;
+        }
     }
 
     //### イベントハンドラ ###
@@ -52,26 +88,7 @@ public class LaserController : DamageObjectController
     //衝突判定
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        GameObject targetObj = other.gameObject;
-        string targetTag = targetObj.tag;
-
-        Vector2 hitPos = other.bounds.ClosestPoint(myTran.position);
-        //Debug.Log(targetObj.name+" >> "+ hitPos);
-
-        //衝突対象判定
-        SetLaserHead(hitPos);
-        //if (Common.FUNC.IsUnitTag(targetTag))
-        //{
-        //    HitUnit(targetObj);
-        //}
-        //else if (Common.FUNC.IsDamageObjectTag(targetTag))
-        //{
-        //    HitDamageObject(targetObj);
-        //}
-        //else if (Common.FUNC.IsStageTag(targetTag))
-        //{
-        //    HitStage(targetObj);
-        //}
+        return;
     }
 
     //接触判定
@@ -79,25 +96,21 @@ public class LaserController : DamageObjectController
     {
         GameObject targetObj = other.gameObject;
         string targetTag = targetObj.tag;
+        //damage = defaultDamage * deltaTime;
+        //strength = GetStrength() * deltaTime;
 
-        ////衝突対象判定
-        //if (Common.FUNC.IsUnitTag(targetTag))
-        //{
-        //    HitUnit(targetObj);
-        //}
-        //else if (Common.FUNC.IsDamageObjectTag(targetTag))
-        //{
-        //    HitDamageObject(targetObj);
-        //}
-        //else if (Common.FUNC.IsStageTag(targetTag))
-        //{
-        //    HitStage(targetObj);
-        //}
-
-    }
-
-    protected void OnTriggerExit2D(Collider2D collision)
-    {
-        SetLaserHead(maxLength);
+        //衝突対象判定
+        if (Common.FUNC.IsUnitTag(targetTag))
+        {
+            HitUnit(targetObj);
+        }
+        else if (Common.FUNC.IsDamageObjectTag(targetTag))
+        {
+            HitDamageObject(targetObj);
+        }
+        else if (Common.FUNC.IsStageTag(targetTag))
+        {
+            HitStage(targetObj);
+        }
     }
 }
