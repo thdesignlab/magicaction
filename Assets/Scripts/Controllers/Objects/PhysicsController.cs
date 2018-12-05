@@ -16,12 +16,14 @@ public class PhysicsController : ObjectController
     protected GameObject groundObj;
     protected bool isKnockBack = false;
     protected float floatPower = 0;
+    protected float maxStrength;
 
     protected override void Awake()
     {
         base.Awake();
         myBody = GetComponent<Rigidbody2D>();
         myG = Physics2D.gravity;
+        maxStrength = strength;
     }
 
     protected override void Start()

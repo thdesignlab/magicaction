@@ -108,6 +108,7 @@ public class UnitController : PhysicsController
             yield return null;
         }
 
+        strength = maxStrength;
         InitSpeed();
     }
 
@@ -229,7 +230,18 @@ public class UnitController : PhysicsController
                 //    //乗り越えられないオブジェクトと衝突
                 //    StartCoroutine(Stack(1.5f));
                 //}
-                StartCoroutine(Stack(1.5f));
+                PhysicsController phyCtrl = collision.gameObject.GetComponent<PhysicsController>();
+                if (phyCtrl != null && strength > 0)
+                {
+                    float stageStrength = phyCtrl.GetStrength();
+                    phyCtrl.Scrape(strength);
+                    strength -= stageStrength;
+                }
+                if (strength <= 0)
+                {
+                    strength = 0;
+                    StartCoroutine(Stack(1.5f));
+                }
             }
             FlickFromStage(p);
         }
