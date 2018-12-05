@@ -56,8 +56,7 @@ public class ObjectController : MonoBehaviour
         liveTime += deltaTime;
         if (timeLimit > 0)
         {
-            timeLimit -= deltaTime;
-            if (timeLimit <= 0)
+            if (timeLimit <= liveTime)
             {
                 Break();
                 return;

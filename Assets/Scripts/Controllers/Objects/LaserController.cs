@@ -50,18 +50,27 @@ public class LaserController : DamageObjectController
         strength = defaultStrength * deltaTime;
 
         if (player != null) liveTime = 0;
+        bool isHitEffect = false;
         LayerMask mask = Common.FUNC.GetLayerMask(raycastHitLayers);
-        RaycastHit2D hit = Physics2D.Raycast(myTran.position, GetForward(), maxLength, mask);
-        if (hit)
+        RaycastHit2D[] hits = Physics2D.RaycastAll(myTran.position, GetForward(), maxLength, mask);
+        if (hits.Length > 0)
         {
-            SetLaserHead(hit.point);
-            SwitchHitEffect(true);
+            foreach (RaycastHit2D hit in hits)
+            {
+                ObjectController objCtrl = hit.collider.GetComponent<ObjectController>();
+                if (objCtrl == null || !objCtrl.IsPlayer())
+                {
+                    SetLaserHead(hit.point);
+                    isHitEffect = true;
+                    break;
+                }
+            }
         }
-        else
+        if (!isHitEffect)
         {
             SetLaserHead(maxLength);
-            SwitchHitEffect(false);
         }
+        SwitchHitEffect(isHitEffect);
         StayAction();
     }
 
