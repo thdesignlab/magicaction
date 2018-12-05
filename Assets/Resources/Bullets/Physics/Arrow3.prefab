@@ -225,8 +225,8 @@ MonoBehaviour:
   spawnObj: {fileID: 0}
   isBreakInvisible: 0
   isGravity: 1
-  strength: 15
-  damage: 3
+  strength: 5
+  damage: 1
   speed: 28
   speedDeviation: 5
 --- !u!198 &198086938298281728

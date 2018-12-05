@@ -314,7 +314,7 @@ MonoBehaviour:
   isBreakInvisible: 1
   isGravity: 0
   strength: 600
-  damage: 1000
+  damage: 1200
   speed: 5
 --- !u!198 &198944515789088606
 ParticleSystem:

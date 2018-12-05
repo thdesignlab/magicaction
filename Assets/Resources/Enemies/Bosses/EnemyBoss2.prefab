@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4670647374857628}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Muzzle
   m_TagString: Muzzle
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 33594434548144966}
   - component: {fileID: 23570803955913934}
   - component: {fileID: 114118593594797346}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: aura2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4762852794742028}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Chants
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 33492913128513884}
   - component: {fileID: 23584853363695348}
   - component: {fileID: 114068381212382338}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: aura2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 4296439951497672}
   - component: {fileID: 198265653777780608}
   - component: {fileID: 199658482361290460}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4651682426956146}
   - component: {fileID: 212142948208288684}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4200297583127506}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Level1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 50398778972832660}
   - component: {fileID: 58132847826325536}
   - component: {fileID: 114538514828628898}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: EnemyBoss2
   m_TagString: EnemyBoss
   m_Icon: {fileID: 0}

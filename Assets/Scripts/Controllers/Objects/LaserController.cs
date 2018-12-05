@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LaserController : DamageObjectController
 {
+    [SerializeField]
+    protected GameObject hitEffect;
     [SerializeField]
     protected Transform laserHead;
     [SerializeField]
@@ -13,7 +16,12 @@ public class LaserController : DamageObjectController
     protected BoxCollider2D boxCollider;
     protected float defaultDamage;
     protected float defaultStrength;
+    protected List<Collider2D> stayList = new List<Collider2D>();
 
+    protected string[] raycastHitLayers = new string[] {
+        Common.CO.LAYER_ENEMY_BOSS,
+        Common.CO.LAYER_OBJECT,
+    };
 
     protected override void Awake()
     {
@@ -37,20 +45,27 @@ public class LaserController : DamageObjectController
     protected override void Update()
     {
         base.Update();
+
+        damage = defaultDamage * deltaTime;
+        strength = defaultStrength * deltaTime;
+
         if (player != null) liveTime = 0;
-        LayerMask mask = Common.FUNC.GetLayerMask(Common.CO.LAYER_OBJECT);
+        LayerMask mask = Common.FUNC.GetLayerMask(raycastHitLayers);
         RaycastHit2D hit = Physics2D.Raycast(myTran.position, GetForward(), maxLength, mask);
         if (hit)
         {
             SetLaserHead(hit.point);
+            SwitchHitEffect(true);
         }
         else
         {
             SetLaserHead(maxLength);
+            SwitchHitEffect(false);
         }
-
+        StayAction();
     }
 
+    //レーザー先端設定
     protected void SetLaserHead(Vector2 pos)
     {
         float length = ((Vector2)myTran.position - pos).magnitude;
@@ -62,6 +77,11 @@ public class LaserController : DamageObjectController
         laserHead.localPosition = new Vector2(length, 0);
         boxCollider.size = new Vector2(length, boxCollider.size.y);
         boxCollider.offset = new Vector2(length / 2, boxCollider.offset.y);
+    }
+
+    protected void SwitchHitEffect(bool flg)
+    {
+        if (hitEffect != null) hitEffect.SetActive(flg);
     }
 
     //ステージに衝突
@@ -81,35 +101,61 @@ public class LaserController : DamageObjectController
         }
     }
 
+    //衝突Colliderリスト
+    protected void EnterColliderList(Collider2D other)
+    {
+        if (stayList.Contains(other)) return;
+        stayList.Add(other);
+    }
+    protected void ExitColliderList(Collider2D other)
+    {
+        stayList.Remove(other);
+    }
+
+    //接触中処理
+    protected void StayAction()
+    {
+        stayList.RemoveAll(o => o == null);
+        List<Collider2D> tempList = new List<Collider2D>(stayList);
+        foreach (Collider2D other in tempList)
+        {
+            if (other == null) continue;
+            GameObject targetObj = other.gameObject;
+            string targetTag = targetObj.tag;
+
+            //衝突対象判定
+            if (Common.FUNC.IsUnitTag(targetTag))
+            {
+                HitUnit(targetObj);
+            }
+            else if (Common.FUNC.IsDamageObjectTag(targetTag))
+            {
+                HitDamageObject(targetObj);
+            }
+            else if (Common.FUNC.IsStageTag(targetTag))
+            {
+                HitStage(targetObj);
+            }
+        }
+    }
+
     //### イベントハンドラ ###
 
     //衝突判定
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        return;
+        EnterColliderList(other);
     }
 
     //接触判定
     protected void OnTriggerStay2D(Collider2D other)
     {
-        GameObject targetObj = other.gameObject;
-        string targetTag = targetObj.tag;
-        damage = defaultDamage * deltaTime;
-        strength = defaultStrength * deltaTime;
+        EnterColliderList(other);
+    }
 
-        //衝突対象判定
-        if (Common.FUNC.IsUnitTag(targetTag))
-        {
-            HitUnit(targetObj);
-        }
-        else if (Common.FUNC.IsDamageObjectTag(targetTag))
-        {
-            Debug.Log(strength);
-            HitDamageObject(targetObj);
-        }
-        else if (Common.FUNC.IsStageTag(targetTag))
-        {
-            HitStage(targetObj);
-        }
+    //接触判定
+    protected void OnTriggerExit2D(Collider2D other)
+    {
+        ExitColliderList(other);
     }
 }
