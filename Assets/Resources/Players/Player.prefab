@@ -1081,18 +1081,18 @@ MonoBehaviour:
   - {fileID: 1457459018339202, guid: 90c2ffeef245db542bdc5f23653748d2, type: 2}
   - {fileID: 1275805080978512, guid: 186ddae800b0ca74390140eaa6a92d9d, type: 2}
   - {fileID: 1465901182435794, guid: b20d9ff991919fa4d9bfcfa27324e4b2, type: 2}
-  dragWeaponList:
-  - {fileID: 1693163762052908, guid: 836c899a7b862954cae14f65a7fedf81, type: 2}
+  dragWeaponList: []
+  dragingWeaponList:
+  - {fileID: 1893633978622604, guid: 4a1bdd6a6dacc574999c721461343db4, type: 2}
   - {fileID: 1513899059552972, guid: f4048af105304404c911785b37c5c038, type: 2}
   - {fileID: 1604644311144064, guid: ec4b61dcec294aa4cbd8663004833f27, type: 2}
   - {fileID: 1260481762692094, guid: 389558da90aea1f459e1c304f48e324a, type: 2}
-  dragingWeaponList: []
   playerDragWeaponList: []
   playerDragingWeaponList:
   - {fileID: 1336121265940952, guid: 22f79f21a36fd9a44b4ffc3e0f8e5054, type: 2}
+  - {fileID: 1336121265940952, guid: 22f79f21a36fd9a44b4ffc3e0f8e5054, type: 2}
   - {fileID: 1252677556055486, guid: 0fc2746a4d631184eb6dcf6ae3561aaf, type: 2}
-  - {fileID: 1017301927834702, guid: 6759d3dd5ce6cf447bfbe29a55f219cf, type: 2}
-  flickWeapon: {fileID: 1963503696641010, guid: e0e46350d142e9547843f2ebd9d8d6fb,
+  flickWeapon: {fileID: 1017301927834702, guid: 6759d3dd5ce6cf447bfbe29a55f219cf,
     type: 2}
   playerFlickWeapon: {fileID: 0}
   pinchWeapon: {fileID: 0}

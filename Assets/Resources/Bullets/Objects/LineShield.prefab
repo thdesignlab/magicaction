@@ -267,6 +267,6 @@ MonoBehaviour:
   spawnObj: {fileID: 0}
   isBreakInvisible: 1
   isGravity: 0
-  strength: 30
+  strength: 35
   breakSpawnObject: {fileID: 1544222883085818, guid: af37515bd4908da47a9371452480cbf1,
     type: 2}

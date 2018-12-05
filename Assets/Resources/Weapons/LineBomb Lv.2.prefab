@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4153031532375226}
-  - component: {fileID: 114178980172047938}
+  - component: {fileID: 114185585953370880}
   m_Layer: 0
   m_Name: LineBomb Lv.2
   m_TagString: Untagged
@@ -40,7 +40,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114178980172047938
+--- !u!114 &114185585953370880
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,14 +48,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1260481762692094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e8618ea7f3323e4d85cd996a36aa2e1, type: 3}
+  m_Script: {fileID: 11500000, guid: ec962ab9d95420147a552c2420800fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDrag: 0
   spawn: {fileID: 1642625439397002, guid: 861680efc003c274b8e14ae98f077576, type: 2}
   useMp: 100
-  maxCount: 10
-  perLength: 20
-  multiInterval: 0.05
+  perLength: 10
   totalLimit: 0
   isPlayerForward: 0
   isLineAngle: 0

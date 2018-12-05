@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69a5371c07acc594cb3e906de19b2a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDrag: 0
   spawn: {fileID: 1869824505195936, guid: 21cf66b301af2a4448a9795d1bead314, type: 2}
   useMp: 500
   rapidCount: 1

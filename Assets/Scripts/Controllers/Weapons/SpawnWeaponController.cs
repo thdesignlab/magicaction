@@ -67,6 +67,9 @@ public class SpawnWeaponController : WeaponController
 
     protected virtual bool IsEnableSpawnPosition(Vector3 pos)
     {
-        return ((player.transform.position - pos).magnitude > player.GetColliderRadius() * 1.5f);
+        if ((player.transform.position - pos).magnitude <= player.GetColliderRadius() * 1.5f) return false;
+        LayerMask mask = Common.FUNC.GetLayerMask(Common.CO.LAYER_ENEMY_BOSS);
+        RaycastHit2D hit = Physics2D.CircleCast(pos, 3.0f, Vector2.zero, 0, mask);
+        return hit.collider == null;
     }
 }
