@@ -51,7 +51,7 @@ public class SpawnWeaponController : WeaponController
     }
 
     //生成
-    protected GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua)
+    protected virtual GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua)
     {
         if (spawnObj.tag == Common.CO.TAG_OBJECT)
         {

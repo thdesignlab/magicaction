@@ -675,7 +675,7 @@ MonoBehaviour:
   isBreakInvisible: 0
   isGravity: 0
   strength: 100
-  damage: 300
+  damage: 200
   hitEffect: {fileID: 1579606749921368}
   laserHead: {fileID: 4361640615977290}
   maxLength: 60

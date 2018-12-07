@@ -224,12 +224,6 @@ public class UnitController : PhysicsController
             if ((p.x > 0 && myVelocity.x > 0) || (p.x < 0 && myVelocity.x < 0))
             {
                 //Unitの前方で衝突
-                //float height = (1 + p.normalized.y) * colliderRadius;
-                //if (height > colliderRadius * ENABLED_OVER_RATE)
-                //{
-                //    //乗り越えられないオブジェクトと衝突
-                //    StartCoroutine(Stack(1.5f));
-                //}
                 PhysicsController phyCtrl = collision.gameObject.GetComponent<PhysicsController>();
                 if (phyCtrl != null && strength > 0)
                 {
