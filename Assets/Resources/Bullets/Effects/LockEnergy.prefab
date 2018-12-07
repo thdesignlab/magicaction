@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 96226999171539228}
   m_Layer: 0
   m_Name: Energy
-  m_TagString: EnergyBullet
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -211,6 +211,7 @@ MonoBehaviour:
   stopTime: 1
   randomSpeed: 30
   randomTime: 1
+  lockOnObj: {fileID: 1621314152559176, guid: c85fa6028c36caf49bb2b51798eb929b, type: 2}
 --- !u!198 &198250253302813050
 ParticleSystem:
   m_ObjectHideFlags: 1

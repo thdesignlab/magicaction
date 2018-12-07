@@ -5,27 +5,21 @@ using System.Collections.Generic;
 public class LockOnFiringWeaponController : FiringWeaponController
 {
     protected List<LockOnBulletController> spawnList = new List<LockOnBulletController>();
+    protected List<GameObject> enemies = new List<GameObject>();
+    protected List<Transform> targets = new List<Transform>();
 
     //発射処理
     protected override IEnumerator Firing(InputStatus input)
     {
         spawnList = new List<LockOnBulletController>();
+        targets = new List<Transform>();
+
         yield return StartCoroutine(base.Firing(input));
 
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(Common.CO.TAG_ENEMY);
-        int i = 1;
         foreach (LockOnBulletController lockOnCtrl in spawnList)
         {
             if (lockOnCtrl == null) continue;
-            
-            if (i % 2 == 0 && enemies.Length > i / 2)
-            {
-                lockOnCtrl.Fire(enemies[i / 2].transform.position);
-            }
-            else
-            {
-                lockOnCtrl.Fire();
-            }
+            lockOnCtrl.Fire();
         }
     }
 
@@ -33,7 +27,36 @@ public class LockOnFiringWeaponController : FiringWeaponController
     protected override GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua)
     {
         GameObject obj = base.Spawn(spawnObj, pos, qua);
-        spawnList.Add(obj.GetComponent<LockOnBulletController>());
+        LockOnBulletController ctrl = obj.GetComponent<LockOnBulletController>();
+        ctrl.SetTarget(GetTarget());
+        spawnList.Add(ctrl);
         return obj;
+    }
+
+    //ターゲット取得
+    protected Transform GetTarget()
+    {
+        Transform target = null;
+        enemies.RemoveAll(o => o == null);
+        targets.RemoveAll(o => o == null);
+
+        if (enemies.Count <= 0)
+        {
+            enemies = new List<GameObject>(GameObject.FindGameObjectsWithTag(Common.CO.TAG_ENEMY));
+        }
+        for (; ; )
+        {
+            if (enemies.Count <= 0) break;
+            GameObject enemy = Common.FUNC.RandomList(enemies);
+            if (enemy == null || targets.Contains(enemy.transform))
+            {
+                enemies.Remove(enemy);
+                continue;
+            }
+            target = enemy.transform;
+            targets.Add(target);
+            break;
+        }
+        return target;
     }
 }

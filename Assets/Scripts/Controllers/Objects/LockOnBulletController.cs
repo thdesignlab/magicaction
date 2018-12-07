@@ -13,8 +13,12 @@ public class LockOnBulletController : DamageObjectController
     protected float randomSpeed;
     [SerializeField]
     protected float randomTime;
+    [SerializeField]
+    protected GameObject lockOnObj;
 
     protected bool isFire = false;
+    protected Transform targetTran;
+    protected Transform lockOnSiteTran;
 
     protected override void Start()
     {
@@ -40,12 +44,33 @@ public class LockOnBulletController : DamageObjectController
     public void Fire(Vector2 target)
     {
         isFire = true;
-        Common.FUNC.LookAt(myTran, target - (Vector2)myTran.position);
+        Common.FUNC.LookAt(myTran, target);
         SetSpeed(GetForward() * (atackSpeed + Common.FUNC.GetRandom(randomSpeed)));
     }
     public void Fire()
     {
-        Vector2 rand = new Vector2(Common.FUNC.GetRandom(30), Common.FUNC.GetRandom(30));
-        Fire(rand);
+        Vector2 v = (targetTran != null) ? (Vector2)targetTran.position : new Vector2(Common.FUNC.GetRandom(30), Common.FUNC.GetRandom(30));
+        Fire(v);
+    }
+
+    public void SetTarget(Transform t)
+    {
+        if (t == null) return;
+        targetTran = t;
+        if (lockOnObj != null)
+        {
+            GameObject obj = Instantiate(lockOnObj, targetTran.position, Quaternion.identity);
+            lockOnSiteTran = obj.transform;
+            lockOnSiteTran.SetParent(targetTran, true);
+        }
+    }
+
+    public override void Break(bool isSpawn = true)
+    {
+        if (lockOnSiteTran != null)
+        {
+            Destroy(lockOnSiteTran.gameObject);
+        }
+        base.Break(isSpawn);
     }
 }

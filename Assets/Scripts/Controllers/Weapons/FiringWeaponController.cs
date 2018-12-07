@@ -10,6 +10,7 @@ public class FiringWeaponController : SpawnWeaponController
     protected float deviation;
 
     protected Coroutine fireCoroutine;
+    protected float interval = 0;
 
     //発射
     public override void Fire(InputStatus input)
@@ -23,9 +24,18 @@ public class FiringWeaponController : SpawnWeaponController
     protected virtual IEnumerator Firing(InputStatus input)
     {
         float preTime = 0;
+        interval = 0;
         for (; ; )
         {
-            if (preTime >= input.pressTime) break;
+            for (; ; )
+            {
+                if (preTime >= input.pressTime) goto FIRE;
+                preTime = input.pressTime;
+                interval -= Time.deltaTime;
+                if (interval <= 0) break;
+                yield return null;
+            }
+
             Vector2 targetPos = Common.FUNC.GetTargetWithDeviation(myTran.position, GetTarget(input), deviation);
             Common.FUNC.LookAt(myTran, targetPos);
             foreach (Transform muzzle in muzzles)
@@ -34,9 +44,10 @@ public class FiringWeaponController : SpawnWeaponController
                 yield return null;
             }
             UseMp();
-            preTime = input.pressTime;
-            yield return new WaitForSeconds(rapidInterval);
+            interval = rapidInterval;
+
         }
+        FIRE:
         fireCoroutine = null;
     }
 
