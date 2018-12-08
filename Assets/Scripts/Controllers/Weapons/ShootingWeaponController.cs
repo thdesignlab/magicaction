@@ -24,11 +24,11 @@ public class ShootingWeaponController : SpawnWeaponController
     {
         index++;
         UseMp();
-        StartCoroutine(FireProcess(GetTarget(input)));
+        StartCoroutine(FireProcess(GetTarget(input), input.GetTapEnemyTran()));
     }
 
     //発射処理
-    protected IEnumerator FireProcess(Vector2 target)
+    protected IEnumerator FireProcess(Vector2 target, Transform enemyTran)
     {
         for (int i = 0; i < rapidCount; i++)
         {
@@ -36,7 +36,7 @@ public class ShootingWeaponController : SpawnWeaponController
             Common.FUNC.LookAt(myTran, targetPos);
             foreach (Transform muzzle in muzzles)
             {
-                Spawn(spawn, muzzle.position, muzzle.rotation);
+                Spawn(spawn, muzzle.position, muzzle.rotation, enemyTran);
                 yield return null;
             }
             yield return new WaitForSeconds(rapidInterval);

@@ -12,6 +12,7 @@ public class SpawnWeaponController : WeaponController
     protected List<Transform> muzzles = new List<Transform>();
     protected Camera _mainCam;
     protected Camera mainCam { get { return _mainCam ? _mainCam : _mainCam = Camera.main; } }
+    protected Transform targetTran;
 
     protected override void Awake()
     {
@@ -47,11 +48,11 @@ public class SpawnWeaponController : WeaponController
         index++;
         UseMp();
         Transform tran = muzzles.Count > 0 ? muzzles[0] : myTran;
-        Spawn(spawn, tran.position, tran.rotation);
+        Spawn(spawn, tran.position, tran.rotation, input.GetTapEnemyTran());
     }
 
     //生成
-    protected virtual GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua)
+    protected virtual GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua, Transform t = null)
     {
         if (spawnObj.tag == Common.CO.TAG_OBJECT)
         {
@@ -62,6 +63,7 @@ public class SpawnWeaponController : WeaponController
         ObjectController objCtrl = obj.GetComponent<ObjectController>();
         objCtrl.SetPlayer(player);
         objCtrl.SetWeapon(this, index);
+        objCtrl.SetTarget(t);
         return obj;
     }
 

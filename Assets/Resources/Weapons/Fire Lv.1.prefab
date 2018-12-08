@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDrag: 0
-  spawn: {fileID: 1016893275873114, guid: efb804ffe99355d449a988ca49045fda, type: 2}
+  spawn: {fileID: 1583857083937172, guid: 22812fd49bee6c34cae3d8a4cd013e0d, type: 2}
   useMp: 100
   rapidCount: 1
   rapidInterval: 0

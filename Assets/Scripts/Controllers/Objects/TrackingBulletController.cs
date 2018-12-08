@@ -8,16 +8,15 @@ public class TrackingBulletController : BulletController
     [SerializeField]
     protected GameObject targetSite;
 
-    protected Transform target;
     protected Transform targetSiteTran;
 
     protected override void Update()
     {
         base.Update();
 
-        if (target != null)
+        if (targetTran != null)
         {
-            Common.FUNC.LookAt(myTran, target.position, turnAngle * Time.deltaTime);
+            Common.FUNC.LookAt(myTran, targetTran.position, turnAngle * Time.deltaTime);
             SetSpeed(GetForward() * speed);
         }
         else
@@ -27,14 +26,17 @@ public class TrackingBulletController : BulletController
         }
     }
 
-    public void SetTarget(Transform t)
+    public override void SetTarget(Transform t)
     {
-        target = t;
+        base.SetTarget(t);
+
+        if (targetTran == null) return;
+
         if (targetSite != null)
         {
-            GameObject obj = Instantiate(targetSite, target.position, Quaternion.identity);
+            GameObject obj = Instantiate(targetSite, targetTran.position, Quaternion.identity);
             targetSiteTran = obj.transform;
-            targetSiteTran.SetParent(target, true);
+            targetSiteTran.SetParent(targetTran, true);
         }
     }
 

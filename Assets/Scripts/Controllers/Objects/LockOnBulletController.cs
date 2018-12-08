@@ -17,7 +17,6 @@ public class LockOnBulletController : DamageObjectController
     protected GameObject targetSite;
 
     protected bool isFire = false;
-    protected Transform targetTran;
     protected Transform targetSiteTran;
     protected LockOnFiringWeaponController lockOnWeaponCtrl;
 
@@ -54,10 +53,12 @@ public class LockOnBulletController : DamageObjectController
         Fire(v);
     }
 
-    public void SetTarget(Transform t)
+    public override void SetTarget(Transform t)
     {
-        if (t == null) return;
-        targetTran = t;
+        base.SetTarget(t);
+
+        if (targetTran == null) return;
+
         if (targetSite != null)
         {
             GameObject obj = Instantiate(targetSite, targetTran.position, Quaternion.identity);

@@ -25,6 +25,7 @@ public class InputStatus
     public float totalTwist;
     public float pressTime;
     public int pressLevel;
+    public GameObject tapEnemy;
     public List<Vector2> linePositions;
 
     public Vector2 GetPoint()
@@ -42,6 +43,15 @@ public class InputStatus
     public Vector2 GetEndPoint()
     {
         return InputManager.Instance.ChangeWorldVector(endPoint);
+    }
+    public bool IsTapEnemy()
+    {
+        return InputManager.Instance.IsTapEnemy(point);
+    }
+    public Transform GetTapEnemyTran()
+    {
+        if (tapEnemy == null) return null;
+        return tapEnemy.transform;
     }
 }
 
@@ -215,6 +225,11 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     {
         get { return inputStatus.pressLevel; }
         set { inputStatus.pressLevel = value; }
+    }
+    protected GameObject tapEnemy
+    {
+        get { return inputStatus.tapEnemy; }
+        set { inputStatus.tapEnemy = value; }
     }
 
     protected InputStatus inputStatus;
@@ -701,6 +716,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         SetPressLevel(0);
         linePositionList = new List<Vector2>();
         isTapUI = false;
+        tapEnemy = null;
     }
 
     protected void SetInputStatus()
@@ -756,6 +772,13 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         int layerMask = Common.FUNC.GetLayerMask(Common.CO.LAYER_PLAYER_BODY);
         GameObject obj = GetTapObject(pos, layerMask);
         return (obj != null);
+    }
+    public bool IsTapEnemy(Vector2 pos)
+    {
+        string[] tags = new string[] { Common.CO.LAYER_ENEMY, Common.CO.LAYER_ENEMY_BOSS };
+        int layerMask = Common.FUNC.GetLayerMask(tags);
+        tapEnemy = GetTapObject(pos, layerMask);
+        return (tapEnemy != null);
     }
 
     //指定座標のUI取得

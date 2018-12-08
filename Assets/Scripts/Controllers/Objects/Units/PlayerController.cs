@@ -217,6 +217,10 @@ public class PlayerController : UnitController
         {
             Fire(playerTapWeaponCtrlList, input);
         }
+        else if (input.IsTapEnemy())
+        {
+            Fire(enemyTapWeaponCtrl, input);
+        }
         else
         {
             Fire(tapWeaponCtrlList, input);

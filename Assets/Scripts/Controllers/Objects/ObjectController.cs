@@ -16,6 +16,7 @@ public class ObjectController : MonoBehaviour
     protected Renderer myRenderer { get { return _myRenderer ? _myRenderer : _myRenderer = GetComponentInChildren<Renderer>(); } }
     protected PlayerController player;
     protected WeaponController weapon;
+    protected Transform targetTran;
     protected float deltaTime;
     protected float liveTime = 0;
     protected bool isPreVisible = false;
@@ -115,6 +116,7 @@ public class ObjectController : MonoBehaviour
         ObjectController objCtrl = obj.GetComponent<ObjectController>();
         objCtrl.SetPlayer(player);
         objCtrl.SetWeapon(weapon, index);
+        objCtrl.SetTarget(targetTran);
     }
 
     //### getter/setter ###
@@ -128,6 +130,11 @@ public class ObjectController : MonoBehaviour
     {
         weapon = w;
         index = i;
+    }
+
+    public virtual void SetTarget(Transform t)
+    {
+        targetTran = t;
     }
 
     public bool IsPlayer()

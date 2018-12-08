@@ -38,9 +38,10 @@ namespace Common
         //レイヤー
         public const string LAYER_PLAYER = "Player";
         public const string LAYER_PLAYER_BODY = "PlayerBody";
+        public const string LAYER_ENEMY = "Enemy";
+        public const string LAYER_ENEMY_BOSS = "EnemyBoss";
         public const string LAYER_UI = "UI";
         public const string LAYER_OBJECT = "Object";
-        public const string LAYER_ENEMY_BOSS = "EnemyBoss";
 
         //タグ
         public const string TAG_PLAYER = "Player";

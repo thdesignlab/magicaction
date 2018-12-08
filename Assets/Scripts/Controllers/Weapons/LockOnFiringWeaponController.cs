@@ -24,12 +24,12 @@ public class LockOnFiringWeaponController : FiringWeaponController
     }
 
     //生成
-    protected override GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua)
+    protected override GameObject Spawn(GameObject spawnObj, Vector2 pos, Quaternion qua, Transform t = null)
     {
         GameObject obj = base.Spawn(spawnObj, pos, qua);
         LockOnBulletController ctrl = obj.GetComponent<LockOnBulletController>();
         spawnList.Add(ctrl);
-        Transform target = GetTarget();
+        Transform target = (t != null) ? t : GetTarget();
         ctrl.SetTarget(target);
         targets.Add(target);
         return obj;
