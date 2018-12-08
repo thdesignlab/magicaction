@@ -38,8 +38,6 @@ public class WeaponController : MonoBehaviour
             target = direction + Common.FUNC.ParseVector2(myTran.position);
         }
         return target;
-
-
     }
 
     //ダメージ情報追加

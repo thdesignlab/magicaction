@@ -246,10 +246,38 @@ namespace Common
         }
 
         //2DLookAt
-        public static void LookAt(Transform tran, Vector3 target)
+        public static void LookAt(Transform tran, Vector3 targetPos)
         {
-            Vector3 diff = (target - tran.position).normalized;
-            tran.rotation = Quaternion.FromToRotation(Vector3.right, diff);
+            Vector3 targetVector = (targetPos - tran.position).normalized;
+            tran.rotation = Quaternion.FromToRotation(Vector3.right, targetVector);
+        }
+        public static void LookAt(Transform tran, Vector3 targetPos, float trunAngle)
+        {
+            if (trunAngle <= 0)
+            {
+                LookAt(tran, targetPos);
+                return;
+            }
+
+            //対象へのベクトル
+            Vector3 targetVector = (targetPos - tran.position).normalized;
+
+            //対象までの角度
+            float angleDiff = Vector3.Angle(tran.right, targetVector);
+
+            if (angleDiff <= trunAngle)
+            {
+                // ターゲットが回転角以内なら完全にターゲットの方を向く
+                tran.rotation = Quaternion.FromToRotation(Vector3.right, targetVector);
+            }
+            else
+            {
+                // ターゲットが回転角の外なら、指定角度だけターゲットに向ける
+                float t = (trunAngle / angleDiff);
+                tran.rotation = Quaternion.FromToRotation(Vector3.right, Vector3.Lerp(tran.right, targetVector, t));
+                //tran.rotation = Quaternion.Slerp(tran.rotation, rotTarget, t);
+            }
+
         }
 
         //レイヤーマスク取得

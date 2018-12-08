@@ -10,13 +10,10 @@ using System.Linq;
 
 public class BattleManager : SingletonMonoBehaviour<BattleManager>
 {
+    //バトル情報
     private float battleEndProgress = 0;
     private int battleLoopCnt = 0;
-    private Dictionary<int, GameObject> popEnemy = new Dictionary<int, GameObject>();
-    private Dictionary<int, float> popInterval = new Dictionary<int, float>();
-    private Dictionary<int, float> popTime = new Dictionary<int, float>();
-    private GameObject[] enemyPops;
-    private GameObject[] enemyGroundPops;
+    private List<GameObject> enemyList = new List<GameObject>();
 
     //キャンバス
     private Canvas battleCanvas;
@@ -202,7 +199,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     }
     private float SliderRate(float f)
     {
-        return (float)Mathf.Floor(f * 1000) / 1000;
+        return Mathf.Floor(f * 1000) / 1000;
     }
 
     //Timelineセット
@@ -385,7 +382,9 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     public GameObject SqawnEnemy(GameObject obj, Vector2 pos, Quaternion qua)
     {
         if (obj == null) return null;
-        return Instantiate(obj, pos, qua);
+        GameObject enemy = Instantiate(obj, pos, qua);
+        enemyList.Add(enemy);
+        return enemy;
     }
 
     public void SqawnEnemyBoss(GameObject obj, Vector2 pos, Quaternion qua)
@@ -395,10 +394,42 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
         //召喚演出
         GameObject bossObj = SqawnEnemy(obj, pos, qua);
+        enemyList.Add(bossObj);
         EnemyBossController bossCtrl = bossObj.GetComponent<EnemyBossController>();
         bossDic.Add(obj.name, bossCtrl);
     }
 
+    //敵をランダムに取得
+    public GameObject GetEnemy()
+    {
+        enemyList.RemoveAll(e => e == null);
+        if (enemyList.Count == 0) return null;
+        return Common.FUNC.RandomList(enemyList);
+    }
+
+    //指定地点に一番近い敵を取得
+    public GameObject GetEnemy(Vector2 pos, float max = 0, float min = 0, float decisionDistance = 5.0f)
+    {
+        enemyList.RemoveAll(e => e == null);
+
+        GameObject enemy = null;
+        float nowDistance = 0;
+        foreach (GameObject obj in enemyList)
+        {
+            float d = ((Vector2)obj.transform.position - pos).magnitude;
+            if (max > 0 && max < d) continue;
+            if (min > 0 && min > d) continue;
+            if (enemy == null || nowDistance > d)
+            {
+                enemy = obj;
+                nowDistance = d;
+                if (d < min + decisionDistance) break;
+            }
+        }
+        return enemy;
+    }
+
+    //Kill数加算
     public void AddKill(float bonus = 0)
     {
         if (isBattleEnd) return;

@@ -1070,7 +1070,8 @@ MonoBehaviour:
   recoverHp: 0
   recoverMp: 300
   walkSpeed: 3
-  enemyTapWeapon: {fileID: 0}
+  enemyTapWeapon: {fileID: 1817812716492546, guid: 2137c65bd3e7e4b439092eab5f19bb4f,
+    type: 2}
   tapWeaponList:
   - {fileID: 1963503696641010, guid: e0e46350d142e9547843f2ebd9d8d6fb, type: 2}
   - {fileID: 1613901059813988, guid: bd1a290617b03a846a489b7341859b6e, type: 2}

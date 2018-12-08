@@ -14,11 +14,11 @@ public class LockOnBulletController : DamageObjectController
     [SerializeField]
     protected float randomTime;
     [SerializeField]
-    protected GameObject lockOnObj;
+    protected GameObject targetSite;
 
     protected bool isFire = false;
     protected Transform targetTran;
-    protected Transform lockOnSiteTran;
+    protected Transform targetSiteTran;
     protected LockOnFiringWeaponController lockOnWeaponCtrl;
 
     protected override void Start()
@@ -58,20 +58,20 @@ public class LockOnBulletController : DamageObjectController
     {
         if (t == null) return;
         targetTran = t;
-        if (lockOnObj != null)
+        if (targetSite != null)
         {
-            GameObject obj = Instantiate(lockOnObj, targetTran.position, Quaternion.identity);
-            lockOnSiteTran = obj.transform;
-            lockOnSiteTran.SetParent(targetTran, true);
+            GameObject obj = Instantiate(targetSite, targetTran.position, Quaternion.identity);
+            targetSiteTran = obj.transform;
+            targetSiteTran.SetParent(targetTran, true);
         }
         lockOnWeaponCtrl = weapon.GetComponent<LockOnFiringWeaponController>();
     }
 
     public override void Break(bool isSpawn = true)
     {
-        if (lockOnSiteTran != null)
+        if (targetSiteTran != null)
         {
-            Destroy(lockOnSiteTran.gameObject);
+            Destroy(targetSiteTran.gameObject);
         }
         if (lockOnWeaponCtrl != null && targetTran != null)
         {
