@@ -28,8 +28,10 @@ public class LockOnFiringWeaponController : FiringWeaponController
     {
         GameObject obj = base.Spawn(spawnObj, pos, qua);
         LockOnBulletController ctrl = obj.GetComponent<LockOnBulletController>();
-        ctrl.SetTarget(GetTarget());
         spawnList.Add(ctrl);
+        Transform target = GetTarget();
+        ctrl.SetTarget(target);
+        targets.Add(target);
         return obj;
     }
 
@@ -38,7 +40,6 @@ public class LockOnFiringWeaponController : FiringWeaponController
     {
         Transform target = null;
         enemies.RemoveAll(o => o == null);
-        targets.RemoveAll(o => o == null);
 
         if (enemies.Count <= 0)
         {
@@ -54,9 +55,15 @@ public class LockOnFiringWeaponController : FiringWeaponController
                 continue;
             }
             target = enemy.transform;
-            targets.Add(target);
             break;
         }
         return target;
+    }
+
+    //ターゲット解除
+    public void RemoveTarget(Transform t)
+    {
+        if (t == null) return;
+        targets.Remove(t);
     }
 }

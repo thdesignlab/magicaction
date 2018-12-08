@@ -19,6 +19,7 @@ public class LockOnBulletController : DamageObjectController
     protected bool isFire = false;
     protected Transform targetTran;
     protected Transform lockOnSiteTran;
+    protected LockOnFiringWeaponController lockOnWeaponCtrl;
 
     protected override void Start()
     {
@@ -63,6 +64,7 @@ public class LockOnBulletController : DamageObjectController
             lockOnSiteTran = obj.transform;
             lockOnSiteTran.SetParent(targetTran, true);
         }
+        lockOnWeaponCtrl = weapon.GetComponent<LockOnFiringWeaponController>();
     }
 
     public override void Break(bool isSpawn = true)
@@ -70,6 +72,10 @@ public class LockOnBulletController : DamageObjectController
         if (lockOnSiteTran != null)
         {
             Destroy(lockOnSiteTran.gameObject);
+        }
+        if (lockOnWeaponCtrl != null && targetTran != null)
+        {
+            lockOnWeaponCtrl.RemoveTarget(targetTran);
         }
         base.Break(isSpawn);
     }
