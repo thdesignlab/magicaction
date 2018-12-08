@@ -43,7 +43,7 @@ public class LockOnFiringWeaponController : FiringWeaponController
 
         if (enemies.Count <= 0)
         {
-            enemies = new List<GameObject>(GameObject.FindGameObjectsWithTag(Common.CO.TAG_ENEMY));
+            enemies = BattleManager.Instance.GetEnemyList();
         }
         for (; ; )
         {

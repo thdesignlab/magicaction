@@ -183,9 +183,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 3
   spawnObj: {fileID: 1506445568096746, guid: 794f711bf44ef1c4093b4da7436d1d66, type: 2}
+  isBreakInvisible: 1
   isGravity: 0
   strength: 100
   damage: 0
+  hitEffect: {fileID: 1029970409936558, guid: f84ff46852d5e2b4088b7313d2dafcb8, type: 2}
   speed: 5
 --- !u!198 &198046049667969302
 ParticleSystem:

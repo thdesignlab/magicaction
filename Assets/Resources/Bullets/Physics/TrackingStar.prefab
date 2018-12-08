@@ -225,8 +225,9 @@ MonoBehaviour:
   spawnObj: {fileID: 0}
   isBreakInvisible: 0
   isGravity: 0
-  strength: 100
+  strength: 50
   damage: 10
+  hitEffect: {fileID: 1029970409936558, guid: f84ff46852d5e2b4088b7313d2dafcb8, type: 2}
   speed: 20
   turnAngle: 360
   targetSite: {fileID: 1155301991863982, guid: 29775e1db1633f64487a949e6e1b7503, type: 2}

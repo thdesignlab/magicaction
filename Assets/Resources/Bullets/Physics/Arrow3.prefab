@@ -222,11 +222,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeLimit: 0
-  spawnObj: {fileID: 1029970409936558, guid: f84ff46852d5e2b4088b7313d2dafcb8, type: 2}
+  spawnObj: {fileID: 0}
   isBreakInvisible: 0
   isGravity: 1
   strength: 20
   damage: 1
+  hitEffect: {fileID: 1029970409936558, guid: f84ff46852d5e2b4088b7313d2dafcb8, type: 2}
   speed: 28
   speedDeviation: 5
 --- !u!198 &198086938298281728

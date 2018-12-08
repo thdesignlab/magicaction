@@ -399,6 +399,12 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         bossDic.Add(obj.name, bossCtrl);
     }
 
+    //敵一覧取得
+    public List<GameObject> GetEnemyList()
+    {
+        return new List<GameObject>(enemyList);
+    }
+
     //敵をランダムに取得
     public GameObject GetEnemy()
     {

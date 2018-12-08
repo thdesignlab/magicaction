@@ -90,11 +90,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeLimit: 0
-  spawnObj: {fileID: 1029970409936558, guid: f84ff46852d5e2b4088b7313d2dafcb8, type: 2}
+  spawnObj: {fileID: 0}
   isBreakInvisible: 1
   isGravity: 0
   strength: 5
   damage: 10
+  hitEffect: {fileID: 1029970409936558, guid: f84ff46852d5e2b4088b7313d2dafcb8, type: 2}
   speed: 10
 --- !u!212 &212411620123890196
 SpriteRenderer:

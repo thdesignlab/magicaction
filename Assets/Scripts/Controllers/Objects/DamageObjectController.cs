@@ -5,6 +5,8 @@ public class DamageObjectController : PhysicsController
 {
     [SerializeField]
     protected float damage;
+    [SerializeField]
+    protected GameObject hitEffect;
 
     protected override void Start()
     {
@@ -31,12 +33,12 @@ public class DamageObjectController : PhysicsController
     }
 
     //ユニットに衝突
-    protected override void HitUnit(GameObject obj)
+    protected override bool HitUnit(GameObject obj)
     {
         base.HitUnit(obj);
 
-        if (obj.tag == Common.CO.TAG_PLAYER && IsPlayer()) return;
-        if (obj.tag != Common.CO.TAG_PLAYER && !IsPlayer()) return;
+        if (obj.tag == Common.CO.TAG_PLAYER && IsPlayer()) return false;
+        if (obj.tag != Common.CO.TAG_PLAYER && !IsPlayer()) return false;
 
         UnitController unitCtrl = obj.GetComponent<UnitController>();
         float enemyStrength = unitCtrl.GetStrength();
@@ -52,42 +54,46 @@ public class DamageObjectController : PhysicsController
         {
             Scrape((int)enemyStrength);
         }
+
+        return true;
     }
 
     //ダメージオブジェクトに衝突
-    protected override void HitDamageObject(GameObject obj)
+    protected override bool HitDamageObject(GameObject obj)
     {
         base.HitDamageObject(obj);
 
         //弾同士の衝突はプレイヤー側が行う
-        if (!IsPlayer()) return;
+        if (!IsPlayer()) return false;
 
         DamageObjectController dmgObjCtrl = obj.GetComponent<DamageObjectController>();
 
         //自分の弾同士はスルー
-        if (dmgObjCtrl.IsPlayer()) return;
+        if (dmgObjCtrl.IsPlayer()) return false;
 
         float myStrength = GetStrength();
         float enemyStrength = dmgObjCtrl.GetStrength();
-        if (tag != Common.CO.TAG_EFFECT)
-        {
-            //相手の弾による耐久値減少
-            Scrape(enemyStrength);
-        }
         if (obj.tag != Common.CO.TAG_EFFECT)
         {
             //相手の弾の耐久値減少
             dmgObjCtrl.Scrape(myStrength);
         }
+        if (tag != Common.CO.TAG_EFFECT)
+        {
+            //相手の弾による耐久値減少
+            Scrape(enemyStrength);
+        }
+
+        return true;
     }
 
     //ステージに衝突
-    protected override void HitStage(GameObject obj)
+    protected override bool HitStage(GameObject obj)
     {
         base.HitStage(obj);
 
         //エフェクトの場合スルー
-        if (tag == Common.CO.TAG_EFFECT) return;
+        if (tag == Common.CO.TAG_EFFECT) return false;
 
         switch (obj.tag)
         {
@@ -98,8 +104,8 @@ public class DamageObjectController : PhysicsController
                 {
                     float myStrength = GetStrength();
                     float enemyStrength = phyCtrl.GetStrength();
-                    Scrape(enemyStrength);
                     phyCtrl.Scrape(myStrength);
+                    Scrape(enemyStrength);
                 }
                 break;
 
@@ -107,5 +113,18 @@ public class DamageObjectController : PhysicsController
                 Break();
                 break;
         }
+
+        return true;
     }
+
+    //衝突時共通処理
+    protected override void HitAction(Collider2D other)
+    {
+        if (hitEffect != null)
+        {
+            Vector2 point = other.bounds.ClosestPoint(myTran.position);
+            Instantiate(hitEffect, point, Quaternion.identity);
+        }
+    }
+
 }

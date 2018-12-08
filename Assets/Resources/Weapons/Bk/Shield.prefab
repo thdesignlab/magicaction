@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74fb26f4f3db1249bfd1f324c8709e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDrag: 0
   spawn: {fileID: 1350782263818984, guid: 375a89c9614d5e3478cfab7347a999d0, type: 2}
   useMp: 250
   minLength: 1

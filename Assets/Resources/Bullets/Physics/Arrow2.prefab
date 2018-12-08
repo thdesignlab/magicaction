@@ -227,6 +227,7 @@ MonoBehaviour:
   isGravity: 1
   strength: 5
   damage: 2
+  hitEffect: {fileID: 1029970409936558, guid: f84ff46852d5e2b4088b7313d2dafcb8, type: 2}
   speed: 28
   speedDeviation: 5
 --- !u!198 &198979323945334284

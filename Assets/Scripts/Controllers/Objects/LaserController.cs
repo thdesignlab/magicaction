@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class LaserController : DamageObjectController
 {
     [SerializeField]
-    protected GameObject hitEffect;
+    protected GameObject collisionEffect;
     [SerializeField]
     protected Transform laserHead;
     [SerializeField]
@@ -90,12 +90,13 @@ public class LaserController : DamageObjectController
 
     protected void SwitchHitEffect(bool flg)
     {
-        if (hitEffect != null) hitEffect.SetActive(flg);
+        if (collisionEffect != null) collisionEffect.SetActive(flg);
     }
 
     //ステージに衝突
-    protected override void HitStage(GameObject obj)
+    protected override bool HitStage(GameObject obj)
     {
+        bool isHit = false;
         switch (obj.tag)
         {
             case Common.CO.TAG_OBJECT:
@@ -105,9 +106,12 @@ public class LaserController : DamageObjectController
                 {
                     float myStrength = GetStrength();
                     phyCtrl.Scrape(myStrength);
+                    isHit = true;
                 }
                 break;
         }
+
+        return isHit;
     }
 
     //衝突Colliderリスト

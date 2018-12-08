@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4428186534731228}
-  - component: {fileID: 114728602180957714}
+  - component: {fileID: 114758280293960544}
   m_Layer: 0
   m_Name: TrackingFire
   m_TagString: Untagged
@@ -69,7 +69,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114728602180957714
+--- !u!114 &114758280293960544
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -83,6 +83,6 @@ MonoBehaviour:
   isDrag: 0
   spawn: {fileID: 1016893275873114, guid: efb804ffe99355d449a988ca49045fda, type: 2}
   useMp: 100
-  rapidCount: 1
+  rapidCount: 0
   rapidInterval: 0
   deviation: 0

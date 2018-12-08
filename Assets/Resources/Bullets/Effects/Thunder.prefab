@@ -36,6 +36,7 @@ GameObject:
   - component: {fileID: 4581420983570358}
   - component: {fileID: 198733384788784118}
   - component: {fileID: 199765545350951136}
+  - component: {fileID: 114561487111283044}
   m_Layer: 0
   m_Name: thunder_efe_tpcl_pre
   m_TagString: Untagged
@@ -51,7 +52,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4961605572249168}
-  - component: {fileID: 114816453555308500}
+  - component: {fileID: 61327462463377490}
+  - component: {fileID: 114779437193621998}
+  - component: {fileID: 114666665154480140}
   m_Layer: 0
   m_Name: Thunder
   m_TagString: Effect
@@ -80,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1542653825205956}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -20, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4233406130796732}
@@ -100,7 +103,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114816453555308500
+--- !u!61 &61327462463377490
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1825305972763034}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 8, y: 50}
+  m_EdgeRadius: 0
+--- !u!114 &114561487111283044
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1542653825205956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b44664d5edcdc67488b350d8d4d122b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  start: 1
+--- !u!114 &114666665154480140
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,6 +157,28 @@ MonoBehaviour:
   isGravity: 0
   strength: 30
   damage: 30
+  hitEffect: {fileID: 0}
+--- !u!114 &114779437193621998
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1825305972763034}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130f013ad5f879646be99ee311f3f817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeLimit: 0.5
+  spawnObj: {fileID: 0}
+  isBreakInvisible: 0
+  isGravity: 0
+  strength: 30
+  damage: 30
+  hitEffect: {fileID: 0}
+  speed: 0
+  turnAngle: 0
+  targetSite: {fileID: 0}
 --- !u!198 &198733384788784118
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -365,7 +427,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 40
+      scalar: 50
       minScalar: 1
       maxCurve:
         serializedVersion: 2

@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 114537944446822186}
   m_Layer: 0
   m_Name: LockEnergy
-  m_TagString: Effect
+  m_TagString: Physics
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -204,8 +204,9 @@ MonoBehaviour:
   spawnObj: {fileID: 0}
   isBreakInvisible: 1
   isGravity: 0
-  strength: 10
+  strength: 30
   damage: 15
+  hitEffect: {fileID: 1029970409936558, guid: f84ff46852d5e2b4088b7313d2dafcb8, type: 2}
   firstSpeed: 10
   atackSpeed: 120
   stopTime: 1

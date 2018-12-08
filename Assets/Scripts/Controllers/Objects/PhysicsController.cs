@@ -148,21 +148,21 @@ public class PhysicsController : ObjectController
     }
 
     //ユニットに衝突
-    protected virtual void HitUnit(GameObject obj)
+    protected virtual bool HitUnit(GameObject obj)
     {
-        //Debug.Log("### HitUnit");
+        return false;
     }
 
     //ダメージオブジェクトに衝突
-    protected virtual void HitDamageObject(GameObject obj)
+    protected virtual bool HitDamageObject(GameObject obj)
     {
-        //Debug.Log("### HitDamageObject");
+        return false;
     }
 
     //ステージに衝突
-    protected virtual void HitStage(GameObject obj)
+    protected virtual bool HitStage(GameObject obj)
     {
-        //Debug.Log("### HitStage");
+        return false;
     }
 
     //耐久値削減
@@ -203,6 +203,12 @@ public class PhysicsController : ObjectController
         }
     }
 
+    //衝突時共通処理
+    protected virtual void HitAction(Collider2D other)
+    {
+
+    }
+
     //### イベントハンドラ ###
 
     //衝突判定
@@ -210,21 +216,23 @@ public class PhysicsController : ObjectController
     {
         GameObject targetObj = other.gameObject;
         string targetTag = targetObj.tag;
+        bool isHit = false;
 
         //衝突対象判定
         if (Common.FUNC.IsUnitTag(targetTag))
         {
-            HitUnit(targetObj);
+            isHit = HitUnit(targetObj);
         }
         else if (Common.FUNC.IsDamageObjectTag(targetTag))
         {
-            HitDamageObject(targetObj);
+            isHit = HitDamageObject(targetObj);
         }
         else if (Common.FUNC.IsStageTag(targetTag))
         {
-            HitStage(targetObj);
+            isHit = HitStage(targetObj);
         }
 
+        if (isHit) HitAction(other);
     }
 
     //### getter/setter ###
