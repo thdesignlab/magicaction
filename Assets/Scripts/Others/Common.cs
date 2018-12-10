@@ -40,6 +40,7 @@ namespace Common
         public const string LAYER_PLAYER_BODY = "PlayerBody";
         public const string LAYER_ENEMY = "Enemy";
         public const string LAYER_ENEMY_BOSS = "EnemyBoss";
+        public const string LAYER_ENEMY_BODY = "EnemyBody";
         public const string LAYER_UI = "UI";
         public const string LAYER_OBJECT = "Object";
 

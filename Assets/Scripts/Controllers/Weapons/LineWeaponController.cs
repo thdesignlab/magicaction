@@ -32,12 +32,13 @@ public class LineWeaponController : SpawnWeaponController
     protected List<GameObject> objList = new List<GameObject>();
 
     //発射
-    public override void Fire(InputStatus input)
+    public override GameObject Fire(InputStatus input)
     {
         index++;
         if (totalLimit > 0) objList.RemoveAll(o => o == null);
         LineRendererStatus lineStatus = new LineRendererStatus(input.linePositions);
         StartCoroutine(ContinuousSpawn(input.GetStartPoint(), lineStatus.GetEvenlySpacedPoints(maxCount, perLength)));
+        return null;
     }
 
     IEnumerator ContinuousSpawn(Vector2 startPos, List<Vector2> posList)

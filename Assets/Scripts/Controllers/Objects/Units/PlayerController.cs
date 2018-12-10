@@ -49,7 +49,6 @@ public class PlayerController : UnitController
     private GameObject twistWeapon;
     private WeaponController twistWeaponCtrl;
 
-    private Transform weaponsTran;
     private int mp = 0;
     private float rhp = 0;
     private float rmp = 0;
@@ -75,7 +74,6 @@ public class PlayerController : UnitController
         InputManager.Instance.SetLongTapLevelAction(LongTapLevelAction);
         InputManager.Instance.SetReleaseAction(ReleaseAction);
         SetMp(maxMp);
-        SetWeapon();
         popPos = GameObject.FindGameObjectWithTag(Common.CO.TAG_PLAYER_POP).transform.position;
     }
 
@@ -161,9 +159,9 @@ public class PlayerController : UnitController
     }
 
     //武器設定
-    private void SetWeapon()
+    protected override void SetWeapon()
     {
-        weaponsTran = myTran.Find(Common.PLAYER.PARTS_WEAPONS);
+        base.SetWeapon();
         enemyTapWeaponCtrl = EquipWeapon(enemyTapWeapon);
         tapWeaponCtrlList = EquipWeapon(tapWeaponList);
         playerTapWeaponCtrlList = EquipWeapon(playerTapWeaponList);
@@ -176,33 +174,21 @@ public class PlayerController : UnitController
         pinchWeaponCtrl = EquipWeapon(pinchWeapon);
         twistWeaponCtrl = EquipWeapon(twistWeapon);
     }
-    public WeaponController EquipWeapon(GameObject weapon)
+    public override WeaponController EquipWeapon(GameObject weapon)
     {
-        if (weapon == null) return null;
-        GameObject weaponObj = Instantiate(weapon, weaponsTran.position, Quaternion.identity);
-        weaponObj.transform.SetParent(weaponsTran, true);
-        WeaponController weaponCtrl = weaponObj.GetComponentInChildren<WeaponController>();
+        WeaponController  weaponCtrl = base.EquipWeapon(weapon);
         if (weaponCtrl != null) weaponCtrl.SetPlayer(this);
         return weaponCtrl;
     }
-    private List<WeaponController> EquipWeapon(List<GameObject> weaponList)
-    {
-        List<WeaponController> wepaonCtrlList = new List<WeaponController>();
-        foreach (GameObject weapon in weaponList)
-        {
-            wepaonCtrlList.Add(EquipWeapon(weapon));
-        }
-        return wepaonCtrlList;
-    }
 
-    //攻撃処理
-    private void Fire(List<WeaponController> weaponCtrlList, InputStatus input)
+    //攻撃
+    protected void Fire(List<WeaponController> weaponCtrlList, InputStatus input)
     {
-        if (weaponCtrlList.Count == 0) return;
-        int level = (weaponCtrlList.Count <= input.pressLevel) ? weaponCtrlList.Count - 1 : input.pressLevel;
-        Fire(weaponCtrlList[level], input);
+        WeaponController weaponCtrl = SelectWeapon(weaponCtrlList, input.pressLevel);
+        if (weaponCtrl == null) return;
+        Fire(weaponCtrl, input);
     }
-    private void Fire(WeaponController weaponCtrl, InputStatus input)
+    protected void Fire(WeaponController weaponCtrl, InputStatus input)
     {
         if (weaponCtrl == null) return;
         weaponCtrl.Fire(input);

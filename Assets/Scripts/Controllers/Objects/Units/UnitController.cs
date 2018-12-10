@@ -11,6 +11,7 @@ public class UnitController : PhysicsController
     protected float colliderRadius;
     protected float stackTime = 0;
     protected float floatDamage = 0;
+    protected Transform weaponsTran;
 
     //詠唱エフェクト
     protected Dictionary<string, GameObject> chantObjDic = new Dictionary<string, GameObject>();
@@ -33,6 +34,7 @@ public class UnitController : PhysicsController
         SetColliderRadius();
         SetChant();
         SetBarrier();
+        SetWeapon();
     }
 
     protected override void Start()
@@ -195,6 +197,37 @@ public class UnitController : PhysicsController
             yield return null;
         }
         barrier.SetActive(false);
+    }
+
+    //武器設定
+    protected virtual void SetWeapon()
+    {
+        weaponsTran = myTran.Find(Common.PLAYER.PARTS_WEAPONS);
+    }
+    public virtual WeaponController EquipWeapon(GameObject weapon)
+    {
+        if (weapon == null) return null;
+        GameObject weaponObj = Instantiate(weapon, weaponsTran.position, Quaternion.identity);
+        weaponObj.transform.SetParent(weaponsTran, true);
+        WeaponController weaponCtrl = weaponObj.GetComponentInChildren<WeaponController>();
+        return weaponCtrl;
+    }
+    protected virtual List<WeaponController> EquipWeapon(List<GameObject> weaponList)
+    {
+        List<WeaponController> wepaonCtrlList = new List<WeaponController>();
+        foreach (GameObject weapon in weaponList)
+        {
+            wepaonCtrlList.Add(EquipWeapon(weapon));
+        }
+        return wepaonCtrlList;
+    }
+
+    //武器リストから対象レベルの武器を取得
+    protected WeaponController SelectWeapon(List<WeaponController> weaponCtrlList, int level = 0)
+    {
+        if (weaponCtrlList.Count == 0) return null;
+        level = (weaponCtrlList.Count <= level) ? weaponCtrlList.Count - 1 : level;
+        return  weaponCtrlList[level];
     }
 
     //### イベントハンドラ ###

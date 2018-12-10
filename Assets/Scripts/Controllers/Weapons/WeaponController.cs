@@ -24,8 +24,9 @@ public class WeaponController : MonoBehaviour
     }
 
     //発射
-    public virtual void Fire(InputStatus input)
+    public virtual GameObject Fire(InputStatus input)
     {
+        return null;
     }
 
     //目標ポイント取得

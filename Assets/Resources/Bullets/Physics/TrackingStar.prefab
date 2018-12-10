@@ -221,15 +221,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130f013ad5f879646be99ee311f3f817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 10
+  timeLimit: 15
   spawnObj: {fileID: 0}
   isBreakInvisible: 0
   isGravity: 0
-  strength: 50
-  damage: 10
+  strength: 100
+  damage: 5
   hitEffect: {fileID: 1029970409936558, guid: f84ff46852d5e2b4088b7313d2dafcb8, type: 2}
   speed: 20
-  turnAngle: 360
+  turnAngle: 450
   targetSite: {fileID: 1155301991863982, guid: 29775e1db1633f64487a949e6e1b7503, type: 2}
 --- !u!198 &198071166200164750
 ParticleSystem:

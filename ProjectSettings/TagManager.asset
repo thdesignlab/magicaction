@@ -17,6 +17,13 @@ TagManager:
   - EquipObject
   - EnemyBoss
   - LaserHead
+  - Hand
+  - ShoulderDash
+  - Extra
+  - Sub
+  - HandDash
+  - Shoulder
+  - Target
   layers:
   - Default
   - TransparentFX
@@ -31,7 +38,7 @@ TagManager:
   - PlayerBody
   - Object
   - EnemyBoss
-  - 
+  - EnemyBody
   - 
   - 
   - 

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EnemyController : UnitController
+public class EnemyController : BaseEnemyController
 {
     [SerializeField]
     private float speed;
@@ -21,12 +21,8 @@ public class EnemyController : UnitController
     private bool isBulletGravity = false;
     private int bulletSpeed;
 
-    protected GameObject playerObj;
-
     protected override void Awake()
     {
-        maxHp = Mathf.RoundToInt(maxHp * BattleManager.Instance.GetPowRate());
-
         base.Awake();
 
         rapidCount = (rapidCount > 0) ? rapidCount: 1;
@@ -47,10 +43,6 @@ public class EnemyController : UnitController
         if (BattleManager.Instance.IsBattleEnd()) return;
         base.Update();
 
-        if (playerObj == null)
-        {
-            playerObj = GameObject.FindGameObjectWithTag(Common.CO.TAG_PLAYER);
-        }
         nextAttackTime -= deltaTime;
         if (attackInterval > 0 && nextAttackTime <= 0)
         {
@@ -69,12 +61,6 @@ public class EnemyController : UnitController
 
     protected virtual IEnumerator Rapid(Vector2 targetPos)
     {
-        if (OnChant(1, true))
-        {
-            yield return new WaitForSeconds(3.0f);
-        }
-
-        
         if (isBulletGravity)
         {
             targetPos += Vector2.up * ((Vector2)myTran.position - targetPos).magnitude * 2;
@@ -89,8 +75,6 @@ public class EnemyController : UnitController
             }
             yield return new WaitForSeconds(rapidInterval);
         }
-
-        OnChant(1, false);
     }
     private void Spawn(GameObject spawnObj, Vector2 target, Transform muzzleTran)
     {
@@ -98,13 +82,7 @@ public class EnemyController : UnitController
         Common.FUNC.LookAt(obj.transform, target);
     }
 
-    protected override void Dead()
-    {
-        BattleManager.Instance.AddKill();
-        base.Dead();
-    }
-
-    protected virtual void Assault(GameObject obj)
+    protected void Assault(GameObject obj)
     {
         float d = (strength == 0) ? hp * hp : hp * strength;
         obj.GetComponent<UnitController>().Damage((int)d);

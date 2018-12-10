@@ -1094,7 +1094,7 @@ MonoBehaviour:
   - {fileID: 1252677556055486, guid: 0fc2746a4d631184eb6dcf6ae3561aaf, type: 2}
   - {fileID: 1017301927834702, guid: 6759d3dd5ce6cf447bfbe29a55f219cf, type: 2}
   - {fileID: 1194372912275180, guid: 3c34b5a8fd2e48149810b6e97f346e73, type: 2}
-  flickWeapon: {fileID: 1963503696641010, guid: e0e46350d142e9547843f2ebd9d8d6fb,
+  flickWeapon: {fileID: 1124872771291590, guid: 17d216f4cbcfce343b9398246ca62b9d,
     type: 2}
   playerFlickWeapon: {fileID: 0}
   pinchWeapon: {fileID: 0}

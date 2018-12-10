@@ -20,11 +20,12 @@ public class ShootingWeaponController : SpawnWeaponController
     }
 
     //発射
-    public override void Fire(InputStatus input)
+    public override GameObject Fire(InputStatus input)
     {
         index++;
         UseMp();
         StartCoroutine(FireProcess(GetTarget(input), input.GetTapEnemyTran()));
+        return null;
     }
 
     //発射処理

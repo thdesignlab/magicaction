@@ -43,12 +43,12 @@ public class SpawnWeaponController : WeaponController
     }
 
     //発射
-    public override void Fire(InputStatus input)
+    public override GameObject Fire(InputStatus input)
     {
         index++;
         UseMp();
         Transform tran = muzzles.Count > 0 ? muzzles[0] : myTran;
-        Spawn(spawn, tran.position, tran.rotation, input.GetTapEnemyTran());
+        return Spawn(spawn, tran.position, tran.rotation, input.GetTapEnemyTran());
     }
 
     //生成

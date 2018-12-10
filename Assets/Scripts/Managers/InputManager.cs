@@ -775,7 +775,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
     }
     public bool IsTapEnemy(Vector2 pos)
     {
-        string[] tags = new string[] { Common.CO.LAYER_ENEMY, Common.CO.LAYER_ENEMY_BOSS };
+        string[] tags = new string[] { Common.CO.LAYER_ENEMY, Common.CO.LAYER_ENEMY_BOSS, Common.CO.LAYER_ENEMY_BODY };
         int layerMask = Common.FUNC.GetLayerMask(tags);
         tapEnemy = GetTapObject(pos, layerMask);
         return (tapEnemy != null);

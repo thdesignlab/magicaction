@@ -13,11 +13,12 @@ public class FiringWeaponController : SpawnWeaponController
     protected float interval = 0;
 
     //発射
-    public override void Fire(InputStatus input)
+    public override GameObject Fire(InputStatus input)
     {
-        if (fireCoroutine != null) return;
+        if (fireCoroutine != null) return null;
         index++;
         fireCoroutine = StartCoroutine(Firing(input));
+        return null;
     }
 
     //発射処理

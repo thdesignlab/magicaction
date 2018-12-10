@@ -29,7 +29,7 @@ public class FlexibleWeaponController : WeaponController
     }
 
     //発射
-    public override void Fire(InputStatus input)
+    public override GameObject Fire(InputStatus input)
     {
         Vector2 start = input.GetStartPoint();
         Vector2 end = input.GetEndPoint();
@@ -38,22 +38,24 @@ public class FlexibleWeaponController : WeaponController
         float dy = end.y - start.y;
         float rad = Mathf.Atan2(dy, dx);
         float angle = rad * Mathf.Rad2Deg;
+        GameObject obj = null;
 
         if (Mathf.Abs(angle) <= borderAngleAbs || 180 - Mathf.Abs(angle) <= borderAngleAbs)
         {
-            if (frontWeaponCtrl != null) frontWeaponCtrl.Fire(input);
+            if (frontWeaponCtrl != null) obj = frontWeaponCtrl.Fire(input);
         }
         else
         {
             if ((angle > 0 && !isDrag) || (angle < 0 && isDrag))
             {
-                if (upwardWeaponCtrl != null) upwardWeaponCtrl.Fire(input);
+                if (upwardWeaponCtrl != null) obj = upwardWeaponCtrl.Fire(input);
             }
             else
             {
-                if (underWeaponCtrl != null) underWeaponCtrl.Fire(input);
+                if (underWeaponCtrl != null) obj = underWeaponCtrl.Fire(input);
             }
         }
+        return obj;
     }
 
 }

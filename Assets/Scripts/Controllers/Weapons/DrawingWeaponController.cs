@@ -30,11 +30,12 @@ public class DrawingWeaponController : SpawnWeaponController
     protected List<GameObject> objList = new List<GameObject>();
 
     //発射
-    public override void Fire(InputStatus input)
+    public override GameObject Fire(InputStatus input)
     {
-        if (fireCoroutine != null) return;
+        if (fireCoroutine != null) return null;
         index++;
         fireCoroutine = StartCoroutine(ContinuousSpawn(input));
+        return null;
     }
 
     IEnumerator ContinuousSpawn(InputStatus input)
