@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 58274580712557792}
   - component: {fileID: 114149010806060602}
   m_Layer: 0
-  m_Name: EArrow2
+  m_Name: ArrowE
   m_TagString: Physics
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

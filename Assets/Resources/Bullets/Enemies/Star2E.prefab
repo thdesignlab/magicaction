@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 50623080654848838}
   - component: {fileID: 58522543491843582}
   m_Layer: 0
-  m_Name: EStar2
+  m_Name: Star2E
   m_TagString: Physics
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -301,6 +301,7 @@ MonoBehaviour:
   isGravity: 0
   strength: 50
   damage: 200
+  hitEffect: {fileID: 0}
   speed: 50
 --- !u!114 &114596713673039188
 MonoBehaviour:

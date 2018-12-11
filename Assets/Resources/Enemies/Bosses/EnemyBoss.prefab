@@ -150,8 +150,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1746280798906936}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalPosition: {x: 0, y: -6, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 4537668275839404}
   - {fileID: 4599331672006400}
@@ -405,10 +405,11 @@ MonoBehaviour:
   strength: 100
   maxHp: 1000
   bossId: 0
-  weaponList: []
+  weaponList:
+  - {fileID: 1335474016892498, guid: fa1b08e1cf4ba0b49b73ab971883b317, type: 2}
   shieldWeapon: {fileID: 1633429962591362, guid: c16370d2cfaec6947a4596cd617cedeb,
     type: 2}
-  shieldInterval: 30
+  shieldInterval: 5
 --- !u!114 &114997583224166070
 MonoBehaviour:
   m_ObjectHideFlags: 1

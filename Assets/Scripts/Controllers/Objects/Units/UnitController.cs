@@ -47,7 +47,7 @@ public class UnitController : PhysicsController
     //被弾
     public virtual bool Damage(int damage)
     {
-        if (hp <= 0) return false;
+        if (!myRenderer.isVisible || hp <= 0) return false;
         OnBarrier();
         SetHp(-damage);
         if (hp <= 0)
@@ -258,7 +258,7 @@ public class UnitController : PhysicsController
             {
                 //Unitの前方で衝突
                 PhysicsController phyCtrl = collision.gameObject.GetComponent<PhysicsController>();
-                if (phyCtrl != null && strength > 0)
+                if (phyCtrl != null && strength > 0 && phyCtrl.IsPlayer() != IsPlayer())
                 {
                     float stageStrength = phyCtrl.GetStrength();
                     phyCtrl.Scrape(strength);

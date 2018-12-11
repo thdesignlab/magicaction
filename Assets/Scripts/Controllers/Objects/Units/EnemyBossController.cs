@@ -16,7 +16,7 @@ public class EnemyBossController : BaseEnemyController
     protected bool isReady = false;
     protected float nextShieldTime = 0;
     protected EnemyWeaponController shieldWeaponCtrl;
-    protected List<EnemyWeaponController> weaponListCtrl;
+    protected List<EnemyWeaponController> weaponCtrlList;
     protected InputStatus inputStatus = new InputStatus();
     protected List<GameObject> shieldObjList;
 
@@ -62,6 +62,29 @@ public class EnemyBossController : BaseEnemyController
 
         OnChant(1, false);
         isReady = true;
+        StartCoroutine(FireSchedule());
+    }
+
+    IEnumerator FireSchedule()
+    {
+        Dictionary<int, float> fireSchedule = new Dictionary<int, float>()
+        {
+            { 0, 10 },
+        };
+        int fireIndex = 0;
+        float fireTime = fireSchedule[fireIndex];
+        float interval = 0.1f;
+        for (; ; )
+        {
+            fireTime -= interval;
+            if (fireTime <= 0)
+            {
+                Fire(weaponCtrlList, fireIndex);
+                fireIndex = ++fireIndex % fireSchedule.Count;
+                fireTime = fireSchedule[fireIndex];
+            }
+            yield return new WaitForSeconds(interval);
+        }
     }
 
     protected override void SearchPlayer()
@@ -86,7 +109,7 @@ public class EnemyBossController : BaseEnemyController
     protected override void SetWeapon()
     {
         base.SetWeapon();
-        weaponListCtrl = EquipEnemyWeapon(weaponList);
+        weaponCtrlList = EquipEnemyWeapon(weaponList);
         shieldWeaponCtrl = EquipEnemyWeapon(shieldWeapon);
     }
     protected List<EnemyWeaponController>  EquipEnemyWeapon(List<GameObject> objList)

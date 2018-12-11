@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50180169852224796}
   - component: {fileID: 61360935956763002}
   m_Layer: 11
-  m_Name: EnemyShield
+  m_Name: ShieldE
   m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -277,6 +277,6 @@ MonoBehaviour:
   spawnObj: {fileID: 0}
   isBreakInvisible: 1
   isGravity: 0
-  strength: 100
+  strength: 300
   breakSpawnObject: {fileID: 1583086910334450, guid: 9ae0b06301a6add4abcd9e7836172a41,
     type: 2}

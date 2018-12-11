@@ -10,6 +10,8 @@ public class EnemyWeaponController : WeaponController
     protected float rapidCount;
     [SerializeField]
     protected float rapidInterval;
+    [SerializeField]
+    protected float deviation;
 
     protected List<Transform> muzzles = new List<Transform>();
     protected List<GameObject> objs = new List<GameObject>();
@@ -39,10 +41,12 @@ public class EnemyWeaponController : WeaponController
         StartCoroutine(RapidFire());
         return null;
     }
-    protected IEnumerator RapidFire()
+    protected virtual IEnumerator RapidFire(Vector2 target = default(Vector2))
     {
         for (int i = 0; i < rapidCount; i++ )
         {
+            Vector2 targetPos = Common.FUNC.GetTargetWithDeviation(myTran.position, target, deviation);
+            if (target != default(Vector2)) Common.FUNC.LookAt(myTran, targetPos);
             foreach (Transform muzzle in muzzles)
             {
                 GameObject obj = Spawn(spawn, muzzle.position, muzzle.rotation);
