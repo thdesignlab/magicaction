@@ -69,9 +69,16 @@ public class SpawnWeaponController : WeaponController
 
     protected virtual bool IsEnableSpawnPosition(Vector3 pos)
     {
+        //プレイヤー周辺
         if ((player.transform.position - pos).magnitude <= player.GetColliderRadius() * 1.5f) return false;
+        //ボス周辺
         LayerMask mask = Common.FUNC.GetLayerMask(Common.CO.LAYER_ENEMY_BOSS);
         RaycastHit2D hit = Physics2D.CircleCast(pos, 3.0f, Vector2.zero, 0, mask);
-        return hit.collider == null;
+        if (hit.collider != null) return false;
+        //オブジェクト周辺
+        mask = Common.FUNC.GetLayerMask(Common.CO.stageTags);
+        hit = Physics2D.Raycast(pos, Vector2.zero, 0, mask);
+        if (hit.collider != null) return false;
+        return true;
     }
 }
