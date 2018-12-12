@@ -84,4 +84,4 @@ MonoBehaviour:
   spawn: {fileID: 1283144128701166, guid: e42849a0b101f5344b6284b13f9dcc6b, type: 2}
   rapidCount: 50
   rapidInterval: 0.1
-  deviation: 5
+  deviation: 3
