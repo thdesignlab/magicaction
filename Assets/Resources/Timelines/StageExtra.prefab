@@ -53,10 +53,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageName: 2
-  spawnMin: {x: -1, y: -0.7}
+  spawnMin: {x: -1, y: -0.8}
   spawnMax: {x: 1, y: 0.9}
+  isBoss: 0
   isEndless: 1
-  powerUpRate: 30
+  powerUpRate: 10
 --- !u!320 &320107974898898994
 PlayableDirector:
   m_ObjectHideFlags: 1
@@ -84,6 +85,14 @@ PlayableDirector:
   - key: {fileID: 114732324596543116, guid: 12151ff2f1b2f9a44bbeb69c3f97cde0, type: 2}
     value: {fileID: 0}
   - key: {fileID: 114205843480628776, guid: 12151ff2f1b2f9a44bbeb69c3f97cde0, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 114217283120380442, guid: 12151ff2f1b2f9a44bbeb69c3f97cde0, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 114865982919168472, guid: 12151ff2f1b2f9a44bbeb69c3f97cde0, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 114454537963638714, guid: 12151ff2f1b2f9a44bbeb69c3f97cde0, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 114239163011845790, guid: 12151ff2f1b2f9a44bbeb69c3f97cde0, type: 2}
     value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
