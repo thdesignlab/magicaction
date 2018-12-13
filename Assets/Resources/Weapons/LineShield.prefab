@@ -53,7 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDrag: 0
   spawn: {fileID: 1503602940936532, guid: 6287270ec03b7124881b17323ca1d21c, type: 2}
-  useMp: 15
+  useMp: 20
   perLength: 1
   totalLimit: 100
   isPlayerForward: 1

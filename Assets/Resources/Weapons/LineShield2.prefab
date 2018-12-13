@@ -54,7 +54,7 @@ MonoBehaviour:
   isDrag: 0
   spawn: {fileID: 1852226906058852, guid: 0b636431b7f3e2f4191438a5a17094b8, type: 2}
   useMp: 30
-  perLength: 3
+  perLength: 1.5
   totalLimit: 30
   isPlayerForward: 1
   isLineAngle: 0
