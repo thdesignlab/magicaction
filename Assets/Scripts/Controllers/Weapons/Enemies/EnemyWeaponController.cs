@@ -12,9 +12,13 @@ public class EnemyWeaponController : WeaponController
     protected float rapidInterval;
     [SerializeField]
     protected float deviation;
+    [SerializeField]
+    protected float chantTime;
 
     protected List<Transform> muzzles = new List<Transform>();
     protected List<GameObject> objs = new List<GameObject>();
+    protected EnemyBossController enemyCtrl;
+    protected int level = 1;
 
     protected override void Awake()
     {
@@ -43,6 +47,10 @@ public class EnemyWeaponController : WeaponController
     }
     protected virtual IEnumerator RapidFire(Vector2 target = default(Vector2))
     {
+        if (enemyCtrl != null) enemyCtrl.SwitchBossChant(true, level);
+
+        yield return new WaitForSeconds(chantTime);
+
         for (int i = 0; i < rapidCount; i++ )
         {
             Vector2 targetPos = Common.FUNC.GetTargetWithDeviation(myTran.position, target, deviation);
@@ -55,6 +63,8 @@ public class EnemyWeaponController : WeaponController
             }
             yield return new WaitForSeconds(rapidInterval);
         }
+
+        if (enemyCtrl != null) enemyCtrl.SwitchBossChant(false);
     }
 
     //生成
@@ -71,4 +81,9 @@ public class EnemyWeaponController : WeaponController
         return objs;
     }
         
+    public void SetEnemy(EnemyBossController ctrl, int l = 1)
+    {
+        enemyCtrl = ctrl;
+        level = l;
+    }
 }

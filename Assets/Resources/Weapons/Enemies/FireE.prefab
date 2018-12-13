@@ -85,3 +85,4 @@ MonoBehaviour:
   rapidCount: 50
   rapidInterval: 0.1
   deviation: 3
+  chantTime: 3

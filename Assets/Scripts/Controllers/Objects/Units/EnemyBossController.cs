@@ -56,11 +56,11 @@ public class EnemyBossController : BaseEnemyController
 
     IEnumerator Summon()
     {
-        OnChant(1, true);
+        SwitchBossChant(true);
 
         yield return new WaitForSeconds(1.5f);
 
-        OnChant(1, false);
+        SwitchBossChant(false);
         isReady = true;
         StartCoroutine(FireSchedule());
     }
@@ -115,16 +115,19 @@ public class EnemyBossController : BaseEnemyController
     protected List<EnemyWeaponController>  EquipEnemyWeapon(List<GameObject> objList)
     {
         List<EnemyWeaponController> list = new List<EnemyWeaponController>();
+        int l = 1;
         foreach (GameObject obj in objList)
         {
-            list.Add(EquipEnemyWeapon(obj));
+            list.Add(EquipEnemyWeapon(obj, l++));
         }
         return list;
     }
-    protected EnemyWeaponController EquipEnemyWeapon(GameObject obj)
+    protected EnemyWeaponController EquipEnemyWeapon(GameObject obj, int level = 1)
     {
         WeaponController wc = EquipWeapon(obj);
-        return (EnemyWeaponController)wc;
+        EnemyWeaponController ewc = (EnemyWeaponController)wc;
+        if (ewc != null) ewc.SetEnemy(this, level);
+        return ewc;
     }
     protected EnemyWeaponController SelectWeapon(List<EnemyWeaponController> weaponCtrlList, int level = 0)
     {
@@ -150,6 +153,11 @@ public class EnemyBossController : BaseEnemyController
     protected void OnShield()
     {
         shieldWeaponCtrl.Fire(inputStatus);
+    }
+
+    public void SwitchBossChant(bool flg, int level = 1)
+    {
+        base.OnChant(level, flg);
     }
 
     //### イベントハンドラ ###

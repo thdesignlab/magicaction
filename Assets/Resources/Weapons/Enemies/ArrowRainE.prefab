@@ -200,3 +200,5 @@ MonoBehaviour:
   spawn: {fileID: 1168521429759610, guid: 179d07358c33e394da756cba06c6a0f0, type: 2}
   rapidCount: 15
   rapidInterval: 0.2
+  deviation: 0
+  chantTime: 3
