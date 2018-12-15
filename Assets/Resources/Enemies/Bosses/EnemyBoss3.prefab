@@ -386,17 +386,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 0
   spawnObj: {fileID: 1247516806466764, guid: 1be43b50417a6e84f9f84eb1ba758b9c, type: 2}
-  isBreakInvisible: 1
-  isGravity: 1
+  isBreakInvisible: 0
+  isGravity: 0
   strength: 100
   maxHp: 1000
-  speed: 0
-  bullet: {fileID: 1168521429759610, guid: 179d07358c33e394da756cba06c6a0f0, type: 2}
-  attackInterval: 10
-  rapidCount: 50
-  rapidInterval: 0
-  deviation: 5
+  bossId: 0
   weaponList: []
+  shieldWeapon: {fileID: 0}
+  shieldInterval: 0
 --- !u!114 &114169157473804048
 MonoBehaviour:
   m_ObjectHideFlags: 1

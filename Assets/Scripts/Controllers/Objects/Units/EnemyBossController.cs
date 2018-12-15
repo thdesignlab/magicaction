@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 
 public class EnemyBossController : BaseEnemyController
 {
@@ -19,6 +20,10 @@ public class EnemyBossController : BaseEnemyController
     protected List<EnemyWeaponController> weaponCtrlList;
     protected InputStatus inputStatus = new InputStatus();
     protected List<GameObject> shieldObjList;
+    protected CinemachineSmoothPath bossPath;
+    protected CinemachineDollyCart bossCart;
+    protected Transform bossCartTran;
+    protected float bossCartSpeed;
 
     protected override void Awake()
     {
@@ -29,6 +34,16 @@ public class EnemyBossController : BaseEnemyController
     {
         base.Start();
 
+        bossPath = BattleManager.Instance.GetBossPath();
+        if (bossPath != null)
+        {
+            bossCart = BattleManager.Instance.GetBossCart();
+            if (bossCart != null)
+            {
+                bossCartTran = bossCart.transform;
+                bossCartSpeed = bossCart.m_Speed;
+            }
+        }
         StartCoroutine(Summon());
     }
 
@@ -38,6 +53,7 @@ public class EnemyBossController : BaseEnemyController
 
         base.Update();
 
+        //シールド
         if (shieldWeaponCtrl != null)
         {
             shieldObjList = shieldWeaponCtrl.GetExistObject();
@@ -52,6 +68,28 @@ public class EnemyBossController : BaseEnemyController
                 }
             }
         }
+
+        //移動
+        if (bossCart != null) SetMoveVelocity(bossCartTran.position, bossCartSpeed);
+    }
+
+    protected override void SetMoveVelocity(Vector2 targetPos, float moveSpeed)
+    {
+        moveVelocity = Vector2.zero;
+        bossCart.m_Speed = 0;
+        if (!isKnockBack)
+        {
+            Vector2 targetVector = targetPos - Common.FUNC.ParseVector2(myTran.position);
+            float distance = targetVector.magnitude;
+            if (distance > 0.5f)
+            {
+                moveVelocity = targetVector.normalized * moveSpeed;
+            }
+            if (distance <= 1.0f)
+            {
+                bossCart.m_Speed = bossCartSpeed;
+            }
+        }
     }
 
     IEnumerator Summon()
@@ -62,6 +100,7 @@ public class EnemyBossController : BaseEnemyController
 
         SwitchBossChant(false);
         isReady = true;
+        if (bossCart != null) bossCart.m_Position = 0;
         StartCoroutine(FireSchedule());
     }
 
@@ -72,7 +111,7 @@ public class EnemyBossController : BaseEnemyController
             { 0, 10 },
         };
         int fireIndex = 0;
-        float fireTime = fireSchedule[fireIndex];
+        float fireTime = fireSchedule[fireIndex] / 2;
         float interval = 0.1f;
         for (; ; )
         {

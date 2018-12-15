@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 
 public class BattleManager : SingletonMonoBehaviour<BattleManager>
 {
@@ -45,6 +46,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     private int killScore = 0;
     private int lostScore = 0;
     private int hitScore = 0;
+    private GameObject stage;
     private PlayableDirector timeline;
     private PlayerController playerCtrl;
     private bool isPause = false;
@@ -212,8 +214,8 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
             DialogManager.Instance.OpenMessage("ステージ情報取得に失敗しました。", callback);
             return;
         }
-        GameObject obj = Instantiate(AppManager.Instance.stageObj);
-        timeline = obj.GetComponent<PlayableDirector>();
+        stage = Instantiate(AppManager.Instance.stageObj);
+        timeline = stage.GetComponent<PlayableDirector>();
         timeline.playOnAwake = false;
 
         //プログレスバー
@@ -303,7 +305,6 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
         InputManager.Instance.SetActive(true);
         SetMessage("START", 3.0f);
-
         isBattleStart = true;
         timeline.Play();
 
@@ -520,6 +521,16 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     public bool IsBattleEnd()
     {
         return isBattleEnd;
+    }
+
+    public CinemachineSmoothPath GetBossPath()
+    {
+        return stage.GetComponent< CinemachineSmoothPath>();
+    }
+
+    public CinemachineDollyCart GetBossCart()
+    {
+        return stage.transform.GetComponentInChildren<CinemachineDollyCart>();
     }
 
     //### イベント ###

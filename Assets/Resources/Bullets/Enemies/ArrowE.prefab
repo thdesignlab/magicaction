@@ -225,11 +225,11 @@ MonoBehaviour:
   spawnObj: {fileID: 0}
   isBreakInvisible: 0
   isGravity: 1
-  strength: 30
+  strength: 20
   damage: 100
   hitEffect: {fileID: 1029970409936558, guid: f84ff46852d5e2b4088b7313d2dafcb8, type: 2}
-  speed: 30
-  speedDeviation: 5
+  speed: 35
+  speedDeviation: 10
 --- !u!198 &198835457793205260
 ParticleSystem:
   m_ObjectHideFlags: 1

@@ -23,7 +23,7 @@ public class ObjectController : MonoBehaviour
     protected List<Transform> muzzles = new List<Transform>();
     protected int index;
 
-    protected const float LIMIT_AREA = 50.0f;
+    protected const float LIMIT_AREA = 100.0f;
     protected const float LIMIT_TIME = 10.0f;
 
     protected virtual void Awake()

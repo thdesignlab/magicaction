@@ -55,8 +55,6 @@ public class PlayerController : UnitController
     private bool isCharge = false;
     private Dictionary<string, WeaponController> weaponList = new Dictionary<string, WeaponController>();
     private Vector2 popPos;
-    private bool isFlying = true;
-    private Vector2 returnVelocity = Vector2.zero;
 
     const float CHARGE_RECOVER_RATE = 0.75f;
 
@@ -100,22 +98,8 @@ public class PlayerController : UnitController
         }
 
         //定位置へ移動
-        returnVelocity = Vector2.zero;
-        if (!isCharge && !isKnockBack)
-        {
-            Vector2 pos = isFlying ? popPos : new Vector2(popPos.x, myTran.position.y);
-            Vector2 target = pos - Common.FUNC.ParseVector2(myTran.position);
-            float distance = target.magnitude;
-            if (distance > 1.0f)
-            {
-                returnVelocity = target.normalized * walkSpeed;
-            }
-        }
-    }
-
-    protected override Vector2 GetTotalVelocity()
-    {
-        return base.GetTotalVelocity() + returnVelocity;
+        moveVelocity = Vector2.zero;
+        if (!isCharge) SetMoveVelocity(popPos, walkSpeed);
     }
 
     //HP割合取得

@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4651876253755426}
   - component: {fileID: 212691364529649072}
-  - component: {fileID: 58923386561065894}
   m_Layer: 13
   m_Name: enemy1_pre
   m_TagString: Untagged
@@ -40,8 +39,24 @@ GameObject:
   - component: {fileID: 50387933204063796}
   - component: {fileID: 58250057210634294}
   m_Layer: 9
-  m_Name: Enemy
+  m_Name: Enemy1
   m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1777717405393790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4197331185339966}
+  - component: {fileID: 58576938644410556}
+  m_Layer: 13
+  m_Name: Body
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,8 +71,22 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4197331185339966}
   - {fileID: 4651876253755426}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4197331185339966
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1777717405393790}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4119941646237592}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4651876253755426
@@ -71,7 +100,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 4119941646237592}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &50387933204063796
 Rigidbody2D:
@@ -108,12 +137,12 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.28
---- !u!58 &58923386561065894
+--- !u!58 &58576938644410556
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1067066658109798}
+  m_GameObject: {fileID: 1777717405393790}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -122,7 +151,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 2
 --- !u!114 &114530932207037644
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -140,7 +169,7 @@ MonoBehaviour:
   isGravity: 0
   strength: 2
   maxHp: 5
-  speed: 1
+  moveSpeed: 1
   bullet: {fileID: 1429345886998256, guid: 0c7874c33fdb67042a20a2fd77b72d33, type: 2}
   attackInterval: 8
   rapidCount: 1

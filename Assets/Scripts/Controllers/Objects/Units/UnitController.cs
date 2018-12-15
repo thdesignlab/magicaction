@@ -12,6 +12,7 @@ public class UnitController : PhysicsController
     protected float stackTime = 0;
     protected float floatDamage = 0;
     protected Transform weaponsTran;
+    protected Vector2 moveVelocity = Vector2.zero;
 
     //詠唱エフェクト
     protected Dictionary<string, GameObject> chantObjDic = new Dictionary<string, GameObject>();
@@ -42,6 +43,25 @@ public class UnitController : PhysicsController
         base.Start();
 
         InitSpeed();
+    }
+
+    protected virtual void SetMoveVelocity(Vector2 targetPos, float moveSpeed)
+    {
+        moveVelocity = Vector2.zero;
+        if (!isKnockBack)
+        {
+            Vector2 targetVector = targetPos - Common.FUNC.ParseVector2(myTran.position);
+            float distance = targetVector.magnitude;
+            if (distance > 0.5f)
+            {
+                moveVelocity = targetVector.normalized * moveSpeed;
+            }
+        }
+    }
+
+    protected override Vector2 GetTotalVelocity()
+    {
+        return base.GetTotalVelocity() + moveVelocity;
     }
 
     //被弾

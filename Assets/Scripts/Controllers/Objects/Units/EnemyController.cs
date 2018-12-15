@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class EnemyController : BaseEnemyController
 {
     [SerializeField]
-    private float speed;
+    private float moveSpeed;
     [SerializeField, HeaderAttribute("NormalAttack")]
     private GameObject bullet;
     [SerializeField]
@@ -56,7 +56,7 @@ public class EnemyController : BaseEnemyController
     {
         base.InitSpeed();
 
-        SetSpeed(GetForward() * speed);
+        SetSpeed(GetForward() * moveSpeed);
     }
 
     protected virtual IEnumerator Rapid(Vector2 targetPos)
