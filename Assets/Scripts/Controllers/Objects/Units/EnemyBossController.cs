@@ -75,9 +75,9 @@ public class EnemyBossController : BaseEnemyController
 
     protected override void SetMoveVelocity(Vector2 targetPos, float moveSpeed)
     {
-        moveVelocity = Vector2.zero;
+        Vector2 moveVelocity = Vector2.zero;
         bossCart.m_Speed = 0;
-        if (!isKnockBack)
+        if (!isKnockBack && stackTime <= 0)
         {
             Vector2 targetVector = targetPos - Common.FUNC.ParseVector2(myTran.position);
             float distance = targetVector.magnitude;
@@ -90,6 +90,7 @@ public class EnemyBossController : BaseEnemyController
                 bossCart.m_Speed = bossCartSpeed;
             }
         }
+        SetSpeed(moveVelocity);
     }
 
     IEnumerator Summon()

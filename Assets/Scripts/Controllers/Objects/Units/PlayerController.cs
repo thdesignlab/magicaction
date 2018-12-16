@@ -98,8 +98,7 @@ public class PlayerController : UnitController
         }
 
         //定位置へ移動
-        moveVelocity = Vector2.zero;
-        if (!isCharge) SetMoveVelocity(popPos, walkSpeed);
+        SetMoveVelocity(popPos, walkSpeed);
     }
 
     //HP割合取得

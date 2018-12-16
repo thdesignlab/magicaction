@@ -402,8 +402,8 @@ MonoBehaviour:
   spawnObj: {fileID: 1247516806466764, guid: 1be43b50417a6e84f9f84eb1ba758b9c, type: 2}
   isBreakInvisible: 1
   isGravity: 0
-  strength: 100
-  maxHp: 1000
+  strength: 1000
+  maxHp: 3000
   bossId: 4
   weaponList:
   - {fileID: 1335474016892498, guid: fa1b08e1cf4ba0b49b73ab971883b317, type: 2}
