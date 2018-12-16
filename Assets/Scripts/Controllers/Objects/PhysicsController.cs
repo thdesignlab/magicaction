@@ -166,7 +166,7 @@ public class PhysicsController : ObjectController
     }
 
     //耐久値削減
-    public void Scrape(int power = 0)
+    public virtual void Scrape(int power = 0)
     {
         if (power < 0) return;
         
